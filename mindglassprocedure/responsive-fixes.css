@@ -1,0 +1,40 @@
+/*
+ * ARTICLE — MOBILE POLISH AND NAVIGATION
+ * The desktop design remains unchanged.
+ */
+html, body { max-width: 100%; overflow-x: clip; }
+[id] { scroll-margin-top: 92px; }
+@media (max-width: 900px) {
+  .topbar { min-height: 68px; height: auto; gap: 10px; flex-wrap: wrap; padding-top: 12px; padding-bottom: 12px; }
+  .brand { font-size: clamp(13px, 3vw, 20px); letter-spacing: .06em; }
+  nav { flex-wrap: wrap; gap: 10px 15px; }
+  /* Keep the Sources link visible even when the sidebar is hidden. */
+  nav a:nth-child(3) { display: inline; }
+  .paper-layout, .article, .watch { min-width: 0; }
+  .diagram, .cycle { max-width: 100%; }
+  .hero { height: auto; min-height: 530px; }
+}
+@media (max-width: 520px) {
+  .topbar { align-items: flex-start; }
+  .topbar nav { width: 100%; justify-content: space-between; }
+  nav a { font-size: 10px; }
+  nav .nav-pdf { padding: 8px 9px; }
+  .hero h1 { font-size: clamp(34px, 10vw, 49px); overflow-wrap: break-word; }
+  .hero-inner { padding-top: 72px; padding-bottom: 72px; }
+  .hero-actions { flex-wrap: wrap; }
+  .references li { overflow-wrap: anywhere; }
+  [id] { scroll-margin-top: 125px; }
+}
+
+/* Mobile accessibility: eliminate transform-based entry motion that can
+   make the page feel as though it moves while swiping. */
+@media (max-width: 700px) {
+  .masthead .eyebrow, .masthead h1, .masthead p,
+  .hero .eyebrow, .hero h1, .hero .dek,
+  .hero .hero-caption, .hero .hero-actions, .hero-image {
+    animation: none !important;
+  }
+  .entry, .article figure, .section-head, .watch .video {
+    animation: none !important;
+  }
+}
