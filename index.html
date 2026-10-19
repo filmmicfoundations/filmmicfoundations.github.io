@@ -1,0 +1,86 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="index,follow"><meta name="description" content="Filmmic Foundations is a growing online archive of critical film analyses and research articles."><link rel="canonical" href="https://filmmicfoundations.github.io/"><meta property="og:title" content="Filmmic Foundations — Film Research Archive"><meta property="og:description" content="Critical film analyses, visual essays, and research."><meta property="og:type" content="website"><title>Filmmic Foundations | Film Research Archive</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="responsive-fixes.css"><link rel="stylesheet" href="site-features.css"><style>
+/* Filmmic Foundations — subtle cinematic motion layer.
+   Add after style.css on both pages. No JavaScript or external dependencies. */
+
+html { scroll-behavior: smooth; }
+body { -webkit-font-smoothing: antialiased; }
+
+/* Quiet, staggered opening sequence. */
+@keyframes ff-arrive {
+  from { opacity: 0; transform: translate3d(0, 17px, 0); filter: blur(3px); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); filter: blur(0); }
+}
+@keyframes ff-image-arrive {
+  from { opacity: .42; transform: scale(1.035); }
+  to   { opacity: .6; transform: scale(1); }
+}
+.masthead .eyebrow, .hero .eyebrow { animation: ff-arrive .85s cubic-bezier(.2,.7,.2,1) both; }
+.masthead h1, .hero h1 { animation: ff-arrive 1.05s .10s cubic-bezier(.2,.7,.2,1) both; }
+.masthead p, .hero .dek { animation: ff-arrive 1s .24s cubic-bezier(.2,.7,.2,1) both; }
+.hero .hero-caption, .hero .hero-actions { animation: ff-arrive 1s .35s cubic-bezier(.2,.7,.2,1) both; }
+.hero-image { animation: ff-image-arrive 1.7s cubic-bezier(.2,.7,.2,1) both; }
+
+/* Editorial link and card interactions. */
+a { text-underline-offset: .22em; text-decoration-thickness: 1px; transition: color .25s ease, text-decoration-color .25s ease; }
+header a:not(:first-child), nav a:not(.nav-pdf), .toc a { transition: color .25s ease, opacity .25s ease; }
+header a:not(:first-child):hover, nav a:not(.nav-pdf):hover { opacity: .68; }
+.entry { transition: transform .55s cubic-bezier(.2,.7,.2,1), box-shadow .55s ease, border-color .4s ease; }
+.entry:hover { transform: translateY(-5px); box-shadow: 0 22px 55px rgba(12,30,37,.13); border-color: #a5c1c0; }
+.entry img { transition: transform .8s cubic-bezier(.2,.7,.2,1), filter .6s ease; }
+.entry:hover img { transform: scale(1.035); filter: saturate(1.08); }
+.entry .read { transition: letter-spacing .35s ease; }
+.entry:hover .read { letter-spacing: .025em; }
+.hero-actions a, nav .nav-pdf { transition: transform .3s ease, background-color .3s ease, color .3s ease, border-color .3s ease; }
+.hero-actions a:hover, nav .nav-pdf:hover { transform: translateY(-2px); }
+.hero-actions .primary:hover { background: #dcf1ec; }
+.hero-actions .secondary:hover { background: rgba(255,255,255,.1); }
+
+/* Gentle motion for article imagery without moving text as it is read. */
+.article figure img { transition: filter .6s ease; }
+.article figure:hover img { filter: contrast(1.045); }
+.topbar { transition: box-shadow .3s ease; }
+.topbar:hover { box-shadow: 0 7px 24px rgba(10,31,35,.06); }
+
+/* Progressive enhancement: reveal figures and archive entries as they enter view.
+   Unsupported browsers simply display everything normally. */
+@keyframes ff-scroll-reveal {
+  from { opacity: .65; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@supports (animation-timeline: view()) {
+  .entry, .article figure, .section-head, .watch .video {
+    animation-name: ff-scroll-reveal;
+    animation-duration: 1s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 27%;
+  }
+}
+
+/* Accessible keyboard focus and reduced-motion support. */
+a:focus-visible { outline: 2px solid #5a9a9b; outline-offset: 4px; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+</style>
+<link rel="icon" href="favicon.svg?v=2" type="image/svg+xml"><link rel="alternate icon" href="favicon.ico?v=2" type="image/x-icon"></head><body><header><a href="./"><strong>FILMMIC <span>FOUNDATIONS</span></strong></a><nav class="site-nav" aria-label="Main navigation">
+  <a class="nav-link" href="#articles">Research archive</a>
+  <details class="nav-dropdown"><summary>Explore <span class="nav-chevron" aria-hidden="true"></span></summary>
+    <div class="nav-menu"><a href="#articles">All articles</a><a href="#search">Search articles</a><a href="#publishing">Submit research</a></div>
+  </details>
+  
+</nav></header><section class="masthead"><div class="wrap"><div class="eyebrow">AN ONLINE FILM STUDIES ARCHIVE</div><h1>FILMMIC<br><em>FOUNDATIONS.</em></h1><p>A collection of critical film analyses exploring visual storytelling, narrative structure, cinematic technique, and the ideas behind moving images.</p></div></section><main class="section" id="articles"><div class="wrap" id="search"><label class="search-label" for="article-search">SEARCH THE ARCHIVE</label><div class="search-shell"><svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg><input type="search" id="article-search" placeholder="Search titles, topics, or descriptions…" autocomplete="off" aria-controls="article-results"/><button type="button" id="clear-search" aria-label="Clear search" hidden>Clear</button></div><p class="search-status" id="search-status" role="status" aria-live="polite"></p></div><div class="wrap"><div class="section-head"><h2>Research &amp; analysis</h2><small>01 PUBLICATION</small></div><div id="article-results"><!-- ARTICLES START: generated by scripts/build_archive.py; do not edit this block manually. -->
+<a class="entry" href="mindglassprocedure/">
+  <img src="mindglassprocedure/assets/mindglass-procedure-laboratory-reveal.webp" alt="A laboratory scene from Mindglass Procedure" loading="lazy">
+  <div class="entry-body">
+    <div class="tag">FILM ANALYSIS · 2026</div>
+    <h3>Mindglass Procedure</h3>
+    <p>Memory, Grief, and the Repetition of Avoidance. A close reading of the 2025 short film, examining its imagery, narrative, ethics, and cinematic form.</p>
+    <span class="read">Read full research article →</span>
+  </div>
+</a>
+<!-- ARTICLES END --></div><p class="no-results" id="no-results" hidden>No articles match your search. Try another title or topic.</p>
+<p class="coming">Additional film analyses may be added to this archive over time.</p><section class="publishing-info" id="publishing"><span class="eyebrow">CONTRIBUTE TO THE ARCHIVE</span><h2>Preparing a research submission?</h2><p>Download the submission questionnaire to gather the film details, primary evidence, research citations, permissions, and images needed for a detailed analysis. Publication is reviewed before it goes live.</p><a class="download-guide" href="Filmmic_Foundations_Article_Submission_Questionnaire.pdf" download>Download submission questionnaire <span aria-hidden="true">&#8599;</span></a></section></div></main><footer>© 2026 Filmmic Foundations · Film Research Archive</footer><script src="site-features.js" defer></script></body></html>
