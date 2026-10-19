@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://filmmicfoundations.github.io/sitemap.xml
