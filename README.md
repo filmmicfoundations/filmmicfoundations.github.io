@@ -1,6 +1,6 @@
 # Films Forever — GitHub Pages archive
 
-Public site: https://filmsforever.github.io/mindglassprocedure/
+Public site: https://filmsforever.github.io/filmsforever/
 
 - `index.html` is the Films Forever database homepage.
 - `mindglassprocedure/index.html` is the complete Mindglass Procedure research article.
