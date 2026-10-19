@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,follow">
+<meta name="description" content="Prepare a PDF research submission for the Filmmic Foundations article drafting workflow.">
+<title>Article Builder | Filmmic Foundations</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../style.css"><link rel="stylesheet" href="../responsive-fixes.css">
+<link rel="stylesheet" href="../site-features.css"><link rel="stylesheet" href="builder.css">
+</head><body>
+<header><a href="../" aria-label="Filmmic Foundations homepage"><strong>FILMMIC <span>FOUNDATIONS</span></strong></a>
+<nav class="site-nav" aria-label="Main navigation"><a class="nav-link" href="../#articles">Archive</a>
+<details class="nav-dropdown"><summary>Explore <span class="nav-chevron" aria-hidden="true"></span></summary><div class="nav-menu"><a href="../#articles">All articles</a><a href="../#search">Search archive</a><a href="../#publishing">Submission guide</a></div></details>
+<a class="nav-builder" href="./" aria-current="page">Article Builder</a></nav></header>
+<main class="builder-main"><div class="builder-shell">
+<div class="eyebrow">FILMMIC FOUNDATIONS · EDITORIAL WORKFLOW</div>
+<h1>Research to <em>article.</em></h1>
+<p class="builder-intro">Prepare a research PDF, an approved cover image, and editorial notes for a publication draft in the style of <cite>Mindglass Procedure</cite>. The files stay on your device until you upload the prepared package to GitHub.</p>
+<div class="builder-steps"><span><b>01</b> Prepare files</span><span><b>02</b> Upload to GitHub</span><span><b>03</b> Run AI workflow</span><span><b>04</b> Review draft</span></div>
+<section class="builder-panel" aria-labelledby="builder-title"><h2 id="builder-title">Prepare your submission</h2>
+<p class="muted">A searchable PDF and one licensed cover image are required. You can also include extra film stills and notes to guide the analysis.</p>
+<form id="submission-form">
+<label class="builder-label" for="slug">Article URL name <span aria-hidden="true">*</span></label>
+<input id="slug" name="slug" required type="text" pattern="[a-z0-9]+(-[a-z0-9]+)*" placeholder="e.g. opal-film-analysis" autocomplete="off" spellcheck="false">
+<p class="field-note">Lowercase letters, numbers and hyphens. Your future article URL will end in /your-name/.</p>
+<div class="upload-grid">
+<label class="upload-tile" for="paper"><span class="tile-icon" aria-hidden="true">PDF</span><b>Research paper <span aria-hidden="true">*</span></b><small id="paper-name">Choose a searchable PDF</small><input type="file" id="paper" accept=".pdf,application/pdf" required></label>
+<label class="upload-tile" for="cover"><span class="tile-icon" aria-hidden="true">IMG</span><b>Cover image <span aria-hidden="true">*</span></b><small id="cover-name">Choose JPG, PNG or WebP</small><input type="file" id="cover" accept="image/jpeg,image/png,image/webp" required></label>
+</div>
+<label class="builder-label" for="extras">Additional cleared images (optional)</label><input id="extras" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+<label class="builder-label" for="notes">Editorial notes (optional, recommended)</label>
+<textarea id="notes" rows="7" placeholder="Film title, director, release year, article argument, key scenes, timestamps, image credits, bibliography corrections, desired diagrams, intended audience, and any details that require verification."></textarea>
+<p class="field-note">Don't include passwords or private personal information. Check that you have permission to publish images and research materials.</p>
+<button class="builder-button" type="submit">Prepare GitHub submission <span class="css-arrow" aria-hidden="true"></span></button>
+<p id="builder-status" role="status" aria-live="polite" class="builder-status"></p>
+</form></section>
+<section class="builder-panel next-panel" id="next-steps" hidden aria-labelledby="next-title"><h2 id="next-title">Your submission is ready</h2><p>Your ZIP contains <code>paper.pdf</code>, <code>notes.md</code>, and your images in <code>assets/</code>. The package was created locally in your browser.</p>
+<ol><li>Click <strong>Upload to GitHub</strong> and upload the downloaded <code>your-name.zip</code> to <code>submissions/inbox/</code>. Commit the upload.</li>
+<li>In GitHub, open <strong>Actions → Draft article from research PDF → Run workflow</strong>.</li>
+<li>Enter the article URL name you chose above, then run the workflow. It uses the API key stored in GitHub Secrets.</li>
+<li>Open the generated pull request and <strong>review every claim, reference, image, and diagram</strong> before merging.</li></ol>
+<a class="builder-button builder-link" href="https://github.com/filmmicfoundations/filmmicfoundations.github.io/upload/main/submissions/inbox" target="_blank" rel="noopener noreferrer">Upload to GitHub <span class="css-arrow" aria-hidden="true"></span></a>
+<p class="field-note">GitHub's browser uploader has a 25 MB per-file limit. For larger submissions, use GitHub Desktop to add the ZIP to <code>submissions/inbox/</code>. GitHub Pages cannot directly accept uploads or securely call an AI API.</p></section>
+<section class="builder-help"><h2>Before you submit</h2><p>For a substantive article, the paper should include a clear thesis, evidence from specific scenes, properly identified sources, and permission to use the supplied visuals. The builder follows the source material; it does not invent research or film stills.</p>
+<a href="../Filmmic_Foundations_Article_Submission_Questionnaire.pdf" download>Download the research questionnaire <span class="css-arrow" aria-hidden="true"></span></a>
+<p class="muted">Drafts require a manual review and approval. AI API usage may incur costs. Only repository collaborators with appropriate permissions can run the workflow.</p></section>
+</div></main><footer>© 2026 Filmmic Foundations · Film Research Archive</footer>
+<script src="../site-features.js" defer></script><script src="builder.js" defer></script>
+</body></html>

@@ -1,0 +1,9 @@
+/* Generated drafts reuse the original Mindglass article typography and layout. */
+.generated-hero { min-height:470px; height:auto; background:#0d1b21; background-size:cover; background-position:center; }
+.generated-hero .hero-inner { padding-bottom:110px; }
+.generated-hero h1 { font-size:clamp(36px,7vw,90px); overflow-wrap:anywhere; }
+.generated-diagram { display:flex; flex-wrap:wrap; list-style:none; gap:12px; margin:32px 0; padding:0; }
+.generated-diagram li { flex:1 1 130px; min-width:0; padding:20px; background:#e8f0ef; border-top:3px solid #2d777d; font-size:14px; line-height:1.6; }
+.article figure img { max-width:100%; height:auto; display:block; }
+.article .references li { overflow-wrap:anywhere; }
+@media(max-width:700px){.generated-hero .hero-inner{padding:70px 24px 80px}.generated-diagram{display:block}.generated-diagram li{margin:10px 0}}
