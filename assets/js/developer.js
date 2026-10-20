@@ -7,7 +7,7 @@
   const API=`https://api.github.com/repos/${OWNER}/${REPO}`;
   const MAX_ZIP=90*1024*1024, MAX_TOTAL=200*1024*1024, MAX_ENTRIES=2500;
   const $=id=>document.getElementById(id);
-  let token='', archive=null, manifest=[], changes=[], baselineSha='', baselineTree='', busy=false, versions=[];
+  let token='', archive=null, manifest=[], changes=[], baselineSha='', baselineTree='', busy=false, versions=[], connectedUser='', lastInspectionError='', justPublished=false;
   const setStatus=(id,msg)=>{$(id).textContent=msg;};
   const trimSha=sha=>String(sha||'').slice(0,10);
   const escapeFile=p=> p.replace(/^\/+/, '');
@@ -88,7 +88,11 @@
       const first=names[0]?.split('/')[0];
       if(first && names.every(n=>n.startsWith(first+'/')) && names.includes(first+'/index.html')){
         list=list.map(x=>({file:x,path:x.name.slice(first.length+1)}));
-      }else throw Error('ZIP must contain index.html at the root (or inside one containing folder).');
+      }else{
+        // A patch archive containing only changed paths (e.g. dev/index.html)
+        // is valid. Files absent from the ZIP are never removed.
+        list=list.map(x=>({file:x,path:x.name}));
+      }
     }else list=list.map(x=>({file:x,path:x.name}));
     const included=$('dev-include-workflows').checked;
     const files=[];const seen=new Set();let total=0;
@@ -104,7 +108,7 @@
       const bytes=await entry.file.async('uint8array');
       files.push({path,bytes,sha:await blobSha(bytes),status:'included'});
     }
-    if(!files.find(f=>f.path==='index.html' && f.bytes))throw Error('Required homepage index.html is missing.');
+    if(!files.some(f=>f.bytes))throw Error('No publishable files were found in this ZIP.');
     return files;
   }
   async function headAndTree(){
@@ -135,14 +139,68 @@
     changes=active.filter(x=>x.status==='changed'||x.status==='new');
     updatePublishButton();
   }
-  function updatePublishButton(){
-    $('dev-publish').disabled=!(token && baselineSha && changes.length && $('dev-confirm-update').checked) || busy;
+  function publishBlocker(){
+    if(justPublished)return 'Commit submitted. GitHub Actions is checking and deploying it. Review successful deployments under Versions & backups.';
+    if(busy)return 'Please wait for the current operation to finish.';
+    if(!token)return 'Connect to GitHub above first. You will then be able to review and publish.';
+    if(!archive)return 'Choose an update ZIP. You can upload a full site or just the changed files.';
+    if(lastInspectionError)return `Fix the inspection issue, then try again: ${lastInspectionError}`;
+    if(!baselineSha)return 'The ZIP has not been compared with GitHub. Select Inspect ZIP to compare again.';
+    if(!changes.length)return 'Everything in this ZIP already matches the repository. There is nothing new to publish.';
+    if(!$('dev-confirm-update').checked)return `Review the ${changes.length} new or changed file${changes.length===1?'':'s'} and tick the approval box.`;
+    return '';
   }
-  function setBusy(value){busy=value;$('dev-compare').disabled=value||!archive;$('dev-refresh-versions').disabled=value;updatePublishButton();}
-
+  function updatePublishButton(){
+    const reason=publishBlocker();
+    const button=$('dev-publish');
+    button.disabled=busy||justPublished;
+    button.dataset.ready=reason?'false':'true';
+    button.classList.toggle('is-ready',!reason);
+    button.querySelector('span').textContent=justPublished?'✓':'↗';
+    $('dev-publish-reason').textContent=reason||`Ready to publish ${changes.length} file${changes.length===1?'':'s'}. GitHub will validate before the update becomes live.`;
+    const tasks={connection:!!token,file:!!archive,inspection:!!baselineSha&&changes.length>0,approved:!!$('dev-confirm-update').checked&&!!baselineSha&&changes.length>0};
+    document.querySelectorAll('[data-check]').forEach(el=>{
+      const complete=tasks[el.dataset.check];el.classList.toggle('is-complete',complete);
+      el.querySelector('.dev-check-icon').textContent=complete?'✓':'○';
+    });
+    const stages={connection:!!token,upload:!!archive,review:!!baselineSha,publish:justPublished};
+    let found=false;
+    document.querySelectorAll('[data-journey]').forEach(el=>{
+      const done=stages[el.dataset.journey];
+      el.classList.toggle('is-done',done);
+      el.classList.toggle('is-current',!found&&!done);
+      el.querySelector('.dev-journey-number').textContent=done?'✓':({connection:'1',upload:'2',review:'3',publish:'4'}[el.dataset.journey]);
+      if(!done)found=true;
+    });
+    $('dev-connect-state').textContent=token?'Connected':'Not connected';
+    $('dev-connect-state').classList.toggle('is-connected',!!token);
+    $('dev-quick-token-form').hidden=!!token;
+    $('dev-connected-info').hidden=!token;
+    if(token)$('dev-connected-as').textContent=`Connected as ${connectedUser||'authorized account'}`;
+    $('dev-connection-badge').textContent=token?'Connected':'Not connected';
+  }
+  function setBusy(value){
+    busy=value;
+    $('dev-compare').disabled=value||!archive;
+    $('dev-refresh-versions').disabled=value;
+    $('dev-zip-file').disabled=value;
+    $('dev-quick-connect').disabled=value;
+    $('dev-publish').firstChild.textContent=value?'Working… ':justPublished?'Update submitted ':'Publish update ';
+    updatePublishButton();
+  }
+  function explainPublishBlocker(){
+    const reason=publishBlocker();
+    if(!reason)return false;
+    setStatus('dev-update-status',reason);
+    if(!token){$('dev-quick-token').focus();$('dev-connect-heading').scrollIntoView({behavior:'smooth',block:'center'});}
+    else if(!archive){$('dev-zip-file').focus();$('dev-choose-heading').scrollIntoView({behavior:'smooth',block:'center'});}
+    else if(!baselineSha && !lastInspectionError){compare();}
+    else if(changes.length && !$('dev-confirm-update').checked){$('dev-confirm-update').focus();$('dev-review').scrollIntoView({behavior:'smooth',block:'center'});}
+    return true;
+  }
   async function compare(){
     if(!archive)return;
-    setBusy(true);setStatus('dev-update-status','Inspecting ZIP structure, CRC and file changes…');
+    lastInspectionError='';justPublished=false;setBusy(true);setStatus('dev-update-status','Inspecting ZIP contents and comparing files…');
     try{
       manifest=await readZip(archive);baselineSha='';baselineTree='';
       if(token){
@@ -155,12 +213,13 @@
         setStatus('dev-update-status','ZIP structure and CRC validated locally. Connect to GitHub (Connection tab) to compare files and enable publishing.');
       }
       renderFiles();
-    }catch(e){$('dev-review').hidden=true;changes=[];baselineSha='';setStatus('dev-update-status',`ZIP inspection stopped: ${e.message}`);}
+      if(token&&changes.length===0)setStatus('dev-update-status','This ZIP is valid, but all its files are already up to date. Choose another ZIP to publish a new change.');
+    }catch(e){$('dev-review').hidden=true;changes=[];baselineSha='';lastInspectionError=e.message;setStatus('dev-update-status',`Could not inspect the ZIP: ${e.message}`);}
     finally{setBusy(false);}
   }
 
   async function publish(){
-    if(!token||!baselineSha||!changes.length||!$('dev-confirm-update').checked||busy)return;
+    if(explainPublishBlocker())return;
     const confirmation=`Publish ${changes.length} new/modified file(s) to ${OWNER}/${REPO}?\n\nFiles absent from the ZIP will be preserved. GitHub Actions will validate and deploy automatically.`;
     if(!window.confirm(confirmation))return;
     setBusy(true);
@@ -178,8 +237,8 @@
       const tree=await api('/git/trees',{method:'POST',body:{base_tree:baselineTree,tree:treeChanges}});
       const commit=await api('/git/commits',{method:'POST',body:{message:`Update Filmmic Foundations via developer portal (${changes.length} files)`,tree:tree.sha,parents:[baselineSha]}});
       await api(`/git/refs/heads/${BRANCH}`,{method:'PATCH',body:{sha:commit.sha,force:false}});
-      baselineSha='';changes=[];$('dev-confirm-update').checked=false;
-      setStatus('dev-update-status',`Update committed (${trimSha(commit.sha)}). GitHub Actions will validate and publish it; check deployment status before treating it as live. The portal itself cannot guarantee deployment success.`);
+      baselineSha='';changes=[];$('dev-confirm-update').checked=false;lastInspectionError='';justPublished=true;
+      setStatus('dev-update-status',`Update submitted successfully (${trimSha(commit.sha)}). GitHub Actions is now validating and deploying. The update will be live only after deployment succeeds.`);
       $('dev-review').hidden=true;await refreshVersions();
     }catch(e){setStatus('dev-update-status',`Publish did not complete: ${e.message}. Check the repository status before retrying.`);}
     finally{setBusy(false);}
@@ -224,6 +283,44 @@
     finally{setBusy(false);}
   }
 
+  function resetInspection(){
+    manifest=[];changes=[];baselineSha='';baselineTree='';lastInspectionError='';justPublished=false;
+    $('dev-review').hidden=true;$('dev-confirm-update').checked=false;updatePublishButton();
+  }
+  async function connectWith(value){
+    if(!value)return;
+    const old=token;token=value;
+    setStatus('dev-connection-status','Checking GitHub authorization…');
+    try{
+      const user=await api('https://api.github.com/user');
+      const repo=await api('');
+      if(repo.full_name?.toLowerCase()!==`${OWNER}/${REPO}`)throw Error('Connected to the wrong repository.');
+      connectedUser=user.login||'authorized account';
+      $('dev-quick-token').value='';$('dev-github-token').value='';
+      resetInspection();
+      setStatus('dev-connection-status',`Connected as ${connectedUser}. The token is only held in browser memory. Closing this tab or disconnecting clears it.`);
+      if(archive){setStatus('dev-update-status','Connected! Comparing the selected ZIP with your GitHub repository…');await compare();}
+      else setStatus('dev-update-status','GitHub connected. Choose a ZIP above to continue.');
+      refreshVersions().catch(()=>{});
+    }catch(err){token=old||'';connectedUser=token?connectedUser:'';setStatus('dev-connection-status',`Could not connect: ${err.message}`);setStatus('dev-update-status',`GitHub connection failed: ${err.message}. Check token access and try again.`);}
+    updatePublishButton();
+  }
+  function disconnect(){
+    token='';connectedUser='';resetInspection();
+    $('dev-github-token').value='';$('dev-quick-token').value='';
+    setStatus('dev-connection-status','Disconnected. Token cleared from memory.');
+    setStatus('dev-update-status','Disconnected. Reconnect to publish an update.');
+    refreshVersions().catch(()=>{});updatePublishButton();
+  }
+  function chooseZip(file){
+    archive=file||null;resetInspection();
+    $('dev-upload-info').hidden=!archive;
+    $('dev-filename').textContent=archive?`${archive.name} · ${(archive.size/1048576).toFixed(2)} MB`:'';
+    $('dev-compare').disabled=!archive||busy;
+    if(archive){setStatus('dev-update-status',token?'ZIP received. Inspecting and comparing automatically…':'ZIP received. Inspecting locally; connect to GitHub to publish.');compare();}
+    else setStatus('dev-update-status','Choose an update ZIP to continue.');
+    updatePublishButton();
+  }
   function showTab(tab){
     document.querySelectorAll('[data-tab]').forEach(b=>{if(b.dataset.tab===tab)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
     document.querySelectorAll('[data-panel]').forEach(p=>p.hidden=p.dataset.panel!==tab);
@@ -236,36 +333,32 @@
       window.scrollTo({top:0,behavior:'instant'});
     }else{$('dev-login-error').textContent='Incorrect demonstration code.';$('dev-access-code').value='';}
   });
-  $('dev-lock-again').addEventListener('click',()=>{token='';baselineSha='';baselineTree='';changes=[];$('dev-confirm-update').checked=false;updatePublishButton();$('dev-connection-badge').textContent='Not connected';$('dev-github-token').value='';$('dev-lock').hidden=false;$('dev-workspace').hidden=true;setStatus('dev-connection-status','Disconnected. Credentials cleared from this page.');window.scrollTo(0,0);});
+  $('dev-lock-again').addEventListener('click',()=>{
+    disconnect();$('dev-access-code').value='';$('dev-lock').hidden=false;$('dev-workspace').hidden=true;window.scrollTo(0,0);
+  });
   document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{showTab(b.dataset.tab);history.replaceState(null,'',`#${b.dataset.tab}`);}));
-  $('dev-zip-file').addEventListener('change',e=>{archive=e.target.files?.[0]||null;manifest=[];changes=[];baselineSha='';$('dev-review').hidden=true;$('dev-upload-info').hidden=!archive;
-    $('dev-filename').textContent=archive?`${archive.name} · ${(archive.size/1048576).toFixed(1)} MB`:'';$('dev-compare').disabled=!archive;
-    if(archive)setStatus('dev-update-status','ZIP ready for inspection.');});
-  $('dev-include-workflows').addEventListener('change',()=>{if(archive){$('dev-review').hidden=true;changes=[];baselineSha='';$('dev-confirm-update').checked=false;updatePublishButton();setStatus('dev-update-status','Workflow selection changed. Inspect ZIP again before publishing.');}});
-  $('dev-clear-zip').addEventListener('click',()=>{archive=null;manifest=[];changes=[];baselineSha='';$('dev-zip-file').value='';$('dev-review').hidden=true;$('dev-upload-info').hidden=true;$('dev-compare').disabled=true;updatePublishButton();});
+  $('dev-token-help-link').addEventListener('click',e=>{e.preventDefault();showTab('status');history.replaceState(null,'','#status');});
+  $('dev-zip-file').addEventListener('change',e=>chooseZip(e.target.files?.[0]||null));
+  $('dev-include-workflows').addEventListener('change',()=>{if(archive){resetInspection();setStatus('dev-update-status','Advanced options changed. Rechecking ZIP…');compare();}});
+  $('dev-clear-zip').addEventListener('click',()=>{$('dev-zip-file').value='';chooseZip(null);});
   $('dev-compare').addEventListener('click',compare);
   $('dev-confirm-update').addEventListener('change',updatePublishButton);
   $('dev-publish').addEventListener('click',publish);
   $('dev-refresh-versions').addEventListener('click',refreshVersions);
-  $('dev-token-form').addEventListener('submit',async e=>{
-    e.preventDefault();const value=$('dev-github-token').value.trim();if(!value)return;
-    token=value;setStatus('dev-connection-status','Verifying GitHub authorization…');
-    try{
-      const user=await api('https://api.github.com/user');
-      const repo=await api('');
-      if(repo.full_name?.toLowerCase()!==`${OWNER}/${REPO}`)throw Error('Connected to the wrong repository.');
-      $('dev-connection-badge').textContent='Connected';
-      setStatus('dev-connection-status',`Connected as ${user.login}. Your token stays in memory until you lock, disconnect or close this tab. Only GitHub can enforce permissions.`);
-      $('dev-github-token').value='';baselineSha='';await refreshVersions();
-      if(archive){setStatus('dev-update-status','Connection established. Inspect ZIP again to compare against live repository.');}
-    }catch(err){token='';$('dev-connection-badge').textContent='Not connected';setStatus('dev-connection-status',`Connection failed: ${err.message}`);}
-    updatePublishButton();
-  });
-  $('dev-disconnect').addEventListener('click',()=>{token='';baselineSha='';changes=[];$('dev-github-token').value='';$('dev-connection-badge').textContent='Not connected';setStatus('dev-connection-status','Disconnected. Token cleared from browser memory.');refreshVersions();updatePublishButton();});
+  $('dev-token-form').addEventListener('submit',async e=>{e.preventDefault();await connectWith($('dev-github-token').value.trim());});
+  $('dev-quick-token-form').addEventListener('submit',async e=>{e.preventDefault();await connectWith($('dev-quick-token').value.trim());});
+  $('dev-disconnect').addEventListener('click',disconnect);
+  $('dev-quick-disconnect').addEventListener('click',disconnect);
   const zone=$('dev-dropzone');
   zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('is-dragging');});
   zone.addEventListener('dragleave',()=>zone.classList.remove('is-dragging'));
-  zone.addEventListener('drop',e=>{e.preventDefault();zone.classList.remove('is-dragging');const file=e.dataTransfer.files?.[0];if(!file)return;if(!/\.zip$/i.test(file.name)){setStatus('dev-update-status','Choose a ZIP file.');return;}
-    archive=file;$('dev-zip-file').value='';manifest=[];changes=[];baselineSha='';$('dev-review').hidden=true;$('dev-upload-info').hidden=false;$('dev-filename').textContent=`${file.name} · ${(file.size/1048576).toFixed(1)} MB`;$('dev-compare').disabled=false;setStatus('dev-update-status','ZIP ready for inspection.');});
+  zone.addEventListener('drop',e=>{
+    e.preventDefault();zone.classList.remove('is-dragging');
+    const file=e.dataTransfer.files?.[0];
+    if(!file)return;
+    if(!/\.zip$/i.test(file.name)){setStatus('dev-update-status','Please choose a .zip file.');return;}
+    $('dev-zip-file').value='';chooseZip(file);
+  });
+  updatePublishButton();
   refreshVersions();
 })();

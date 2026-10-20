@@ -73,3 +73,16 @@ To publish or restore, the user must separately enter a fine-grained GitHub pers
 - The Source ZIP updates automatically because it points at the successful deployment commit from GitHub's run history. A successful deployment snapshot is distinct from the newest unverified commit.
 - Publishing removes nothing absent from the uploaded ZIP; this avoids deleting unrelated short-film research. Use GitHub for intentional deletions or implement a separate confirmed delete workflow later.
 - If a token lacks Actions read permission, the history/rollback UI cannot verify successful deployments and disables that function rather than claiming generic commits are safe restore points.
+
+## Developer Portal usability update (v40)
+
+The portal's **Website updates** section is now a guided, single-screen procedure:
+
+1. **Connect** to GitHub using a short-lived repository-limited fine-grained token in the inline form. The dedicated Connection tab remains available.
+2. **Choose ZIP** — either a complete website export or a partial patch ZIP containing only changed relative paths, for example `dev/index.html` and `assets/js/developer.js`. Missing files are always preserved; publication does not delete files.
+3. **Inspect/review** — selection triggers ZIP validation automatically; after connecting, the portal automatically compares with GitHub. The optional Inspect button reruns comparison. A readable checklist shows connected, ZIP received, changes detected and review approved.
+4. **Publish** — the button stays clickable when not yet ready and explains precisely what is still required, rather than silently remaining disabled. It still cannot publish without authentication, an up-to-date comparison with at least one modified/new file, and confirmation.
+
+If all selected files already match GitHub, the portal explains that nothing needs updating. GitHub Actions continues to validate and deploy after the commit; a successful commit is **not** a confirmed successful deployment. Use **Versions & backups** to inspect recorded successful deployments.
+
+**Installation note:** If the previously deployed portal cannot publish v40 because of its old readiness checks, make this update once via GitHub Desktop or the GitHub web uploader. This isn't a backend or a security upgrade: the public demonstration passcode `123` is unchanged and GitHub API authorization remains necessary to publish.
