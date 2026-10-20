@@ -1,16 +1,37 @@
-/* Filmmic Foundations developer portal: temporary visual gate + explicit GitHub authorization.
- * NO credentials are shipped, stored, logged or sent anywhere other than api.github.com.
- * Password '123' is intentionally public; it is NOT authentication. */
+/* Filmmic Foundations developer portal: public visual gate + GitHub authorization.
+ * Token is held in this tab's sessionStorage after verification; never log or embed it.
+ * The public access code is not authentication. */
 (() => {
   'use strict';
   const OWNER='filmmicfoundations', REPO='filmmicfoundations.github.io', BRANCH='main';
   const API=`https://api.github.com/repos/${OWNER}/${REPO}`;
+  const SESSION_TOKEN_KEY='ff-dev-github-token-v1';
   const MAX_ZIP=90*1024*1024, MAX_TOTAL=200*1024*1024, MAX_ENTRIES=2500;
   const $=id=>document.getElementById(id);
   let token='', archive=null, manifest=[], changes=[], baselineSha='', baselineTree='', busy=false, versions=[], connectedUser='', lastInspectionError='', justPublished=false;
   const setStatus=(id,msg)=>{$(id).textContent=msg;};
   const trimSha=sha=>String(sha||'').slice(0,10);
   const escapeFile=p=> p.replace(/^\/+/, '');
+  // Session storage is scoped to a browser tab but some browsers restore sessions.
+  function saveSessionToken(value){try{if(value)sessionStorage.setItem(SESSION_TOKEN_KEY,value);else sessionStorage.removeItem(SESSION_TOKEN_KEY);}catch{ /* storage unavailable: in-memory session still works */ }}
+  function loadSessionToken(){try{return sessionStorage.getItem(SESSION_TOKEN_KEY)||'';}catch{return '';}}
+  let dialogCloseTimer=0;
+  let dialogReturnFocus=null;
+  function openTokenGuide(expired=false){
+    const guide=$('dev-token-guide');
+    $('dev-token-expired').hidden=!expired;
+    clearTimeout(dialogCloseTimer);guide.classList.remove('is-closing');
+    dialogReturnFocus=document.activeElement;
+    if(!guide.open)guide.showModal();
+    $('dev-token-guide-close').focus({preventScroll:true});
+  }
+  function closeTokenGuide(){
+    const guide=$('dev-token-guide');if(!guide.open||guide.classList.contains('is-closing'))return;
+    guide.classList.add('is-closing');
+    const done=()=>{guide.close();guide.classList.remove('is-closing');dialogReturnFocus?.focus?.({preventScroll:true});};
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches)done();
+    else dialogCloseTimer=setTimeout(done,170);
+  }
 
   function cleanPath(path) {
     if(path.startsWith('/')||path.includes('\\')||/[\x00-\x1f\x7f]/.test(path)) throw Error(`Unsafe ZIP path: ${path}`);
@@ -30,11 +51,22 @@
     try{res=await fetch(path.startsWith('https://')?path:API+path,{method,headers,body:body===null?undefined:JSON.stringify(body),cache:'no-store',redirect:'follow'});}
     catch(e){throw Error('Could not reach GitHub. Check your connection, browser restrictions or content blockers. '+e.message);}
     const data=await res.json().catch(()=>({}));
+    if(res.status===401 && token){
+      // The token cannot be used. Do not retain rejected credentials in tab storage.
+      saveSessionToken('');token='';connectedUser='';
+      setStatus('dev-connection-status','GitHub rejected the token. It may be expired or revoked. Create a new token to reconnect.');
+      updatePublishButton();openTokenGuide(true);
+    }
     if(!res.ok)throw Error(`GitHub ${res.status}: ${data.message||'Request failed'}`);
     return data;
   }
 
   const bufHex=bytes=>Array.from(new Uint8Array(bytes),x=>x.toString(16).padStart(2,'0')).join('');
+  const CRC_TABLE=Uint32Array.from({length:256},(_,i)=>{
+    let c=i;for(let j=0;j<8;j++)c=(c>>>1)^((c&1)?0xedb88320:0);
+    return c>>>0;
+  });
+  function crc32(bytes){let c=0xffffffff;for(const byte of bytes)c=CRC_TABLE[(c^byte)&255]^(c>>>8);return(c^0xffffffff)>>>0;}
   /* The SHA-1 digest is Git's blob object ID, not a password hash. WebCrypto is
    * preferred on HTTPS; pure JS fallback supports inspecting a ZIP offline. */
   function sha1Fallback(input){
@@ -79,7 +111,9 @@
   async function readZip(file){
     if(!window.JSZip)throw Error('ZIP support did not load. Reload the page and try again.');
     if(file.size>MAX_ZIP)throw Error('ZIP exceeds 90 MB. Split or optimize the update package.');
-    const zip=await JSZip.loadAsync(file,{checkCRC32:true});
+    // Avoid JSZip's checkCRC32 option, which can stall while streaming Blobs in some browsers.
+    // Each decompressed entry is checked explicitly below instead.
+    const zip=await JSZip.loadAsync(file,{checkCRC32:false});
     let list=Object.values(zip.files).filter(entry=>!entry.dir && !entry.name.startsWith('__MACOSX/'));
     if(list.length>MAX_ENTRIES)throw Error('Too many files in ZIP.');
     // Accept both a source-root ZIP and a ZIP with exactly one containing folder.
@@ -106,6 +140,8 @@
       if(sz>MAX_ZIP)throw Error(`File too large: ${path}`);
       total+=sz;if(total>MAX_TOTAL)throw Error('ZIP uncompressed content exceeds the 200 MB limit.');
       const bytes=await entry.file.async('uint8array');
+      if(entry.file._data && typeof entry.file._data.crc32==='number' && crc32(bytes)!==(entry.file._data.crc32>>>0))
+        throw Error(`ZIP integrity check failed: ${path}`);
       files.push({path,bytes,sha:await blobSha(bytes),status:'included'});
     }
     if(!files.some(f=>f.bytes))throw Error('No publishable files were found in this ZIP.');
@@ -163,21 +199,12 @@
       const complete=tasks[el.dataset.check];el.classList.toggle('is-complete',complete);
       el.querySelector('.dev-check-icon').textContent=complete?'✓':'○';
     });
-    const stages={connection:!!token,upload:!!archive,review:!!baselineSha,publish:justPublished};
-    let found=false;
-    document.querySelectorAll('[data-journey]').forEach(el=>{
-      const done=stages[el.dataset.journey];
-      el.classList.toggle('is-done',done);
-      el.classList.toggle('is-current',!found&&!done);
-      el.querySelector('.dev-journey-number').textContent=done?'✓':({connection:'1',upload:'2',review:'3',publish:'4'}[el.dataset.journey]);
-      if(!done)found=true;
-    });
     $('dev-connect-state').textContent=token?'Connected':'Not connected';
     $('dev-connect-state').classList.toggle('is-connected',!!token);
     $('dev-quick-token-form').hidden=!!token;
     $('dev-connected-info').hidden=!token;
     if(token)$('dev-connected-as').textContent=`Connected as ${connectedUser||'authorized account'}`;
-    $('dev-connection-badge').textContent=token?'Connected':'Not connected';
+
   }
   function setBusy(value){
     busy=value;
@@ -289,26 +316,27 @@
   }
   async function connectWith(value){
     if(!value)return;
-    const old=token;token=value;
+    token=value;
     setStatus('dev-connection-status','Checking GitHub authorization…');
     try{
       const user=await api('https://api.github.com/user');
       const repo=await api('');
       if(repo.full_name?.toLowerCase()!==`${OWNER}/${REPO}`)throw Error('Connected to the wrong repository.');
       connectedUser=user.login||'authorized account';
-      $('dev-quick-token').value='';$('dev-github-token').value='';
+      $('dev-quick-token').value='';
+      saveSessionToken(token);
       resetInspection();
-      setStatus('dev-connection-status',`Connected as ${connectedUser}. The token is only held in browser memory. Closing this tab or disconnecting clears it.`);
+      setStatus('dev-connection-status','');
       if(archive){setStatus('dev-update-status','Connected! Comparing the selected ZIP with your GitHub repository…');await compare();}
       else setStatus('dev-update-status','GitHub connected. Choose a ZIP above to continue.');
       refreshVersions().catch(()=>{});
-    }catch(err){token=old||'';connectedUser=token?connectedUser:'';setStatus('dev-connection-status',`Could not connect: ${err.message}`);setStatus('dev-update-status',`GitHub connection failed: ${err.message}. Check token access and try again.`);}
+    }catch(err){token='';connectedUser='';saveSessionToken('');setStatus('dev-connection-status',`Could not connect: ${err.message}`);setStatus('dev-update-status',`GitHub connection failed: ${err.message}. Check token access and try again.`);}
     updatePublishButton();
   }
   function disconnect(){
-    token='';connectedUser='';resetInspection();
-    $('dev-github-token').value='';$('dev-quick-token').value='';
-    setStatus('dev-connection-status','Disconnected. Token cleared from memory.');
+    token='';connectedUser='';saveSessionToken('');resetInspection();
+    $('dev-quick-token').value='';
+    setStatus('dev-connection-status','Disconnected. Token cleared from this tab.');
     setStatus('dev-update-status','Disconnected. Reconnect to publish an update.');
     refreshVersions().catch(()=>{});updatePublishButton();
   }
@@ -329,15 +357,23 @@
     e.preventDefault();
     if($('dev-access-code').value==='123'){
       $('dev-access-code').value='';$('dev-login-error').textContent='';$('dev-lock').hidden=true;$('dev-workspace').hidden=false;
-      const tab=location.hash.slice(1);showTab(['updates','versions','standards','status'].includes(tab)?tab:'updates');
+      const tab=location.hash.slice(1);showTab(['updates','versions','standards'].includes(tab)?tab:'updates');
       window.scrollTo({top:0,behavior:'instant'});
+      const saved=loadSessionToken();if(saved&&!token){
+        setStatus('dev-connection-status','Restoring GitHub connection for this tab…');
+        connectWith(saved).catch(()=>{});
+      }
     }else{$('dev-login-error').textContent='Incorrect demonstration code.';$('dev-access-code').value='';}
   });
   $('dev-lock-again').addEventListener('click',()=>{
     disconnect();$('dev-access-code').value='';$('dev-lock').hidden=false;$('dev-workspace').hidden=true;window.scrollTo(0,0);
   });
   document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{showTab(b.dataset.tab);history.replaceState(null,'',`#${b.dataset.tab}`);}));
-  $('dev-token-help-link').addEventListener('click',e=>{e.preventDefault();showTab('status');history.replaceState(null,'','#status');});
+  $('dev-token-help-link').addEventListener('click',()=>openTokenGuide());
+  $('dev-token-guide-close').addEventListener('click',closeTokenGuide);
+  $('dev-token-guide-done').addEventListener('click',closeTokenGuide);
+  $('dev-token-guide').addEventListener('cancel',e=>{e.preventDefault();closeTokenGuide();});
+  $('dev-token-guide').addEventListener('click',e=>{if(e.target===$('dev-token-guide'))closeTokenGuide();});
   $('dev-zip-file').addEventListener('change',e=>chooseZip(e.target.files?.[0]||null));
   $('dev-include-workflows').addEventListener('change',()=>{if(archive){resetInspection();setStatus('dev-update-status','Advanced options changed. Rechecking ZIP…');compare();}});
   $('dev-clear-zip').addEventListener('click',()=>{$('dev-zip-file').value='';chooseZip(null);});
@@ -345,9 +381,7 @@
   $('dev-confirm-update').addEventListener('change',updatePublishButton);
   $('dev-publish').addEventListener('click',publish);
   $('dev-refresh-versions').addEventListener('click',refreshVersions);
-  $('dev-token-form').addEventListener('submit',async e=>{e.preventDefault();await connectWith($('dev-github-token').value.trim());});
   $('dev-quick-token-form').addEventListener('submit',async e=>{e.preventDefault();await connectWith($('dev-quick-token').value.trim());});
-  $('dev-disconnect').addEventListener('click',disconnect);
   $('dev-quick-disconnect').addEventListener('click',disconnect);
   const zone=$('dev-dropzone');
   zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('is-dragging');});

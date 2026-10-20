@@ -86,3 +86,26 @@ The portal's **Website updates** section is now a guided, single-screen procedur
 If all selected files already match GitHub, the portal explains that nothing needs updating. GitHub Actions continues to validate and deploy after the commit; a successful commit is **not** a confirmed successful deployment. Use **Versions & backups** to inspect recorded successful deployments.
 
 **Installation note:** If the previously deployed portal cannot publish v40 because of its old readiness checks, make this update once via GitHub Desktop or the GitHub web uploader. This isn't a backend or a security upgrade: the public demonstration passcode `123` is unchanged and GitHub API authorization remains necessary to publish.
+
+## Developer Portal v43
+
+The `/dev/` interface has three compact sections: Updates, Backups, and Standards.
+The temporary code `123` is only a visual gate on public GitHub Pages, not authentication.
+Actual publishing and restoring require a repository-scoped, fine-grained GitHub token.
+
+After GitHub verifies a token, the portal saves it in **tab-scoped sessionStorage** so a
+reload in that tab can reconnect without retyping. Disconnect or **Lock portal** clears
+it. Browser session restoration may preserve sessionStorage after a browser restart;
+for sensitive credentials, use short expiration dates and explicitly disconnect when
+finished. Anyone who can execute JavaScript on the same origin could read tab storage.
+No token is included in source downloads, site packages, the page URL, or localStorage.
+
+The **How to create or renew a token** link opens instructions; a GitHub 401 response
+clears rejected credentials and opens the same guide automatically. The required
+fine-grained token permissions are **Contents: Read and write** and **Actions:
+Read-only** for deployment history, scoped to this repository. Use a short expiration.
+
+The portal supports both complete-site and patch ZIPs, reports exact differences
+before publication, preserves omitted files, and can restore successful deployment
+revisions. ZIP entry decompression and CRC verification happen per file rather than
+through JSZip's built-in streaming CRC option.
