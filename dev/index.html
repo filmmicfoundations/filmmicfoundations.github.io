@@ -14,12 +14,11 @@
 <section id="dev-lock" class="dev-lock" aria-labelledby="dev-lock-title">
   <div class="dev-lock-card"><div class="dev-lock-symbol" aria-hidden="true">⌁</div><p class="dev-overline">FILMMIC FOUNDATIONS · DEVELOPER TOOLS</p><h1 id="dev-lock-title">Enter the portal.</h1><p>Enter the access code to open development tools. Publishing requires separate GitHub authorization.</p>
     <form id="dev-login-form"><label for="dev-access-code">Access code</label><div class="dev-login-row"><input id="dev-access-code" type="password" autocomplete="off" required placeholder="Enter access code"><button class="dev-button primary" type="submit">Continue <span aria-hidden="true">→</span></button></div><p id="dev-login-error" class="dev-error" role="alert" aria-live="polite"></p></form>
-    <p class="dev-small">This access code is a convenience gate, not secure authentication.</p>
   </div>
 </section>
 <div id="dev-workspace" class="dev-workspace" hidden>
   <div class="dev-hero"><div class="dev-shell"><p class="dev-overline">FILMMIC FOUNDATIONS / SITE MANAGEMENT</p><div class="dev-hero-title"><div><h2 class="dev-workspace-title">Developer portal.</h2><p>Deploy updates, manage releases, and access publication standards.</p></div><button id="dev-lock-again" class="dev-button quiet" type="button">Lock portal</button></div></div></div>
-  <div class="dev-shell dev-main-grid"><aside class="dev-side"><nav class="dev-tabs" aria-label="Developer tools"><button class="dev-tab" data-tab="updates" aria-current="page" type="button">Updates</button><button class="dev-tab" data-tab="versions" type="button">Backups</button><button class="dev-tab" data-tab="standards" type="button">Standards</button></nav><div class="dev-side-note">A visual access code is not secure authentication. GitHub permissions control publishing.</div></aside>
+  <div class="dev-shell dev-main-grid"><aside class="dev-side"><nav class="dev-tabs" aria-label="Developer tools"><button class="dev-tab" data-tab="updates" aria-current="page" type="button">Updates</button><button class="dev-tab" data-tab="versions" type="button">Backups</button><button class="dev-tab" data-tab="standards" type="button">Standards</button></nav></aside>
   <div class="dev-content">
     <section class="dev-panel" data-panel="updates" aria-labelledby="updates-title"><span class="dev-eyebrow">DEPLOYMENT</span><h2 id="updates-title">Publish an update.</h2><p class="dev-lead">Connect a GitHub account, select an update ZIP, and approve the changed files. Unspecified files are preserved.</p>
       <div class="dev-task-pair">
@@ -38,7 +37,7 @@
         <button id="dev-compare" class="dev-button outline dev-inspect-button" type="button" disabled><span aria-hidden="true">⌕</span> Inspect ZIP and compare changes</button>
       </section>
       </div>
-      <section class="dev-task-block dev-publish-section" aria-labelledby="dev-review-heading">
+      <section id="dev-publish-section" class="dev-task-block dev-publish-section" aria-labelledby="dev-review-heading">
         <div class="dev-task-header"><div><p class="dev-task-label">03 / REVIEW &amp; PUBLISH</p><h3 id="dev-review-heading">Review changes</h3><p>Publishing requires an inspected ZIP, a live GitHub comparison, and approval.</p></div></div>
         <div class="dev-review" id="dev-review" hidden><div class="dev-review-head"><h3>Files in this update</h3><span id="dev-change-summary"></span></div><p id="dev-review-hint" class="dev-small"></p><div class="dev-file-list" id="dev-file-list" aria-label="Files in update"></div><label class="dev-checkline"><input id="dev-confirm-update" type="checkbox"> I reviewed the files and approve this update.</label></div>
         <div class="dev-preflight" id="dev-preflight" aria-label="Publication readiness">
@@ -52,6 +51,20 @@
         <div class="dev-next-step" id="dev-publish-reason" role="status" aria-live="polite">Connect GitHub to begin.</div>
       </section>
       <div class="dev-message" id="dev-update-status" aria-live="polite" role="status">Select a ZIP to inspect. Nothing is published until changes are approved.</div>
+      <section class="dev-deploy-panel" id="dev-deploy-panel" hidden aria-label="Deployment progress">
+        <div class="dev-deploy-head"><div><p class="dev-eyebrow">LIVE RELEASE STATUS</p><h3 id="dev-deploy-title">Preparing deployment</h3></div><span id="dev-deploy-badge" class="dev-deploy-badge">In progress</span></div>
+        <div id="dev-deploy-track" class="dev-deploy-track" role="progressbar" aria-label="Publication stages" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0"><span id="dev-deploy-fill"></span></div>
+        <p id="dev-deploy-detail" class="dev-deploy-detail" role="status" aria-live="polite">Waiting for publication.</p>
+        <ol class="dev-deploy-stages">
+          <li data-deploy-step="files"><span class="dev-deploy-step-dot" aria-hidden="true">1</span>Transfer files</li>
+          <li data-deploy-step="commit"><span class="dev-deploy-step-dot" aria-hidden="true">2</span>Create release</li>
+          <li data-deploy-step="build"><span class="dev-deploy-step-dot" aria-hidden="true">3</span>GitHub Pages</li>
+          <li data-deploy-step="live"><span class="dev-deploy-step-dot" aria-hidden="true">4</span>Live website</li>
+        </ol>
+        <div class="dev-deploy-actions"><a id="dev-deploy-actions-link" href="https://github.com/filmmicfoundations/filmmicfoundations.github.io/actions" target="_blank" rel="noopener noreferrer">View deployment on GitHub ↗</a><button id="dev-deploy-reload" type="button" class="dev-inline-button" hidden>Reload portal now</button></div>
+        <p class="dev-deploy-footnote">Progress follows actual GitHub results. No estimated completion time is shown.</p>
+      </section>
+
     </section>
     <section class="dev-panel" data-panel="versions" aria-labelledby="versions-title" hidden><span class="dev-eyebrow">RELEASE HISTORY</span><h2 id="versions-title">Backups &amp; restore.</h2><p class="dev-lead">Download the source used for the most recent successful deployment, or restore a previous release.</p>
       <div class="dev-download-card"><div><strong>Current website source</strong><p>Complete repository snapshot including code, article assets and publishing scripts. Credentials are never included.</p><span id="dev-source-revision" class="dev-revision">Latest main-branch version</span></div><a id="dev-download-source" class="dev-button primary" href="https://github.com/filmmicfoundations/filmmicfoundations.github.io/archive/refs/heads/main.zip" download>Download ZIP ↓</a></div>

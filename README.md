@@ -109,3 +109,43 @@ The portal supports both complete-site and patch ZIPs, reports exact differences
 before publication, preserves omitted files, and can restore successful deployment
 revisions. ZIP entry decompression and CRC verification happen per file rather than
 through JSZip's built-in streaming CRC option.
+
+## Developer Portal deployment progress (v44)
+
+The public `/dev/` passcode screen remains a visual convenience gate. Its copy has been
+simplified, **but it is not authentication**. The details and safer-operation guidance
+remain in the repository documentation and token-renewal popup. Actual GitHub writes
+require a fine-grained personal access token with repository Contents write permission.
+
+After the update ZIP has been reviewed and approved, the portal displays a **live
+release-status panel**:
+
+1. **Transfer files:** each changed file's Git blob is uploaded to GitHub; counts are
+   exact, not an estimated transfer percentage.
+2. **Create release:** the tree and commit are created and the `main` reference advances.
+3. **GitHub Pages:** the portal polls the specific GitHub Actions workflow run by its
+   exact commit SHA, displaying runner/job status when the API provides it.
+4. **Live website:** after a successful workflow, the portal polls a modified public
+   asset with cache-busting and compares its Git blob hash to the uploaded version.
+   If the package doesn't contain a directly comparable public asset, it verifies the
+   public portal responds but labels this as unverified at the individual-file level.
+
+If the new public file is confirmed, the portal automatically reloads itself to use
+new HTML/JS/CSS. It leaves other open website tabs untouched to avoid losing reading
+positions or form state. When live verification times out, it does **not** falsely
+report success; use the GitHub Actions link and optional manual reload.
+
+Pending deployment status is saved to tab-scoped session storage (without storing ZIP
+content) so a portal reload/reconnect can resume monitoring. Automatic post-release
+reload uses a single-use tab flag to return the maintainer to Updates and show the
+completion message without reentering the cosmetic access code.
+
+**Important patch-ZIP fix:** a ZIP containing only `dev/index.html` or another nested
+`index.html` is now treated as a patch and preserves the full path. Only recognizable
+complete-site archives wrapped in a containing folder are unwrapped. In earlier
+versions, a single nested index could be misidentified as a wrapped site, potentially
+replacing the root homepage. Inspect the file comparison before approving every
+publication.
+
+This release has been tested against simulated GitHub API and deployment responses;
+real deployments must still be verified on the live GitHub Pages site.
