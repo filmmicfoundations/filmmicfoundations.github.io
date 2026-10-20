@@ -1,0 +1,39 @@
+{
+  "title": "Mindglass Procedure",
+  "year": "2026",
+  "type": "FILM ANALYSIS",
+  "description": "An evidence-led close reading of the 2025 short film Mindglass Procedure, examining grief, memory, cinematic symbolism, narrative construction, and autonomy.",
+  "image": "assets/mindglass-procedure-laboratory-reveal.webp",
+  "image_alt": "A laboratory scene from Mindglass Procedure",
+  "genre": [
+    "Science fiction",
+    "Drama"
+  ],
+  "date": "2026-10-19",
+  "tags": [
+    "memory",
+    "grief",
+    "cinematography"
+  ],
+  "order": 1,
+  "film_year": "2025",
+  "article_date": "2026-10-19",
+  "abstract": "Mindglass Procedure examines the relationship between grief, autobiographical memory, and the temptation to escape painful experience. Through its recurring water imagery, fragmented opening montage, artificial neighborhood, and laboratory revelation, the film connects personal loss to questions of identity, autonomy, and the ethics of memory modification. This analysis considers how cinematography, editing, production design, and narrative repetition reinforce those concerns, while distinguishing the fictional procedure from real-world psychological research.",
+  "themes": [
+    "grief",
+    "memory",
+    "identity",
+    "avoidance",
+    "consent"
+  ],
+  "techniques": [
+    "cinematography",
+    "editing",
+    "visual symbolism",
+    "production design"
+  ],
+  "updated_date": "2026-10-19",
+  "language": "en",
+  "citation_title": "Mindglass Procedure: Memory, Grief, and the Repetition of Avoidance",
+  "citation_apa_title": "Mindglass Procedure: Memory, grief, and the repetition of avoidance"
+}

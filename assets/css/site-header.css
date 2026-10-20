@@ -1,0 +1,114 @@
+/* Filmmic Foundations · one global navigation component across all pages.
+   This stylesheet is loaded after the page-specific CSS, preventing home/article drift. */
+.ff-site-header.topbar {
+  --ff-header-bg: #fcfcfa;
+  --ff-header-fg: #18333a;
+  --ff-header-accent: #2d777d;
+  --ff-header-stroke: #dce5e4;
+  position: sticky;
+  top: 0;
+  z-index: 70;
+  height: 70px;
+  min-height: 70px;
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(12px, 2vw, 28px);
+  padding: 0 clamp(20px, 5vw, 90px);
+  background: var(--ff-header-bg) !important;
+  color: var(--ff-header-fg);
+  border-bottom: 1px solid var(--ff-header-stroke);
+  box-shadow: none;
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+html[data-theme="dark"] .ff-site-header.topbar {
+  --ff-header-bg: #17272d;
+  --ff-header-fg: #e7efed;
+  --ff-header-accent: #8fcac6;
+  --ff-header-stroke: #355056;
+  background: var(--ff-header-bg) !important;
+  color: var(--ff-header-fg);
+  border-color: var(--ff-header-stroke);
+}
+.ff-site-header .ff-site-brand,
+html[data-theme="dark"] .ff-site-header .ff-site-brand {
+  color: var(--ff-header-fg);
+  text-decoration: none;
+  font: 700 clamp(13px, 1.55vw, 20px)/1.1 'DM Sans', sans-serif;
+  letter-spacing: .105em;
+  flex: 0 1 auto;
+  min-width: 0;
+  white-space: nowrap;
+}
+.ff-site-header .ff-site-brand span,
+html[data-theme="dark"] .ff-site-header .ff-site-brand span { color: var(--ff-header-accent); }
+.ff-site-header .ff-site-nav,
+html[data-theme="dark"] .ff-site-header .ff-site-nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  flex: 0 0 auto;
+  gap: clamp(9px, 1.75vw, 26px);
+  margin-left: auto;
+}
+.ff-site-header .ff-site-nav .nav-link,
+html[data-theme="dark"] .ff-site-header .ff-site-nav .nav-link {
+  display: inline-flex !important;
+  align-items: center;
+  position: relative;
+  flex: 0 0 auto;
+  color: var(--ff-header-fg) !important;
+  font: 700 12px/1.4 'DM Sans', sans-serif;
+  letter-spacing: .04em;
+  text-decoration: none;
+  opacity: 1;
+  white-space: nowrap;
+  transition: color .25s ease, opacity .25s ease, transform .25s ease;
+}
+.ff-site-header .ff-site-nav .nav-link:hover { opacity: .72; }
+.ff-site-header .ff-site-nav .nav-link::after { background: var(--ff-header-fg); }
+.ff-site-header .ff-site-nav .nav-link:focus-visible {outline:2px solid var(--ff-header-accent);outline-offset:3px}
+@media (max-width: 600px) {
+  .ff-site-header.topbar { height: 64px; min-height: 64px; gap: 9px; padding: 0 15px; }
+  .ff-site-header .ff-site-brand,
+  html[data-theme="dark"] .ff-site-header .ff-site-brand { font-size: clamp(11px, 3.2vw, 16px); letter-spacing: .04em; }
+  .ff-site-header .ff-site-nav,
+  html[data-theme="dark"] .ff-site-header .ff-site-nav { gap: 8px; }
+  .ff-site-header .ff-site-nav .nav-link,
+  html[data-theme="dark"] .ff-site-header .ff-site-nav .nav-link { font-size: clamp(9px,2.5vw,11px); }
+}
+@media (max-width: 360px) {
+  .ff-site-header.topbar { padding-inline: 10px; }
+  .ff-site-header .ff-site-nav { gap: 6px; }
+  .ff-site-header .ff-site-brand,
+  html[data-theme="dark"] .ff-site-header .ff-site-brand { font-size: 10px; }
+}
+/* Avoid sudden theme changes without animating unrelated elements. */
+html.ff-theme-animating .ff-site-header.topbar,
+html.ff-theme-animating .ff-site-header .ff-site-brand,
+html.ff-theme-animating .ff-site-header .ff-site-nav .nav-link,
+html.ff-theme-animating .ff-site-header .ff-settings-toggle {
+  transition: background-color .48s ease, color .48s ease, border-color .48s ease !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ff-site-header *, .ff-site-header { scroll-behavior: auto; }
+  html.ff-theme-animating .ff-site-header.topbar,
+  html.ff-theme-animating .ff-site-header * { transition: none !important; }
+}
+
+/* Unified settings trigger on every page. */
+.ff-site-header .ff-site-nav .ff-settings-toggle {display:inline-flex;align-items:center;justify-content:center;flex:0 0 40px;width:40px;height:40px;min-width:40px;padding:0;margin:0;border:1px solid transparent;border-radius:50%;background:transparent;color:var(--ff-header-fg);cursor:pointer;transition:background-color .26s ease,border-color .26s ease,color .26s ease,transform .35s cubic-bezier(.2,.8,.2,1)}
+.ff-site-header .ff-settings-toggle:hover {background:rgba(75,133,136,.11);border-color:rgba(75,133,136,.24)}
+.ff-site-header .ff-settings-toggle:hover svg {transform:rotate(24deg)}
+.ff-site-header .ff-settings-toggle svg {width:19px;height:19px;transition:transform .5s cubic-bezier(.18,.78,.2,1)}
+.ff-site-header .ff-settings-toggle:focus-visible {outline:2px solid var(--ff-header-accent);outline-offset:3px}
+@media(max-width:600px){.ff-site-header .ff-site-nav .ff-settings-toggle{width:34px;height:34px;min-width:34px;flex-basis:34px}.ff-site-header .ff-settings-toggle svg{width:18px;height:18px}}
+@media(prefers-reduced-motion:reduce){.ff-site-header .ff-settings-toggle svg{transition:none}.ff-site-header .ff-settings-toggle:hover svg{transform:none}}
+
+/* Common developer footer link, matching editorial footer styles. */
+footer .ff-dev-footer-link{font:600 11px/1.5 "DM Sans",sans-serif;letter-spacing:.025em;text-decoration:none;color:inherit;opacity:.8;transition:opacity .2s ease}
+footer .ff-dev-footer-link:hover,footer .ff-dev-footer-link:focus-visible{opacity:1;text-decoration:underline;text-underline-offset:4px}

@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>Filmmic Foundations — Short-Film Research</title>
+    <link>https://filmmicfoundations.github.io/</link>
+    <description>New educational and critical research on short cinema, without individual author bylines.</description>
+    <language>en-US</language>
+    <atom:link href="https://filmmicfoundations.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mindglass Procedure</title>
+      <link>https://filmmicfoundations.github.io/mindglassprocedure/</link>
+      <description>An evidence-led close reading of the 2025 short film Mindglass Procedure, examining grief, memory, cinematic symbolism, narrative construction, and autonomy.</description>
+      <guid>https://filmmicfoundations.github.io/mindglassprocedure/</guid>
+      <pubDate>Mon, 19 Oct 2026 00:00:00 +0000</pubDate>
+      <category>avoidance</category>
+      <category>cinematography</category>
+      <category>consent</category>
+      <category>grief</category>
+      <category>identity</category>
+      <category>memory</category>
+    </item>
+  </channel>
+</rss>

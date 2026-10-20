@@ -1,0 +1,28 @@
+# PDF specification — Filmmic Foundations
+
+Reference example: 16-page *Mindglass Procedure: Memory, Grief, and the Repetition of Avoidance*. See Publication Standard §6 for measured values.
+
+## Design and production
+- US Letter (612 × 792 pt) is an established baseline, not an inviolable rule.
+- Restrained academic typographic hierarchy, uncluttered light paper, deep-blue ink, muted teal separators, concise running heads and page numbers.
+- Main body text should prioritize comfortable readability (~10–11pt preferred where feasible). Existing sample uses approximately 8.9pt for dense text; do not blindly clone that small size.
+- Consistent paragraph rhythm, no orphan headings, clear section hierarchy. Use the paper's actual argument to determine section breaks and pacing.
+- Professional cover: title, film, essay subtitle, accurate verified film still and caption, anonymous organizational author. Multi-page papers usually include a table of contents and abstract/scope.
+- Clearly differentiated film stills vs original analytical diagrams, numbered figures with factual captions. Place illustrations near relevant text. Preserve original aspect ratio.
+- References: original film as primary source, other research with verified citation details. Every sourced assertion must be traceable; bibliography does not prove content.
+- Font embedding or accessible equivalent; selectable text, active links, logical reading order; publication author metadata Filmmic Foundations only. Scan for identifying metadata.
+- Render every page to image, manually inspect, compare edits; verify full page count, margins, no clipped captions or broken links.
+
+## Writing and interpretation
+- Film-specific research question and nuanced central claim.
+- Scene-level observation plus filmmaking technique plus argued meaning plus evidence/qualification.
+- Real-world sources provide conceptual context; do not use science to diagnose fictional people or claim invented technologies are established practice.
+- Treat ambiguity as ambiguity, include alternative readings and limitations where relevant.
+
+## Future PDF authoring workflow
+1. Verify source film, scenes and reference bibliography.
+2. Draft with explicit figure placements, labels and full references.
+3. Lay out publication-consistent paper.
+4. Embed fonts, links and neutral document metadata; remove accidental creator identity.
+5. Render to images, inspect and revise all pages.
+6. Test links, selectable text and accessibility properties.

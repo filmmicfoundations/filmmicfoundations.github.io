@@ -1,0 +1,507 @@
+/* Filmmic Foundations · consolidated presentation styles.
+   Ordered to preserve the existing editorial appearance. */
+
+/* responsive-fixes.css */
+/* Article mobile-only adjustments. Desktop styling stays in style.css. */
+html,body {max-width:100%;overflow-x:clip}
+#references-and-further-viewing {scroll-margin-top:95px}
+@media(max-width:900px){
+  /* Original stylesheet hides the Sources link on mobile. Keep it visible. */
+  nav a:nth-child(3){display:inline}
+  .topbar {height:auto;min-height:68px;flex-wrap:wrap;gap:8px;padding-top:10px;padding-bottom:10px}
+  nav {flex-wrap:wrap;gap:10px}
+  #references-and-further-viewing {scroll-margin-top:135px}
+}
+@media(max-width:520px){
+  .brand {font-size:clamp(13px,3.8vw,22px)}
+  nav a {font-size:10px}
+  .hero h1 {font-size:clamp(34px,9vw,49px)}
+}
+
+/* ../site-features.css */
+/* SHARED NAVIGATION + SEARCH: isolated from the original visual design. */
+.site-nav { display:flex; align-items:center; gap:clamp(10px,2vw,28px); }
+.site-nav .nav-link, .site-nav summary { font:700 12px/1.4 "DM Sans",sans-serif; letter-spacing:.04em; color:inherit; text-decoration:none; cursor:pointer; }
+.site-nav details { position:relative; }
+.site-nav summary { list-style:none; display:flex; align-items:center; gap:8px; white-space:nowrap; padding:12px 0; }
+.site-nav summary::-webkit-details-marker { display:none; }
+.nav-chevron { width:7px; height:7px; border-right:1.5px solid currentColor; border-bottom:1.5px solid currentColor; transform:translateY(-2px) rotate(45deg); transition:transform .2s ease; }
+.site-nav details[open] .nav-chevron { transform:translateY(2px) rotate(225deg); }
+.site-nav .nav-menu { position:absolute; right:0; top:100%; z-index:80; width:max-content; min-width:190px; max-width:calc(100vw - 32px); padding:9px; border:1px solid #dce5e4; background:#fff; color:#18333a; box-shadow:0 12px 36px #0c1e2522; border-radius:4px; }
+.site-nav .nav-menu a { display:block; padding:12px 14px; color:#18333a; font-size:12px; font-weight:600; letter-spacing:0; text-decoration:none; border-radius:3px; }
+.site-nav .nav-menu a:hover, .site-nav .nav-menu a:focus-visible { background:#eaf1ef; color:#2d777d; }
+.site-nav a:focus-visible, .site-nav summary:focus-visible { outline:2px solid #2d777d; outline-offset:4px; }
+/* Archive search retains the original restrained editorial palette. */
+#search { margin-bottom:48px; }
+.search-label { display:block; font-size:11px; font-weight:700; letter-spacing:.15em; color:#547277; margin-bottom:12px; }
+.search-shell { display:flex; align-items:center; gap:13px; border:1px solid #cbd9d8; background:white; padding:0 17px; min-height:58px; }
+.search-shell svg { color:#547277; flex:none; }
+.search-shell input { flex:1; min-width:0; border:0; outline:0; background:transparent; color:#18333a; font:15px "DM Sans",sans-serif; }
+.search-shell:focus-within { outline:2px solid #2d777d; outline-offset:2px; }
+.search-shell button { border:0; background:transparent; color:#2d777d; cursor:pointer; font:600 12px "DM Sans",sans-serif; }
+.search-status { min-height:18px; margin:8px 0 0; font-size:12px; color:#647378; }
+.no-results { padding:36px 0; color:#647378; }
+
+
+
+
+
+/* Only adjust the new menu at narrow widths; keep original page layout intact. */
+@media(max-width:700px) {
+ header:not(.topbar) { gap:12px; }
+ header:not(.topbar) strong { font-size:clamp(11px,3vw,16px); letter-spacing:.045em; }
+ .site-nav { gap:12px; }
+ .site-nav .nav-link { display:none; }
+ .site-nav summary { font-size:11px; }
+ .topbar .site-nav .nav-pdf { padding:8px 9px; font-size:10px; }
+ .site-nav .nav-menu { right:0; }
+ #search { margin-bottom:32px; }
+ 
+}
+/* HTML hidden attribute must win over the existing grid card display. */
+#article-results .entry[hidden], #no-results[hidden] { display:none !important; }
+
+
+/* 2026 navigation refinements: hover for pointer devices, click for touch/keyboard. */
+.site-nav { gap:clamp(12px,1.7vw,26px); }
+.site-nav .nav-builder {font:700 11px/1.4 "DM Sans",sans-serif;letter-spacing:.045em;text-decoration:none;color:inherit;border:1px solid currentColor;padding:10px 13px;white-space:nowrap;transition:background .24s ease,color .24s ease,transform .24s ease;}
+.site-nav .nav-builder:hover {background:#d9ece7;color:#102a32;transform:translateY(-1px);}
+.site-nav .nav-menu {padding:8px; border-radius:6px;transform-origin:top right;animation:ff-menu-arrive .18s ease both;}
+@keyframes ff-menu-arrive {from {opacity:0;transform:translateY(-5px)} to {opacity:1;transform:translateY(0)}}
+.site-nav .nav-menu a {transition:background .18s ease,padding-left .18s ease;}
+.site-nav .nav-menu a:hover {padding-left:18px;}
+@media (hover:hover) and (pointer:fine) {
+ .site-nav .nav-dropdown:not([open]):hover .nav-menu {display:block;}
+ .site-nav .nav-dropdown:hover .nav-menu {display:block;}
+ .site-nav .nav-dropdown:hover .nav-chevron {transform:translateY(2px) rotate(225deg);}
+}
+/* SVG-like arrows drawn with borders: no emoji glyph fallback on mobile. */
+.css-arrow {display:inline-block;position:relative;width:12px;height:12px;margin-left:7px;vertical-align:middle;flex:none;}
+.css-arrow::before {content:"";position:absolute;width:9px;height:1.5px;background:currentColor;top:5px;left:0;}
+.css-arrow::after {content:"";position:absolute;width:5px;height:5px;border-top:1.5px solid currentColor;border-right:1.5px solid currentColor;transform:rotate(45deg);top:2.5px;right:1px;}
+.css-arrow-down {transform:rotate(90deg);}
+/* Article actions have their own slim strip below the global navigation. */
+/* Preserve existing typography while making interactive elements feel alive. */
+.site-nav summary,.site-nav .nav-link {transition:opacity .2s ease,transform .2s ease;}
+.site-nav summary:hover,.site-nav .nav-link:hover {opacity:.72;transform:translateY(-1px);}
+.search-shell {transition:border-color .22s ease,box-shadow .22s ease;}
+.search-shell:hover {border-color:#89aaa9;box-shadow:0 7px 26px rgba(12,30,37,.055);}
+@media(max-width:700px) {
+ .site-nav .nav-link {display:none;}
+ .site-nav {gap:10px;}
+ .site-nav .nav-builder {font-size:10px;padding:9px 10px;}
+ .site-nav summary {font-size:10px;}
+}
+@media(max-width:380px) {
+ .site-nav .nav-builder {font-size:9px;padding:8px;}
+ .site-nav summary {font-size:9px;}
+}
+@media(prefers-reduced-motion:reduce){.site-nav .nav-menu {animation:none!important}}
+
+.css-arrow-up {transform:rotate(-90deg);}
+
+/* V3 — restrained three-link navigation, four archive layouts, and filter controls. */
+.site-nav-simple {gap:clamp(12px,2.2vw,34px)}
+.site-nav-simple .nav-link {display:inline!important;white-space:nowrap;position:relative}
+.site-nav-simple .nav-link::after {content:"";position:absolute;bottom:-6px;left:0;right:100%;height:1px;background:currentColor;transition:right .32s ease}
+.site-nav-simple .nav-link:hover::after,.site-nav-simple .nav-link:focus-visible::after {right:0}
+.ai-nav {position:relative;isolation:isolate;overflow:hidden;display:inline-flex!important;align-items:center;gap:8px}
+.ai-nav::before {content:"";position:absolute;inset:-100%;z-index:-1;background:conic-gradient(from 0deg,transparent 0 15%,#b7e9e366 26%,transparent 40% 65%,#d8f5ef66 77%,transparent 90%);opacity:0;transition:opacity .35s ease;animation:ai-orbit 5s linear infinite paused}
+.ai-nav:hover::before,.ai-nav:focus-visible::before {opacity:1;animation-play-state:running}
+.ai-nav-spark {font-size:19px;line-height:0.6;transition:transform .5s ease;display:inline-block}
+.ai-nav:hover .ai-nav-spark {transform:rotate(85deg) scale(1.25)}
+@keyframes ai-orbit {to{transform:rotate(360deg)}}
+.archive-controls {display:flex;align-items:end;flex-wrap:wrap;gap:14px;margin:0 0 25px}
+.archive-controls label,.view-switch legend {font:700 10px/1.5 "DM Sans",sans-serif;letter-spacing:.09em;color:#5b777b}
+.archive-controls label {display:grid;gap:7px}
+.archive-controls select {background:white;border:1px solid #c9d8d6;border-radius:0;padding:11px 29px 11px 10px;color:#1a3a41;font:12px "DM Sans",sans-serif;min-height:42px}
+.view-switch {display:flex;gap:0;padding:0;border:0;margin:0 0 0 auto}
+.view-switch legend {margin-bottom:7px}
+.view-switch button {background:#fff;border:1px solid #c9d8d6;color:#3d666a;font:600 11px "DM Sans",sans-serif;padding:12px 11px;cursor:pointer;transition:background .2s,color .2s}
+.view-switch button+button {border-left:0}
+.view-switch button[aria-pressed=true] {background:#173740;color:#fff}
+#article-results[data-view="grid"] {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+#article-results[data-view="grid"] .entry {display:block}
+#article-results[data-view="grid"] .entry img {width:100%;height:230px;object-fit:cover}
+#article-results[data-view="list"] .entry {display:flex;flex-direction:row;align-items:center;gap:20px;margin-bottom:12px}
+#article-results[data-view="list"] .entry img {width:160px;max-width:32%;height:105px;object-fit:cover}
+#article-results[data-view="compact"] {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+#article-results[data-view="compact"] .entry {display:block}
+#article-results[data-view="compact"] .entry img {width:100%;height:130px;object-fit:cover}
+#article-results[data-view="compact"] .entry-body {padding:18px}
+#article-results[data-view="compact"] .entry-body p {display:none}
+#article-results .entry[hidden] {display:none!important}
+@media(max-width:760px){.site-nav-simple{gap:10px}.site-nav-simple .nav-link{font-size:10px}.site-nav-simple .nav-builder{font-size:10px;padding:9px}.archive-controls{gap:9px}.view-switch{width:100%;margin:0}.view-switch button{flex:1}#article-results[data-view="grid"],#article-results[data-view="compact"]{grid-template-columns:1fr}#article-results[data-view="list"] .entry img{width:110px;height:90px}}
+@media(max-width:390px){.site-nav-simple .nav-link{font-size:9px}.site-nav-simple .nav-builder{font-size:9px;padding:8px 6px}.ai-nav-spark{display:none}}
+@media(prefers-reduced-motion:reduce){.ai-nav::before{animation:none}.ai-nav-spark{transition:none}}
+
+.entry-placeholder{background:#173840;color:#d5e5e2;display:grid;place-items:center;min-height:230px;font:700 13px "DM Sans",sans-serif;letter-spacing:.18em}
+
+/* Inline motion & accessibility */
+
+/* Filmmic Foundations — subtle cinematic motion layer.
+   Add after style.css on both pages. No JavaScript or external dependencies. */
+
+html { scroll-behavior: smooth; }
+body { -webkit-font-smoothing: antialiased; }
+
+/* Quiet, staggered opening sequence. */
+@keyframes ff-arrive {
+  from { opacity: 0; transform: translate3d(0, 17px, 0); filter: blur(3px); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); filter: blur(0); }
+}
+
+.masthead .eyebrow, .hero .eyebrow { animation: ff-arrive .85s cubic-bezier(.2,.7,.2,1) both; }
+.masthead h1, .hero h1 { animation: ff-arrive 1.05s .10s cubic-bezier(.2,.7,.2,1) both; }
+.masthead p, .hero .dek { animation: ff-arrive 1s .24s cubic-bezier(.2,.7,.2,1) both; }
+.hero .hero-caption, .hero .hero-actions { animation: ff-arrive 1s .35s cubic-bezier(.2,.7,.2,1) both; }
+
+/* Editorial link and card interactions. */
+a { text-underline-offset: .22em; text-decoration-thickness: 1px; transition: color .25s ease, text-decoration-color .25s ease; }
+header a:not(:first-child), nav a:not(.nav-pdf), .toc a { transition: color .25s ease, opacity .25s ease; }
+header a:not(:first-child):hover, nav a:not(.nav-pdf):hover { opacity: .68; }
+.entry { transition: transform .55s cubic-bezier(.2,.7,.2,1), box-shadow .55s ease, border-color .4s ease; }
+.entry:hover { transform: translateY(-5px); box-shadow: 0 22px 55px rgba(12,30,37,.13); border-color: #a5c1c0; }
+.entry img { transition: transform .8s cubic-bezier(.2,.7,.2,1), filter .6s ease; }
+.entry:hover img { transform: scale(1.035); filter: saturate(1.08); }
+.entry .read { transition: letter-spacing .35s ease; }
+.entry:hover .read { letter-spacing: .025em; }
+.hero-actions a, nav .nav-pdf { transition: transform .3s ease, background-color .3s ease, color .3s ease, border-color .3s ease; }
+.hero-actions a:hover, nav .nav-pdf:hover { transform: translateY(-2px); }
+.hero-actions .primary:hover { background: #dcf1ec; }
+.hero-actions .secondary:hover { background: rgba(255,255,255,.1); }
+
+/* Gentle motion for article imagery without moving text as it is read. */
+.article figure img { transition: filter .6s ease; }
+.article figure:hover img { filter: contrast(1.045); }
+.topbar { transition: box-shadow .3s ease; }
+.topbar:hover { box-shadow: 0 7px 24px rgba(10,31,35,.06); }
+
+/* Progressive enhancement: reveal figures and archive entries as they enter view.
+   Unsupported browsers simply display everything normally. */
+@keyframes ff-scroll-reveal {
+  from { opacity: .65; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@supports (animation-timeline: view()) {
+  .entry, .article figure, .section-head, .watch .video {
+    animation-name: ff-scroll-reveal;
+    animation-duration: 1s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 27%;
+  }
+}
+
+/* Accessible keyboard focus and reduced-motion support. */
+a:focus-visible { outline: 2px solid #5a9a9b; outline-offset: 4px; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* viewer-v23.css */
+/* Filmmic Foundations | v23 coherent photograph viewer and minimal share dialog.
+   Deliberately independent of the historical lightbox rules. */
+.article-image-open{display:block;position:relative;width:100%;padding:0;border:0;background:transparent;text-align:inherit;cursor:pointer}
+.article-image-open img{display:block;width:100%;height:auto;transition:filter .4s ease}
+.article-image-open:hover img{filter:brightness(.94)}
+.article-image-open .image-zoom-hint{position:absolute;right:14px;bottom:14px;display:inline-flex;align-items:center;gap:8px;background:rgba(13,35,41,.87);border:1px solid rgba(255,255,255,.27);border-radius:6px;color:white;padding:9px 12px;font:600 11px/1.2 "DM Sans",sans-serif;opacity:0;transform:translateY(5px);pointer-events:none;transition:opacity .28s ease,transform .28s ease}
+.article-image-open:hover .image-zoom-hint,.article-image-open:focus-visible .image-zoom-hint{opacity:1;transform:none}
+.article-image-open .image-zoom-hint::before{content:"";width:15px;height:15px;background:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5'/%3E%3C/svg%3E")}
+
+.ffv-dialog,.ffv-dialog *,.ffs-dialog,.ffs-dialog *{box-sizing:border-box}
+.ffv-dialog{position:fixed;inset:calc(var(--ff-chrome-height,132px) + 12px) 0 12px;margin:auto;padding:0;width:min(1050px,calc(100vw - 38px));height:min(780px,calc(100dvh - var(--ff-chrome-height,132px) - 28px));max-width:none;max-height:none;overflow:hidden;background:#10282e;color:#f1f7f3;border:1px solid rgba(206,231,223,.31);border-radius:10px;box-shadow:0 38px 110px rgba(0,0,0,.48);font-family:"DM Sans",sans-serif}
+/* A single uniform backdrop dims the header and article toolbar equally.
+   Removing the previous two-opacity gradient also removes the pale transition band.
+   The dialog still sits below the measured sticky navigation. */
+.ffv-dialog::backdrop{background:rgba(4,15,19,.61)}
+.ffv-dialog[open]{animation:ffv-enter .35s cubic-bezier(.2,.75,.2,1) both}
+.ffv-dialog[open]::backdrop{animation:ffv-backdrop-in .35s ease both}
+.ffv-dialog.ffv-closing[open]{animation:ffv-exit .23s cubic-bezier(.3,0,1,1) both;pointer-events:none}
+.ffv-dialog.ffv-closing[open]::backdrop{animation:ffv-backdrop-out .23s ease both}
+@keyframes ffv-enter{from{opacity:0;transform:translateY(13px) scale(.982)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes ffv-exit{from{opacity:1;transform:translateY(0) scale(1)}to{opacity:0;transform:translateY(9px) scale(.986)}}
+@keyframes ffv-backdrop-in{from{opacity:0}to{opacity:1}}
+@keyframes ffv-backdrop-out{from{opacity:1}to{opacity:0}}
+.ffv-shell{display:flex;flex-direction:column;width:100%;height:100%;min-height:0;background:#10282e}
+.ffv-head{flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;height:57px;min-height:57px;padding:9px 18px!important;background:#143239!important;color:#f1f7f3!important;border-bottom:1px solid rgba(225,241,235,.14);position:relative;z-index:3}
+.ffv-eyebrow{font-size:10px;font-weight:700;letter-spacing:.14em;color:#bad8d1}
+.ffv-button{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid rgba(215,238,230,.25);border-radius:6px;background:transparent;color:#edf6f2;font:600 12px/1 "DM Sans",sans-serif;min-height:36px;min-width:36px;padding:9px 12px;cursor:pointer;text-decoration:none;white-space:nowrap;transition:background .2s ease,border-color .2s ease,transform .2s ease}
+.ffv-button:hover:not(:disabled){background:rgba(235,250,243,.13);border-color:rgba(224,246,237,.54);transform:translateY(-1px)}
+.ffv-button:active:not(:disabled){transform:none}
+.ffv-button:disabled{opacity:.42;cursor:default}
+.ffv-button:focus-visible,.ffv-arrow:focus-visible,.ffv-tile:focus-visible{outline:2px solid #b1e2d7;outline-offset:3px}
+.ffv-button svg{display:block;width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round}
+.ffv-close{border-color:transparent;padding:8px;width:37px;height:37px}
+.ffv-viewport{flex:1 1 0;min-height:0;position:relative;background:#0b2126;isolation:isolate;overflow:hidden}
+.ffv-single,.ffv-gallery{position:absolute;inset:0;min-height:0;transition:opacity .38s cubic-bezier(.22,1,.36,1),transform .38s cubic-bezier(.22,1,.36,1),visibility 0s linear .38s}
+.ffv-single{display:flex;align-items:center;justify-content:center;padding:18px 58px;opacity:1;transform:translateY(0);visibility:visible;pointer-events:auto}
+.ffv-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-content:start;gap:16px;overflow:auto;overscroll-behavior:contain;padding:22px;background:#0b2126;opacity:0;transform:translateY(12px);visibility:hidden;pointer-events:none}
+.ffv-viewport[data-mode="gallery"] .ffv-single{opacity:0;transform:translateY(-10px);visibility:hidden;pointer-events:none}
+.ffv-viewport[data-mode="gallery"] .ffv-gallery{opacity:1;transform:translateY(0);visibility:visible;pointer-events:auto;transition:opacity .38s cubic-bezier(.22,1,.36,1),transform .38s cubic-bezier(.22,1,.36,1),visibility 0s}
+.ffv-viewport[data-mode="single"] .ffv-single{transition:opacity .38s cubic-bezier(.22,1,.36,1),transform .38s cubic-bezier(.22,1,.36,1),visibility 0s}
+.ffv-canvas{position:relative;width:100%;height:100%;min-width:0;min-height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;touch-action:none;user-select:none}
+.ffv-canvas img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;transform-origin:center center;cursor:default;will-change:transform;transition:transform .32s cubic-bezier(.22,.75,.24,1),opacity .25s ease}
+.ffv-canvas.ffv-can-pan img{cursor:grab}
+.ffv-canvas.ffv-dragging img{cursor:grabbing;transition:none}
+.ffv-ghost{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:2}
+.ffv-ghost img{width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain;cursor:default!important;transform:none!important}
+.ffv-canvas.ffv-sliding>img{animation:ffv-slide-in .32s cubic-bezier(.22,.8,.28,1) both;animation-direction:normal}
+.ffv-canvas.ffv-sliding .ffv-ghost{animation:ffv-slide-out .32s cubic-bezier(.22,.8,.28,1) both}
+@keyframes ffv-slide-in{from{opacity:0;transform:translateX(calc(var(--ffv-direction,1) * 24px)) scale(.993)}to{opacity:1;transform:translateX(0) scale(1)}}
+@keyframes ffv-slide-out{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(calc(var(--ffv-direction,1) * -24px))}}
+.ffv-arrow{position:absolute;top:50%;z-index:3;transform:translateY(-50%);display:flex;align-items:center;justify-content:center;width:38px;height:43px;padding:0;border:1px solid rgba(220,239,232,.2);border-radius:6px;background:rgba(22,51,58,.92);color:white;font:27px/1 Georgia,serif;cursor:pointer;transition:background .18s,border-color .18s}
+.ffv-arrow:hover{background:#2a5660;border-color:#a2bfb9}
+.ffv-prev{left:var(--ffv-arrow-offset,12px)}.ffv-next{right:var(--ffv-arrow-offset,12px)}
+.ffv-tile{display:flex;flex-direction:column;min-width:0;margin:0;padding:0;aspect-ratio:4/3;border:1px solid rgba(210,235,227,.22);border-radius:6px;background:#1a373f;overflow:hidden;position:relative;cursor:pointer;transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease}
+.ffv-tile img{display:block;width:100%;height:100%;object-fit:cover}
+.ffv-tile:hover{transform:translateY(-3px);border-color:rgba(213,238,230,.6);box-shadow:0 12px 28px #0005}
+.ffv-tile.ffv-current{outline:2px solid #a9d8ca;outline-offset:2px}
+.ffv-tile-number{position:absolute;bottom:9px;left:11px;padding:4px 8px;border-radius:4px;background:rgba(9,28,34,.78);color:#eaf5ef;font-size:11px;font-weight:700;pointer-events:none}
+.ffv-foot{flex:none;position:relative;z-index:3;display:flex;flex-direction:column;gap:10px;background:#143239!important;color:#e4f1eb!important;border-top:1px solid rgba(225,241,235,.14);padding:13px 18px 15px}
+.ffv-details{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;color:#c4ddd5;font:12px/1.45 "DM Sans",sans-serif}
+#ffv-caption{min-width:0;max-height:2.9em;overflow:hidden}#ffv-count{flex:none;color:#9ebdb4;white-space:nowrap}
+.ffv-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.ffv-zoom,.ffv-other{display:flex;align-items:center;gap:5px}
+.ffv-zoom output{display:inline-block;min-width:49px;text-align:center;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;color:#eaf4ef}
+.ffv-fit{padding-inline:15px}
+.ffv-square-icon{display:none!important}
+.ffv-viewport[data-mode="gallery"]~.ffv-foot .ffv-square-icon{display:block!important}
+.ffv-view svg.ffv-square-icon{display:none}
+.ffv-dialog[data-gallery="true"] .ffv-view .ffv-square-icon{display:block!important;fill:none;stroke:currentColor;stroke-width:1.75}
+.ffv-dialog[data-gallery="true"] .ffv-view .ffv-grid-icon{display:none}
+.ffv-view .ffv-grid-icon{fill:currentColor;stroke:none}
+.ffv-status{position:absolute;right:18px;bottom:100%;margin:0 0 7px;max-width:calc(100% - 36px);padding:7px 11px;border-radius:5px;background:rgba(18,49,55,.94);color:#d9eee5;font-size:11px;opacity:0;pointer-events:none;transition:opacity .25s}
+.ffv-status.ffv-show{opacity:1}
+
+/* Minimal, consistent article/image link dialogs, matching the requested input + button layout. */
+.ffs-dialog{position:fixed;inset:calc(var(--ff-chrome-height,132px) + 12px) 0 12px;margin:auto;width:min(650px,calc(100vw - 30px));max-width:none;max-height:calc(100dvh - var(--ff-chrome-height,132px) - 28px);border:1px solid #d9e5e0;border-radius:10px;padding:0;background:#fcfdfa;color:#204049;box-shadow:0 26px 85px rgba(0,21,27,.3);overflow:visible;font-family:"DM Sans",sans-serif}
+.ffs-dialog::backdrop{background:rgba(4,15,19,.61)}
+.ffs-dialog[open]{animation:ffv-enter .29s cubic-bezier(.2,.75,.2,1) both}
+.ffs-dialog[open]::backdrop{animation:ffv-backdrop-in .29s ease both}
+.ffs-dialog.ffs-closing[open]{animation:ffv-exit .22s cubic-bezier(.3,0,1,1) both;pointer-events:none}
+.ffs-dialog.ffs-closing[open]::backdrop{animation:ffv-backdrop-out .22s ease both}
+.ffs-panel{padding:21px 24px 22px}
+.ffs-title{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:14px}
+.ffs-title h2{font:700 19px/1.3 "DM Sans",sans-serif;letter-spacing:0;margin:0;color:#21434a}
+.ffs-close{border:0;background:transparent;color:#48676a;min-width:31px;min-height:31px;padding:0;cursor:pointer;font:27px/1 "DM Sans",sans-serif;border-radius:5px;transition:background .2s}
+.ffs-close:hover{background:#e8f0ec}
+.ffs-row{display:flex;align-items:stretch;gap:12px}
+.ffs-row input{flex:1;min-width:0;padding:13px 15px;background:#f1f5f3;color:#24434a;border:1px solid #c5ded4;border-radius:8px;font:16px/1.3 "DM Sans",sans-serif;text-overflow:ellipsis}
+.ffs-row button{flex:none;border:1px solid #173d46;border-radius:8px;background:#173d46;color:white;padding:12px 22px;font:700 15px/1.2 "DM Sans",sans-serif;cursor:pointer;transition:background .22s,transform .22s,box-shadow .22s}
+.ffs-row button:hover{background:#2b6368;transform:translateY(-1px);box-shadow:0 5px 14px #102b302b}
+.ffs-row button.ffs-copied{background:#356b5f;color:white}
+.ffs-feedback{display:block;min-height:0;height:0;overflow:hidden;color:#3a7161;font-size:12px;transition:height .2s}
+.ffs-feedback:not(:empty){height:19px;margin-top:9px}
+html[data-theme="dark"] .ffs-dialog{background:#172c32;border-color:#476b69;color:#edf4ef}
+html[data-theme="dark"] .ffs-title h2{color:#eff7f3}
+html[data-theme="dark"] .ffs-close{color:#c1d6d0}
+html[data-theme="dark"] .ffs-close:hover{background:#2c4b4e}
+html[data-theme="dark"] .ffs-row input{background:#213b40;color:#e9f5ee;border-color:#4d6f69}
+html[data-theme="dark"] .ffs-row button{background:#dbece5;color:#173d46;border-color:#dbece5}
+html[data-theme="dark"] .ffs-row button:hover{background:white}
+html[data-theme="dark"] .ffs-row button.ffs-copied{background:#a0d0be;color:#113138}
+html[data-theme="dark"] .ffs-feedback{color:#b6d8c5}
+
+@media(max-width:700px){
+ .ffv-dialog{width:calc(100vw - 14px);height:calc(100dvh - var(--ff-chrome-height,132px) - 21px);border-radius:7px}
+ .ffv-head{padding:8px 12px!important;min-height:50px;height:50px}
+ .ffv-eyebrow{font-size:9px;letter-spacing:.08em}
+ .ffv-single{padding:10px 37px}
+ .ffv-gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:13px}
+ .ffv-arrow{width:30px;height:38px;font-size:22px}
+ .ffv-foot{padding:10px 11px 13px;gap:9px}
+ .ffv-details{font-size:11px}
+ .ffv-controls{justify-content:center;gap:9px}
+ .ffv-button{min-width:33px;min-height:33px;padding:8px 10px}
+ .ffv-zoom,.ffv-other{justify-content:center}
+ .ffs-panel{padding:18px}
+ .ffs-row{gap:8px}
+ .ffs-row input{font-size:13px}
+ .ffs-row button{font-size:12px;padding:12px 13px}
+}
+@media(max-width:380px){.ffv-other .ffv-button{font-size:11px}.ffv-zoom output{min-width:40px}}
+@media(prefers-reduced-motion:reduce){.ffv-dialog[open],.ffv-dialog[open]::backdrop,.ffs-dialog[open],.ffs-dialog[open]::backdrop,.ffv-canvas.ffv-sliding>img,.ffv-canvas.ffv-sliding .ffv-ghost{animation:none!important}.ffv-dialog *, .ffs-dialog *{transition:none!important}}
+/* Keep background scrollbar width stable while native modal dialogs prevent scrolling. */
+html{scrollbar-gutter:stable}
+html:has(.ffv-dialog[open]),html:has(.ffs-dialog[open]){overflow:hidden;overscroll-behavior:none}
+/* Explicit thumbnail row sizing: prevent the browser from squeezing grid tracks
+   within the viewer height while the images themselves overflow into the next row. */
+.ffv-gallery{grid-auto-rows:max-content!important;align-content:start!important}
+.ffv-gallery>.ffv-tile{height:auto!important;min-height:0!important;align-self:start}
+
+/* article-footer-v7.css */
+/* Consistent bottom article actions. */
+.foot-links{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.foot-links a{display:inline-flex;align-items:center;gap:8px;padding:11px 14px;border:1px solid #9cb8b0;border-radius:5px;text-decoration:none;font:700 11px "DM Sans",sans-serif;transition:background .2s,color .2s,border-color .2s}
+.foot-links a:hover{background:#e4f0eb;color:#173d46;border-color:#5f8e89}
+
+/* ../v10-polish.css */
+/* V10 refinements: a single visual language, hover motion, and modal polish. */
+.archive-filter-dropdown>summary{box-sizing:border-box!important;width:50px!important;height:50px!important;min-width:50px!important;min-height:50px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:0!important;overflow:visible!important;line-height:1!important}
+.archive-filter-dropdown>summary svg{width:21px!important;height:21px!important;display:block!important;flex:none!important}
+.archive-filter-dropdown>summary .active-filter-count:not([hidden]){position:absolute;top:-6px;right:-6px;min-width:17px;height:17px;line-height:17px;border:2px solid #fcfcfa}
+#article-results .archive-card .entry img{transition:transform .55s cubic-bezier(.2,.7,.2,1),filter .35s ease,object-position .15s linear!important;transform:scale(1)!important}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){#article-results .archive-card:hover .entry img{transform:scale(1.035)!important}}
+#article-results[data-view=compact] .archive-card{position:relative;background:transparent!important;border-radius:5px;transition:box-shadow .25s ease!important}
+#article-results[data-view=compact] .archive-card:hover{background:transparent!important;box-shadow:0 7px 20px rgba(15,51,56,.09)!important}
+#article-results[data-view=compact] .archive-card .entry,#article-results[data-view=compact] .archive-card .entry:hover{background:transparent!important;box-shadow:none!important;transform:none!important}
+#article-results[data-view=compact] .archive-card .archive-preview-trigger{visibility:hidden!important;opacity:0!important;pointer-events:none!important;background:#fcfcfa!important;box-shadow:none!important;transition:opacity .18s ease,transform .18s ease,visibility 0s linear .18s!important}
+#article-results[data-view=compact] .archive-card:hover .archive-preview-trigger,#article-results[data-view=compact] .archive-card:focus-within .archive-preview-trigger{visibility:visible!important;opacity:1!important;pointer-events:auto!important;transition-delay:0s!important}
+@media(hover:none){#article-results[data-view=compact] .archive-card .archive-preview-trigger{visibility:visible!important;opacity:1!important;pointer-events:auto!important}}
+.preview-gallery{gap:5px!important;background:#fcfcfa!important}
+.archive-preview[open]{animation:ff-dialog-pop .32s cubic-bezier(.2,.8,.25,1) both!important}
+.archive-preview::backdrop{animation:ff-backdrop-in .3s ease both!important}
+@keyframes ff-dialog-pop{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes ff-backdrop-in{from{opacity:0}to{opacity:1}}
+/* More opaque than v9; background remains discernible. */
+
+
+/* Fit the viewer chrome to the actual displayed picture rather than viewport edges. */
+
+
+
+
+
+
+
+
+
+html.ff-v10-modal,html.ff-v10-modal body{overscroll-behavior:none!important}
+body.ff-v10-fixed{position:fixed!important;overflow:hidden!important;width:100%!important;left:0!important;right:0!important}
+
+@media(prefers-reduced-motion:reduce){.archive-preview[open], .archive-preview::backdrop{animation:none!important}#article-results .archive-card .entry img{transition:none!important}}
+
+/* ../v11-polish.css */
+/* V11: restrained editorial motion and stable, centered dialogs. */
+/* The filter control is deliberately a fixed-size icon button. */
+.archive-filter-dropdown { flex:0 0 auto!important; min-width:48px!important; }
+.archive-filter-dropdown > summary { position:relative!important;box-sizing:border-box!important;display:flex!important;flex-flow:row nowrap!important;align-items:center!important;justify-content:center!important; width:48px!important;min-width:48px!important;max-width:48px!important;height:48px!important;min-height:48px!important;max-height:48px!important;padding:0!important;gap:0!important;border:1px solid #b7ceca!important;border-radius:7px!important;background:#fcfcfa!important;color:#193d44!important;font-size:0!important;line-height:0!important;white-space:nowrap!important; }
+.archive-filter-dropdown > summary svg { display:block!important;position:static!important;width:21px!important;height:21px!important;min-width:21px!important;max-width:21px!important;flex:0 0 21px!important; }
+.archive-filter-dropdown > summary .sr-only { position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;padding:0!important;margin:-1px!important;border:0!important; }
+.archive-filter-dropdown > summary .active-filter-count:not([hidden]) { position:absolute!important;top:-7px!important;right:-7px!important;line-height:17px!important;font-size:10px!important; }
+/* Move only a tiny amount, and use a slower, soft easing curve. */
+#article-results .archive-card .entry img {transform:scale(1)!important;transition:transform 1.15s cubic-bezier(.22,.61,.36,1),filter 1.15s ease!important;}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){#article-results .archive-card:hover .entry img {transform:scale(1.012)!important;filter:saturate(1.025)!important;}}
+/* Native dialog locking without position:fixed avoids the close-time page jump. */
+/* Dialog animation remains understated. */
+.archive-preview[open]{animation:ff-v11-appear .28s cubic-bezier(.2,.72,.25,1) both!important;}
+@keyframes ff-v11-appear{from{opacity:0;transform:translateY(9px) scale(.987)}to{opacity:1;transform:translateY(0) scale(1)}}
+/* Viewer is a centered floating composition, not a full-bleed dark sheet. */
+
+
+
+
+
+
+
+
+
+
+
+
+@media(prefers-reduced-motion:reduce){#article-results .archive-card .entry img{transition:none!important}.archive-preview[open]{animation:none!important}}
+
+/* ../v12-theme.css */
+/* v12: theme and thumbnail motion. Original stylesheets are unchanged. */
+:root{color-scheme:light;--ff-page:#fcfcfa;--ff-panel:#fff;--ff-ink:#18333a;--ff-muted:#607477;--ff-border:#dce5e4;--ff-soft:#eff3f2}
+html[data-theme="dark"]{color-scheme:dark;--ff-page:#101c20;--ff-panel:#17272d;--ff-ink:#e7efed;--ff-muted:#b1c4c3;--ff-border:#355056;--ff-soft:#21373d;--ink:var(--ff-ink);--paper:var(--ff-page);--muted:var(--ff-muted);--line:var(--ff-border);--accent:#8fcac6}
+/* The image itself is animated in an isolated compositor layer. Avoid competing
+   object-position and filter transitions from earlier versions. */
+#article-results .archive-card .entry img{transform:translateZ(0) scale(1)!important;transform-origin:50% 50%;transition:transform 1.65s cubic-bezier(.18,.7,.25,1)!important;filter:none!important;backface-visibility:hidden;will-change:transform}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){#article-results .archive-card:hover .entry img{transform:translateZ(0) scale(1.018)!important;filter:none!important}}
+/* Theme control is intentionally consistent on both pages. */
+html[data-theme="dark"] body{background:var(--ff-page);color:var(--ff-ink)}
+html[data-theme="dark"] .topbar{background:var(--ff-panel)!important;color:var(--ff-ink);border-color:var(--ff-border)}
+html[data-theme="dark"] .brand,html[data-theme="dark"] .site-nav a,html[data-theme="dark"] nav a:not(.reading-tool):not(.reading-pdf){color:var(--ff-ink)}
+html[data-theme="dark"] .section,html[data-theme="dark"] .paper-layout{background:var(--ff-page)}
+html[data-theme="dark"] .entry,html[data-theme="dark"] .archive-card,html[data-theme="dark"] .archive-preview .preview-content,html[data-theme="dark"] .archive-preview .preview-panel{background:var(--ff-panel)!important;color:var(--ff-ink)!important;border-color:var(--ff-border)!important}
+html[data-theme="dark"] .entry h3,html[data-theme="dark"] .section-head h2,html[data-theme="dark"] .article h2,html[data-theme="dark"] .article-intro>p:first-child{color:var(--ff-ink)!important}
+html[data-theme="dark"] .entry p,html[data-theme="dark"] .article p,html[data-theme="dark"] .toc a,html[data-theme="dark"] .article figcaption,html[data-theme="dark"] .references li,html[data-theme="dark"] .sidebar-note,html[data-theme="dark"] .section-head small{color:var(--ff-muted)!important}
+html[data-theme="dark"] .archive-controls,html[data-theme="dark"] .archive-filter-panel,html[data-theme="dark"] .archive-filter-dropdown>summary,html[data-theme="dark"] .archive-filter-panel select,html[data-theme="dark"] .archive-filter-panel button,html[data-theme="dark"] .view-switch button,html[data-theme="dark"] .archive-preview button,html[data-theme="dark"] .archive-preview .preview-actions a{background:var(--ff-panel)!important;color:var(--ff-ink)!important;border-color:var(--ff-border)!important}
+html[data-theme="dark"] .archive-filter-dropdown[open] .archive-filter-panel{box-shadow:0 14px 35px #0008}
+html[data-theme="dark"] .archive-preview .preview-meta,html[data-theme="dark"] .archive-preview .preview-description{color:var(--ff-muted)!important}
+html[data-theme="dark"] .article-meta,html[data-theme="dark"] .section-head,html[data-theme="dark"] .toc,html[data-theme="dark"] .references li{border-color:var(--ff-border)}
+html[data-theme="dark"] .diagram{background:var(--ff-soft)!important;border-color:var(--ff-border)}
+html[data-theme="dark"] .diagram-row>div,html[data-theme="dark"] .cycle span{background:var(--ff-panel)!important;color:var(--ff-ink)!important;border-color:var(--ff-border)}
+html[data-theme="dark"] .diagram-row span:not(.diagram-arrow){color:var(--ff-muted)!important}
+html[data-theme="dark"] .archive-preview .preview-topbar{background:var(--ff-panel)!important;color:var(--ff-ink)!important}
+html[data-theme="dark"] input,html[data-theme="dark"] select{color-scheme:dark}
+@media(prefers-reduced-motion:reduce){#article-results .archive-card .entry img{transition:none!important}.ff-settings-toggle{transition:none}}
+
+/* ../v13-refinements.css */
+/* v13: unified motion + navigation. The original site CSS is untouched. */
+/* The nav links and theme icon form one right-aligned group on both pages. */
+/* Only animate theme changes triggered by the button, not initial paint. */
+html.ff-theme-animating,html.ff-theme-animating body,html.ff-theme-animating header,html.ff-theme-animating .topbar,html.ff-theme-animating .section,html.ff-theme-animating .entry,html.ff-theme-animating .archive-card,html.ff-theme-animating .paper-layout,html.ff-theme-animating .article,html.ff-theme-animating .archive-filter-panel,html.ff-theme-animating .diagram,html.ff-theme-animating .archive-preview{transition:background-color .48s ease,color .48s ease,border-color .48s ease,box-shadow .48s ease!important}
+/* Animate only the photo, not its dimensions. Keep image framing fixed across hover states. */
+#article-results .archive-card .entry img{transform:translate3d(0,0,0) scale(1)!important;transform-origin:center center;transition:transform 1.25s cubic-bezier(.22,.65,.3,1)!important;will-change:auto;backface-visibility:hidden;filter:none!important;object-position:center center!important}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){#article-results .archive-card:hover .entry img{transform:translate3d(0,0,0) scale(1.012)!important}}
+/* Prevent the preview control from triggering a hover change on the image. */
+#article-results .archive-card:has(.archive-preview-trigger:hover) .entry img{transform:translate3d(0,0,0) scale(1)!important}
+/* More cohesive layout transitions; image stays stable during card movement. */
+#article-results.ff-view-changing .archive-card .entry img{transition:none!important;transform:none!important}
+@media(prefers-reduced-motion:reduce){html.ff-theme-animating,html.ff-theme-animating *{transition:none!important}#article-results .archive-card .entry img{transition:none!important;transform:none!important}}
+
+/* article-tools-v15.css */
+/* Article tools — matches Filmmic Foundations' established editorial palette. */
+.article-toolbar button.reading-tool{font-family:"DM Sans",sans-serif;appearance:none;cursor:pointer}
+.ff-cite-section{scroll-margin-top:160px;margin:54px 0 44px;padding:28px 30px;border:1px solid #d8e4df;border-radius:9px;background:var(--paper,#fafbf8);box-shadow:0 10px 32px #102b300a}
+.ff-cite-section h2{margin:8px 0 12px!important}.ff-cite-section p{margin:0 0 16px}.ff-cite-eyebrow{font:700 10px "DM Sans",sans-serif;letter-spacing:.16em;color:#537e7b}.ff-cite-tabs{display:flex;gap:6px;flex-wrap:wrap;margin:22px 0 13px}.ff-cite-tabs button{border:1px solid #cbded8;border-radius:6px;padding:9px 15px;background:transparent;color:#31595a;font:700 12px "DM Sans",sans-serif;cursor:pointer;transition:background .2s,color .2s}.ff-cite-tabs button.is-selected{background:#173d46;color:#fff;border-color:#173d46}.ff-cite-tabs button:hover{box-shadow:0 3px 12px #102b3019}.ff-cite-output{padding:17px 18px;border-radius:6px;border:1px solid #d5e3dd;background:#f1f5f1}.ff-cite-output p{overflow-wrap:anywhere;font:14px/1.7 Georgia,serif;color:#254347;margin:0 0 15px}.ff-cite-output button{background:#173d46;color:#fff;border:1px solid #173d46;border-radius:6px;padding:10px 15px;font:700 11px "DM Sans",sans-serif;cursor:pointer}.ff-cite-note{font-size:12px!important;color:#66817d;margin-top:12px!important}
+
+/* Keep every viewer control visible throughout the dialog's open state. */
+
+html[data-theme="dark"] .ff-cite-section{background:#172b30;border-color:#426164}html[data-theme="dark"] .ff-cite-output{background:#20373b;border-color:#426164}html[data-theme="dark"] .ff-cite-output p{color:#e2eeea}html[data-theme="dark"] .ff-cite-section p{color:#d1e0db}html[data-theme="dark"] .ff-cite-tabs button:not(.is-selected){color:#dcebe6;border-color:#52706d}html[data-theme="dark"] .ff-cite-tabs button.is-selected{background:#dcebe6;color:#173d46}
+@media(max-width:600px){.ff-cite-section{padding:20px 16px}.ff-article-share{padding-inline:8px!important}}
+@media(prefers-reduced-motion:reduce){.ff-cite-tabs button{transition:none}}
+
+/* Shared icon treatment for article and image sharing. */
+#ff-share-article{display:inline-flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap}
+#ff-share-article svg{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* Shared site header: keep the sticky article toolbar attached to its real height. */
+:root{--ff-header-height:70px}
+@media(max-width:600px){:root{--ff-header-height:64px}}
+
+
+/* v30 · Center the viewer in the full viewport, rather than offsetting it
+   downward by half the sticky header height. Symmetric available space
+   keeps both navigation bars unobscured on short/mobile screens. */
+.ffv-dialog {
+  inset: 0 !important;
+  margin: auto !important;
+  height: min(720px, calc(100dvh - 2 * var(--ff-chrome-height, 132px) - 24px)) !important;
+  max-height: calc(100dvh - 24px) !important;
+}
+@media (max-height: 520px) {
+  /* Landscape phones: favor usable image height when chrome consumes space. */
+  .ffv-dialog {
+    height: calc(100dvh - var(--ff-chrome-height, 132px) - 18px) !important;
+    inset: var(--ff-chrome-height, 132px) 0 0 !important;
+  }
+}
+
+
+/* v31 — restrained scroll parallax for article cover photographs.
+   Overscan prevents exposing the edge of the image during translation. The
+   foreground type/shade never moves; only the background photograph does. */
+@keyframes ff-cover-fade-in {from{opacity:.42}to{opacity:.6}}
+.hero .hero-image {
+  animation:ff-cover-fade-in 1.65s cubic-bezier(.2,.7,.2,1) both;
+  transform: translate3d(0,var(--ff-cover-shift,0px),0) scale(1.17);
+  transform-origin:center center;
+}
+@media (prefers-reduced-motion:reduce) {
+  .hero .hero-image {animation:none!important;transform:none!important}
+}
+
+/* One consistent download action icon, shared by the article toolbar and hero. */
+.ff-download-icon { display:inline-block; flex:none; width:17px; height:17px; margin-inline-start:5px; vertical-align:middle; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+.article-toolbar .reading-pdf, .hero-actions .ff-pdf-button { display:inline-flex; align-items:center; justify-content:center; gap:7px; }
+.article-toolbar .reading-pdf .ff-download-icon, .hero-actions .ff-pdf-button .ff-download-icon { margin-inline-start:0; }
+@media(max-width:420px) { .article-toolbar .reading-pdf .ff-download-icon { width:15px; height:15px; } }
+
+/* Keep the viewer's download control responsive but non-repeatable while saving. */
+.ffv-download[aria-busy="true"] { opacity:.6; pointer-events:none; }

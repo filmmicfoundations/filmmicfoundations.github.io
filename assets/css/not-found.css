@@ -1,0 +1,64 @@
+/* Filmmic Foundations · 404 / missing research page.
+   Scoped to .ff-error so the shared header, theme and popups remain untouched. */
+.ff-error {
+  --ff-error-ink: #173942;
+  --ff-error-subtle: #61777b;
+  --ff-error-outline: #d2e0dc;
+  --ff-error-paper: #fcfcfa;
+  --ff-error-panel: #f3f7f4;
+  color: var(--ff-error-ink);
+  background: var(--ff-error-paper);
+  min-height: calc(100svh - 154px);
+  display: grid;
+  align-items: center;
+  padding: clamp(64px, 9vw, 128px) clamp(20px, 5vw, 90px);
+}
+.ff-error-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(300px, .9fr);
+  gap: clamp(30px, 7vw, 110px);
+  align-items: center;
+  width: min(100%, 1180px);
+  margin-inline: auto;
+}
+.ff-error-content { min-width: 0; }
+.ff-error-eyebrow { display: inline-flex; align-items: center; gap: 12px; color: #388184; font: 700 11px/1.4 'DM Sans', sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+.ff-error-eyebrow::before { content: ''; display: block; width: 29px; height: 1px; background: currentColor; }
+.ff-error h1 { font: 400 clamp(40px, 5.5vw, 78px)/1.17 'Libre Baskerville', Georgia, serif; letter-spacing: -.055em; margin: 24px 0; max-width: 780px; }
+.ff-error h1 em { color: #3a8285; font-weight: 400; }
+.ff-error-lede { max-width: 520px; color: var(--ff-error-subtle); font: 400 clamp(14px, 1.5vw, 17px)/1.9 'DM Sans', sans-serif; margin: 0; }
+.ff-error-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 35px; }
+.ff-error-link { min-height: 51px; display: inline-flex; align-items: center; justify-content: center; gap: 11px; padding: 13px 20px; color: var(--ff-error-ink); border: 1px solid #b1cbc5; border-radius: 6px; font: 700 12px/1.4 'DM Sans',sans-serif; text-decoration: none; transition: background-color .25s ease, border-color .25s ease, color .25s ease, box-shadow .25s ease, transform .25s ease; }
+.ff-error-link svg { width: 17px; height: 17px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.ff-error-link--primary { background: #173d46; border-color: #173d46; color: #f4faf7; }
+.ff-error-link:hover { background: #ecf5f2; border-color: #4e9190; box-shadow: 0 6px 19px #102e3220; transform: translateY(-2px); }
+.ff-error-link--primary:hover { background: #285d65; border-color: #285d65; color: #fff; }
+.ff-error-note { border-top: 1px solid var(--ff-error-outline); padding-top: 23px; margin-top: clamp(35px, 5vw, 65px); color: var(--ff-error-subtle); font: 400 12px/1.7 'DM Sans',sans-serif; max-width: 520px; }
+.ff-error-note strong { color: var(--ff-error-ink); font-weight: 700; }
+/* A small editorial filmstrip illustrates a missing frame rather than a generic warning illustration. */
+.ff-error-visual { width: min(100%, 460px); justify-self: end; position: relative; padding: 20px; border: 1px solid var(--ff-error-outline); background: var(--ff-error-panel); border-radius: 5px; }
+.ff-error-visual-head, .ff-error-visual-foot { font: 700 10px/1.4 'DM Sans',sans-serif; letter-spacing: .13em; text-transform: uppercase; color: #658489; display: flex; justify-content: space-between; gap: 14px; }
+.ff-error-visual-head { margin-bottom: 16px; }
+.ff-error-film { background: #173841; border-radius: 3px; padding: 15px 11px; box-shadow: 0 18px 38px #0b242a1a; }
+.ff-error-perforations { display: flex; justify-content: space-around; gap: 11px; padding: 0 2px; }
+.ff-error-perforations span { height: 9px; flex: 1; border-radius: 1px; background: #a5c7c5; opacity: .8; }
+.ff-error-frames { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 7px; margin: 12px 0; }
+.ff-error-frame { min-height: clamp(110px, 13vw, 164px); border: 1px solid #50787c; background: linear-gradient(155deg,#285861,#12313b); position: relative; overflow: hidden; }
+.ff-error-frame::before { content: ''; position: absolute; bottom: -26px; left: -22px; right: -14px; height: 75%; background: linear-gradient(135deg, transparent 0 27%, #4a8080 27% 45%, #285761 45% 66%, transparent 66%); opacity: .6; transform: rotate(-7deg); }
+.ff-error-frame:nth-child(2)::before { transform: translateY(-16px) rotate(8deg); opacity: .35; }
+.ff-error-frame--missing { background: repeating-linear-gradient(-45deg,#214650,#214650 11px,#254e58 11px,#254e58 12px); display: grid; place-items: center; border: 1px dashed #79a3a4; }
+.ff-error-frame--missing::before { display: none; }
+.ff-error-frame--missing svg { width: clamp(42px, 7vw, 65px); height: auto; color: #b7d7d2; opacity: .85; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.ff-error-frame-label { position: absolute; top: 10px; left: 10px; color: #c8e0db; font: 700 9px 'DM Sans',sans-serif; letter-spacing:.12em; }
+.ff-error-frame--missing .ff-error-frame-label {color:#d5e5e3}
+.ff-error-visual-foot { margin-top: 16px; }
+html[data-theme="dark"] .ff-error { --ff-error-ink:#e6f2ee; --ff-error-subtle:#b0c6c6; --ff-error-outline:#36535b; --ff-error-paper:#10252d; --ff-error-panel:#1a333c; }
+html[data-theme="dark"] .ff-error-eyebrow,html[data-theme="dark"] .ff-error h1 em { color:#a6d4cc; }
+html[data-theme="dark"] .ff-error-link { color:#e5f4ee; border-color:#50747a; }
+html[data-theme="dark"] .ff-error-link:hover { background:#26464e; border-color:#8bbcb8; }
+html[data-theme="dark"] .ff-error-link--primary {background:#d7e8e3;color:#183a41;border-color:#d7e8e3}
+html[data-theme="dark"] .ff-error-link--primary:hover {background:#fff;color:#183a41;border-color:#fff}
+html[data-theme="dark"] .ff-error-visual-head,html[data-theme="dark"] .ff-error-visual-foot { color:#aac5c3; }
+@media (max-width: 840px) { .ff-error-inner { grid-template-columns:1fr; } .ff-error-visual { justify-self:start; max-width:540px; } .ff-error { padding-block:65px; } }
+@media (max-width: 530px) { .ff-error{padding:52px 20px 65px}.ff-error h1{font-size:clamp(38px,9vw,52px);line-height:1.25}.ff-error-actions{align-items:stretch}.ff-error-link{min-width:0}.ff-error-visual{padding:14px}.ff-error-frame{min-height:126px}.ff-error-visual-head,.ff-error-visual-foot{font-size:9px} }
+@media (prefers-reduced-motion: reduce) { .ff-error-link { transition:none; } .ff-error-link:hover{transform:none} }

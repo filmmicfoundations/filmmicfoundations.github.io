@@ -1,0 +1,42 @@
+/* Filmmic Foundations · shared printing rules (intentionally no effect on screen) */
+@page { margin: 17mm; }
+@media print {
+  *,*::before,*::after { animation:none!important; transition:none!important; text-shadow:none!important; box-shadow:none!important; }
+  html,body { background:#fff!important; color:#161d20!important; overflow:visible!important; height:auto!important; scroll-behavior:auto!important; }
+  html[data-theme="dark"] body, html[data-theme="dark"] main { background:#fff!important; color:#161d20!important; }
+  .topbar,.ff-site-header,.ff-section-toolbar,.article-toolbar,.sidebar,.toc,.sidebar-sticky,
+  .ff-reading-progress,.ff-theme-toggle,.ff-about-toolbar,.ff-cite-tabs,
+  .ff-cite-output button,.ffv-dialog,.ffs-dialog,.archive-preview,
+  .archive-filter-dropdown,.archive-view-options,.search-shell,.search-status,
+  .archive-preview-trigger,.preview-actions,.preview-top,.video,iframe,
+  .ff-about-end,.watch,.ff-about-toolbar,footer,.ff-related-section,
+  .ffv-enlarge,.ff-enlarge,.enlarge-image,.enlarge-btn,.image-enlarge,
+  .ff-article-share,.reading-tools-right,.ff-share-button { display:none!important; }
+  .paper-layout,.article,.paper,.ff-about,.ff-about-layout,.ff-about-width,.ff-about-content,
+  .wrap,.section,.hero,.hero-inner,main { display:block!important; width:100%!important; max-width:none!important; min-width:0!important; margin:0!important; padding:0!important; transform:none!important; }
+  .article,.ff-about-content { font:10.5pt/1.55 Georgia,'Times New Roman',serif!important; color:#191f21!important; }
+  .hero { height:auto!important; min-height:0!important; background:#fff!important; padding:0 0 12pt!important; }
+  .hero-actions,.hero-image,.hero-shade,.ff-about-hero:before,.ff-about-hero:after { display:none!important; }
+  .hero-inner,.hero-inner *,.ff-about-hero-copy,.ff-about-hero-copy * { color:#111!important; text-shadow:none!important; }
+  h1,h2,h3 { color:#172d32!important; break-after:avoid-page; page-break-after:avoid; }
+  h1 { font-size:24pt!important; }
+  h2 { font-size:16pt!important; }
+  h3 { font-size:12pt!important; }
+  p,li { orphans:3; widows:3; }
+  figure,figcaption,blockquote,table,.ff-method-visual,.ff-cite-output { break-inside:avoid-page; page-break-inside:avoid; }
+  img { max-width:100%!important; height:auto!important; object-fit:contain!important; }
+  .article img,.ff-about img { max-height:110mm!important; }
+  a { color:#172d32!important; text-decoration:underline; }
+  a[href^="http"]:not([href*="filmmicfoundations.github.io"])::after { content:' (' attr(href) ')'; font-size:8pt; overflow-wrap:anywhere; }
+  .ff-publication-meta { display:flex!important; flex-wrap:wrap; gap:8pt; font:9pt Arial,sans-serif!important; background:none!important; border:0!important; color:#222!important; }
+  .ff-publication-meta * { color:#222!important; }
+  .ff-cite-output { display:block!important; border:1px solid #adb6b6!important; background:#fff!important; padding:9pt!important; }
+  .ff-cite-output p { color:#222!important; }
+  .ff-method-visual { background:#fff!important; border:1px solid #bbb!important; color:#111!important; }
+  .ff-method-visual * { color:#111!important; }
+  .ff-about-hero { min-height:0!important; padding:0 0 18pt!important; background:#fff!important; }
+  .ff-about-hero-grid { display:block!important; }
+  .ff-method-grid { display:grid!important; grid-template-columns:repeat(4,1fr)!important; }
+  .ff-about-content section { display:block!important; break-before:auto; }
+  .archive-card { break-inside:avoid-page!important; }
+}

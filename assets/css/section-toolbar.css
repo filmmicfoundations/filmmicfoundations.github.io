@@ -1,0 +1,103 @@
+/* Shared Filmmic Foundations secondary navigation — articles and editorial pages. */
+/* Filmmic Foundations — restrained sticky article navigation.
+   Uses native <details> for the mobile table of contents. */
+:root{--ff-header-height:68px;--ff-toolbar-height:66px}
+.topbar{z-index:70}
+.ff-section-toolbar{position:sticky!important;top:var(--ff-header-height);z-index:60;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:10px clamp(18px,5vw,80px);min-height:64px;background:rgba(252,252,250,.96);border-bottom:1px solid #dce7e3;box-shadow:0 8px 22px rgba(13,38,40,.045);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);overflow:visible}
+.reading-tools,.reading-tools-right{display:flex;align-items:center;gap:5px;min-width:0}
+.ff-section-toolbar .reading-tool,.ff-section-toolbar .reading-pdf,.mobile-contents>summary{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;min-height:40px;padding:10px 15px;border-radius:7px;text-decoration:none;font:700 11px "DM Sans",sans-serif;letter-spacing:.025em;color:#506c6d;cursor:pointer;transition:background .22s,color .22s,box-shadow .22s}
+.ff-section-toolbar .reading-tool:hover,.ff-section-toolbar .reading-tool:focus-visible,.mobile-contents>summary:hover{background:#eaf2ef;color:#1b555b}
+.ff-section-toolbar .reading-tool[aria-current="location"]{background:#e4efec;color:#194e54}
+.ff-section-toolbar .reading-pdf{background:#183a41;color:#f3faf7;border:1px solid #183a41;padding:10px 17px}
+.ff-section-toolbar .reading-pdf:hover{background:#2c6267;color:#fff;box-shadow:0 4px 12px #102b3020}
+.mobile-contents{display:none;position:relative}
+.mobile-contents>summary{list-style:none;border:1px solid #d7e4e0;gap:7px}
+.mobile-contents>summary::-webkit-details-marker{display:none}
+.mobile-contents>summary::after{content:"";display:inline-block;width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg);margin-left:6px;margin-top:-4px;transition:transform .2s}
+.mobile-contents[open]>summary::after{transform:rotate(225deg);margin-top:4px}
+.mobile-contents-list{position:absolute;top:calc(100% + 10px);right:0;width:min(340px,calc(100vw - 32px));max-height:min(60vh,470px);overflow:auto;background:#fcfcfa;border:1px solid #d9e5e1;border-radius:10px;padding:8px;box-shadow:0 18px 45px #102b3028;z-index:90}
+.mobile-contents-list a{display:block;padding:11px 12px;border-radius:5px;color:#49686b;font-size:12px;line-height:1.45;text-decoration:none;white-space:normal}
+.mobile-contents-list a:hover,.mobile-contents-list a:focus-visible{background:#ecf3f0;color:#184c52}
+html{scroll-padding-top:calc(var(--ff-header-height) + var(--ff-toolbar-height) + 24px)!important}
+.article [id],#watch,#references-and-further-viewing{scroll-margin-top:calc(var(--ff-header-height) + var(--ff-toolbar-height) + 24px)!important}
+.sidebar-sticky{top:calc(var(--ff-header-height) + var(--ff-toolbar-height) + 22px)}
+@media(max-width:900px){.mobile-contents{display:block}}
+@media(max-width:700px){
+.ff-section-toolbar{gap:7px;padding:8px 12px;min-height:58px}
+.reading-tools{flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+.reading-tools::-webkit-scrollbar{display:none}
+.reading-tools-right{gap:6px}
+.ff-section-toolbar .reading-tool,.ff-section-toolbar .reading-pdf,.mobile-contents>summary{font-size:10px;padding:8px 10px;min-height:38px}
+}
+@media(max-width:420px){.reading-tools{gap:1px}.ff-section-toolbar .reading-tool{padding:8px}.ff-section-toolbar .reading-pdf{padding:8px}.ff-section-toolbar .reading-tools > .reading-tool:nth-child(2){display:none}}
+@media(prefers-reduced-motion:reduce){.ff-section-toolbar *{transition:none!important}}
+
+/* Deep teal secondary navigation is visually distinct from the cream global header. */
+.ff-section-toolbar{background:#173d46!important;color:#e8f3ef!important;border-bottom:1px solid #0d2d34!important;box-shadow:0 8px 22px #0a202526!important;backdrop-filter:blur(16px)}
+.ff-section-toolbar .reading-tool,.ff-section-toolbar .reading-pdf,.mobile-contents>summary{color:#e8f3ef!important;background:transparent;border:1px solid transparent;border-radius:6px;min-height:40px;transition:background .22s,color .22s,border-color .22s}
+.ff-section-toolbar .reading-tool:hover,.ff-section-toolbar .reading-tool:focus-visible,.mobile-contents>summary:hover{background:#ffffff1c!important;color:white!important}
+.ff-section-toolbar .reading-tool[aria-current=location]{background:#ffffff20!important;color:white!important}
+.ff-section-toolbar .reading-pdf{background:#dcebe6!important;border-color:#dcebe6!important;color:#173d46!important}
+.ff-section-toolbar .reading-pdf:hover{background:#fff!important;color:#173d46!important}
+.mobile-contents>summary{border-color:#ffffff55!important}
+.mobile-contents-list{background:#fcfcfa;color:#173d46}
+.ff-section-toolbar a:focus-visible,.mobile-contents>summary:focus-visible{outline:2px solid #c8e7dd;outline-offset:2px}
+
+
+/* Common state and responsive behavior; one source of truth for the About and research toolbars. */
+.ff-section-toolbar { isolation:isolate; }
+.ff-section-toolbar .reading-tool { transform:none; }
+.ff-section-toolbar .reading-tool:focus-visible,
+.ff-section-toolbar .reading-pdf:focus-visible { outline:2px solid #c8e7dd; outline-offset:2px; }
+.ff-section-toolbar .mobile-contents-list a { color:#49686b !important; }
+.ff-section-toolbar .mobile-contents-list a:hover,
+.ff-section-toolbar .mobile-contents-list a:focus-visible { color:#184c52 !important; }
+html[data-theme="dark"] .ff-section-toolbar { background:#214b54!important; }
+@media (max-width:900px) { .ff-section-toolbar .mobile-contents{display:block} }
+@media (prefers-reduced-motion:reduce) { .ff-section-toolbar, .ff-section-toolbar * {transition:none!important} }
+
+/* Floating reading utility: shared across article and About pages.
+   The control is deliberately separate from the sticky section navigation. */
+.ff-back-to-top {
+  position:fixed;
+  right:clamp(16px,2.4vw,34px);
+  bottom:max(20px,env(safe-area-inset-bottom,0px) + 16px);
+  z-index:54;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  min-height:49px;
+  padding:0 17px;
+  border:1px solid #527f82;
+  border-radius:100px;
+  background:#173d46;
+  color:#f4faf6;
+  box-shadow:0 9px 29px #082a3040;
+  font:700 12px/1 'DM Sans',sans-serif;
+  letter-spacing:.02em;
+  cursor:pointer;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transform:translateY(14px) scale(.97);
+  transition:opacity .27s ease,transform .36s cubic-bezier(.22,1,.36,1),visibility 0s linear .36s,background-color .24s ease,box-shadow .24s ease;
+}
+.ff-back-to-top svg{display:block;width:17px;height:17px;flex:none}
+.ff-back-to-top--visible {
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+  transform:translateY(0) scale(1);
+  transition:opacity .27s ease,transform .36s cubic-bezier(.22,1,.36,1),visibility 0s,background-color .24s ease,box-shadow .24s ease;
+}
+.ff-back-to-top--visible:hover {background:#275d65;box-shadow:0 12px 32px #082a3050;transform:translateY(-3px)}
+.ff-back-to-top:focus-visible {outline:3px solid #8bc6c1;outline-offset:3px}
+html[data-theme="dark"] .ff-back-to-top {background:#d7e9e4;color:#183940;border-color:#a0c3bf;box-shadow:0 9px 29px #03181f8c}
+html[data-theme="dark"] .ff-back-to-top--visible:hover{background:#fff}
+/* A modal takes precedence over the floating utility; avoid a bright island behind it. */
+body:has(dialog[open]) .ff-back-to-top {opacity:0;pointer-events:none;transform:translateY(12px)}
+@media (max-width:600px) { .ff-back-to-top {right:16px;bottom:max(16px,env(safe-area-inset-bottom,0px) + 12px);min-height:45px;padding:0 15px;font-size:11px;gap:8px;} }
+@media (prefers-reduced-motion:reduce) { .ff-back-to-top,.ff-back-to-top--visible,.ff-back-to-top:hover {transition:none;transform:none} }
+html[data-ff-motion="off"] .ff-back-to-top {transition:none!important;transform:none!important}
+@media print { .ff-back-to-top{display:none!important} }

@@ -1,0 +1,57 @@
+/* Filmmic Foundations — publication, access and research features. */
+.ff-skip-link{position:fixed;top:-150px;left:12px;z-index:1000000;background:#fcfcfa;color:#15343b;padding:12px 18px;text-decoration:none;border:2px solid #39838a;border-radius:4px;font-weight:700}
+.ff-skip-link:focus{top:12px}
+:where(a,button,input,select,summary):focus-visible{outline:3px solid #338f97;outline-offset:3px}
+.ff-footer-links{display:flex;flex-wrap:wrap;gap:18px;font-size:12px}
+.ff-footer-links a{text-decoration:none;color:inherit;opacity:.85;transition:opacity .2s ease}
+.ff-footer-links a:hover{opacity:1;text-decoration:underline;text-underline-offset:3px}
+body>footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.ff-publication-meta{display:flex;flex-wrap:wrap;gap:6px 22px;padding:19px 0 24px;margin:0 0 35px;border-bottom:1px solid var(--line,#dce5e4);color:var(--muted,#687b7f);font-size:12px;line-height:1.7}
+.ff-publication-meta span{display:inline-flex;align-items:baseline;gap:5px}
+.ff-publication-meta strong{color:var(--ink,#1e3035);font-weight:600}
+.ff-reading-progress{position:absolute;bottom:0;left:0;height:2px;width:100%;background:#94cbca;transform:scaleX(0);transform-origin:left center;pointer-events:none;z-index:3;will-change:transform}
+.ff-related-section{padding:58px clamp(20px,5vw,90px) 70px;background:var(--paper,#fcfcfa);border-top:1px solid var(--line,#dce5e4)}
+.ff-related-inner{max-width:1120px;margin:auto}
+.ff-related-kicker{font-weight:700;font-size:11px;letter-spacing:.15em;color:var(--accent,#2d777d)}
+.ff-related-inner h2{font:clamp(25px,3vw,36px)/1.35 'Libre Baskerville',serif;margin:12px 0 14px}
+.ff-related-intro{font-size:13px;line-height:1.8;color:var(--muted,#617478);max-width:720px;margin:0 0 25px}
+.ff-related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));gap:18px}
+.ff-related-card{border:1px solid var(--line,#dce5e4);background:var(--paper,#fcfcfa);color:var(--ink,#1e3035);display:block;text-decoration:none;overflow:hidden;transition:box-shadow .35s ease,border-color .35s ease}
+.ff-related-card:hover{box-shadow:0 12px 30px #05181e18;border-color:var(--accent,#2d777d)}
+.ff-related-card img{display:block;width:100%;aspect-ratio:2.35;object-fit:cover}
+.ff-related-content{padding:20px}
+.ff-related-content small{font-weight:700;font-size:10px;letter-spacing:.13em;color:var(--accent,#2d777d)}
+.ff-related-content h3{font:20px/1.5 'Libre Baskerville',serif;margin:9px 0;color:inherit}
+.ff-related-content p{font-size:13px;line-height:1.7;color:var(--muted,#617478);margin:0}
+.ff-about{background:var(--paper,#fcfcfa);color:var(--ink,#1e3035)}
+.ff-about-width{max-width:1130px;margin:auto;padding-inline:clamp(24px,5vw,65px)}
+.ff-about-hero{background:#112d35;color:#f4f7f5;padding:clamp(65px,8vw,110px) 0}
+.ff-about-hero h1{font:clamp(42px,6vw,75px)/1.16 'Libre Baskerville',serif;letter-spacing:-.055em;max-width:800px;margin:25px 0}
+.ff-about-hero h1 em{font-weight:400;color:#a6d5d1}
+.ff-about-hero p{font:clamp(16px,1.65vw,20px)/1.85 'Libre Baskerville',serif;max-width:710px;color:#c5d8d8}
+.ff-about-layout{display:grid;grid-template-columns:200px minmax(0,1fr);gap:clamp(30px,7vw,95px);padding-top:70px;padding-bottom:120px}
+.ff-about-side{position:sticky;top:110px;align-self:start;display:flex;flex-direction:column;gap:15px}
+.ff-about-caption,.ff-about-number{letter-spacing:.13em;font-weight:700;font-size:10px;color:var(--accent,#2d777d)}
+.ff-about-side a{font-size:12px;color:var(--muted,#687c7d);text-decoration:none;line-height:1.55}
+.ff-about-side a:hover{color:var(--accent,#2d777d)}
+.ff-about-content section{padding:0 0 48px;margin:0 0 45px;border-bottom:1px solid var(--line,#dce5e4);scroll-margin-top:110px}
+.ff-about-content section h2{font:clamp(24px,3.2vw,35px)/1.4 'Libre Baskerville',serif;letter-spacing:-.03em;margin:14px 0 20px}
+.ff-about-content section p,.ff-about-content section li{font:15px/1.95 'DM Sans',sans-serif;color:var(--muted,#617478)}
+.ff-about-content ul{padding-left:23px}
+.ff-about-content li{padding:4px 0}
+.ff-about-content strong{color:var(--ink,#1e3035);font-weight:700}
+.ff-about-content a{color:var(--accent,#2d777d)}
+.ff-about-end{display:flex;flex-wrap:wrap;gap:26px}
+.ff-about-end a{font-weight:700;font-size:13px;text-decoration:none;color:var(--accent,#2d777d)}
+.ff-about-end a:hover{text-decoration:underline}
+html[data-theme=dark] .ff-about-hero{background:#081920}
+html[data-theme=dark] .ff-about-hero h1 em{color:#a2d4cf}
+html[data-theme=dark] .ff-related-card{background:#142931}
+html[data-theme=dark] .ff-related-content p{color:#b6c7c8}
+html[data-theme=dark] .ff-publication-meta strong{color:#ecf3f0}
+@media(max-width:700px){.ff-about-layout{grid-template-columns:1fr;padding-top:48px;gap:35px}.ff-about-side{position:static;flex-direction:row;flex-wrap:wrap;gap:9px 18px}.ff-about-caption{flex-basis:100%}.ff-related-section{padding-block:45px}.ff-publication-meta{gap:3px 16px}}
+@media(prefers-reduced-motion:reduce){.ff-related-card,.ff-footer-links a{transition:none}.ff-reading-progress{will-change:auto}}
+
+/* Contrast refinement for small secondary copy in light mode (WCAG AA). */
+html[data-theme="light"] body>footer { color:#586b70; }
+html[data-theme="light"] .coming { color:#586b70; }

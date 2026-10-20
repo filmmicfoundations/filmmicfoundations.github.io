@@ -1,0 +1,149 @@
+/* Filmmic Foundations · shared reading preferences (all pages).
+   No dependencies. One scoped dialog, one source of preference styling. */
+:root{--ff-reading-scale:1;--ff-leading:1;--ff-preferred-width:800px}
+.ff-settings-toggle{touch-action:manipulation}
+.ff-settings-dialog,.ff-settings-dialog *{box-sizing:border-box}
+.ff-settings-dialog{
+  position:fixed;inset:0;margin:auto;width:min(690px,calc(100vw - 30px));
+  max-width:690px;max-height:min(790px,calc(100dvh - 30px));padding:0;
+  overflow:hidden;border:1px solid #c5d6d2;border-radius:12px;
+  background:#fcfcfa;color:#1c383f;box-shadow:0 35px 110px #02131960;
+  font-family:'DM Sans',system-ui,sans-serif;font-size:14px;line-height:1.5;
+}
+.ff-settings-dialog::backdrop{background:rgba(6,19,24,.62);backdrop-filter:blur(1px)}
+.ff-settings-dialog[open]{animation:ff-pref-enter .34s cubic-bezier(.18,.75,.2,1) both}
+.ff-settings-dialog[open]::backdrop{animation:ff-pref-backdrop .3s ease both}
+.ff-settings-dialog.ff-pref-closing[open]{animation:ff-pref-leave .18s cubic-bezier(.3,0,.8,1) both;pointer-events:none}
+.ff-settings-dialog.ff-pref-closing[open]::backdrop{animation:ff-pref-backdrop-out .18s ease both}
+@keyframes ff-pref-enter{from{opacity:0;transform:translateY(12px) scale(.975)}to{opacity:1;transform:none}}
+@keyframes ff-pref-leave{from{opacity:1;transform:none}to{opacity:0;transform:translateY(9px) scale(.984)}}
+@keyframes ff-pref-backdrop{from{background:rgba(6,19,24,0)}to{background:rgba(6,19,24,.62)}}
+@keyframes ff-pref-backdrop-out{to{background:rgba(6,19,24,0)}}
+.ff-settings-shell{display:flex;flex-direction:column;max-height:min(790px,calc(100dvh - 30px));min-height:0}
+.ff-settings-top{flex:none;display:flex;align-items:center;justify-content:space-between;padding:22px 27px 16px;border-bottom:1px solid #dce7e3;gap:16px}
+.ff-settings-kicker{display:block;font:700 10px/1.5 'DM Sans',sans-serif;letter-spacing:.15em;color:#49787b;text-transform:uppercase}
+.ff-settings-top h2{margin:4px 0 0;font:400 26px/1.22 'Libre Baskerville',Georgia,serif;letter-spacing:-.02em;color:inherit}
+.ff-settings-dismiss{display:grid;place-items:center;flex:none;width:38px;height:38px;border:1px solid #d6e2de;border-radius:7px;color:inherit;background:transparent;cursor:pointer;transition:background .2s ease,border-color .2s ease}
+.ff-settings-dismiss:hover{background:#eaf2ee;border-color:#aac6c3}
+.ff-settings-dismiss svg{width:19px;height:19px}
+.ff-settings-tabs{display:flex;flex:none;gap:4px;padding:12px 23px;border-bottom:1px solid #dce7e3;overflow-x:auto;scrollbar-width:thin}
+.ff-settings-tab{flex:1;min-width:max-content;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 9px;border:0;border-bottom:2px solid transparent;border-radius:5px 5px 0 0;background:transparent;color:#547177;cursor:pointer;font:700 12px/1.4 'DM Sans',sans-serif;transition:color .18s ease,background .18s ease,border-color .18s ease}
+.ff-settings-tab:hover{background:#e9f2ef;color:#173b43}
+.ff-settings-tab[aria-selected="true"]{border-bottom-color:#347e81;color:#173b43;background:#e9f2ef}
+.ff-settings-tab svg{width:15px;height:15px}
+.ff-settings-scroll{overflow-y:auto;overscroll-behavior:contain;padding:22px 27px 18px;scrollbar-color:#abc6c0 transparent}
+.ff-settings-panel[hidden]{display:none!important}
+.ff-settings-section{margin-bottom:22px}
+.ff-settings-section>h3{font:700 11px/1.3 'DM Sans',sans-serif;letter-spacing:.14em;text-transform:uppercase;margin:0 0 8px;color:#4d797a}
+.ff-pref-row{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px 0;border-bottom:1px solid #e7eeeb;min-height:60px}
+.ff-pref-row:last-child{border-bottom:0}
+.ff-pref-text{min-width:0;flex:1}
+.ff-pref-text label,.ff-pref-title{display:block;color:#19393f;font:700 13px/1.4 'DM Sans',sans-serif}
+.ff-pref-text p{font:400 11px/1.65 'DM Sans',sans-serif;color:#5c7578;margin:3px 0 0;max-width:365px}
+.ff-pref-row select{min-width:138px;max-width:170px;width:42%;min-height:38px;padding:8px 24px 8px 11px;background:#f5f9f7;color:#173a42;border:1px solid #bbcfc9;border-radius:6px;font:600 12px 'DM Sans',sans-serif;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23477477' stroke-width='1.8'%3E%3Cpath d='m5 7 5 5 5-5'/%3E%3C/svg%3E");background-position:right 8px center;background-size:17px;background-repeat:no-repeat}
+.ff-pref-row input[type="checkbox"]{appearance:none;-webkit-appearance:none;flex:0 0 42px;width:42px;height:24px;border:1px solid #92afae;border-radius:50px;background:#d7e2df;position:relative;cursor:pointer;transition:background-color .22s ease,border-color .22s ease}
+.ff-pref-row input[type="checkbox"]::before{content:"";position:absolute;width:16px;height:16px;background:white;border-radius:50%;top:3px;left:3px;box-shadow:0 1px 4px #0c2e2f30;transition:transform .22s cubic-bezier(.2,.8,.2,1)}
+.ff-pref-row input[type="checkbox"]:checked{background:#347d80;border-color:#347d80}
+.ff-pref-row input[type="checkbox"]:checked::before{transform:translateX(18px)}
+.ff-pref-row select:focus-visible,.ff-pref-row input:focus-visible,.ff-settings-dialog button:focus-visible{outline:2px solid #318a91;outline-offset:3px}
+.ff-pref-information{padding:17px 18px;margin:6px 0 22px;background:#eff5f2;border:1px solid #d5e5de;border-radius:7px;font-size:12px;line-height:1.8;color:#405e62}
+.ff-pref-information strong{display:block;color:#1c444a;margin-bottom:4px}
+.ff-pref-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.ff-pref-action{border:1px solid #91b4b1;color:#1f5055;border-radius:6px;background:transparent;padding:11px 15px;font:700 12px 'DM Sans',sans-serif;cursor:pointer;transition:background .2s ease,transform .2s ease}
+.ff-pref-action:hover{background:#e4f1ed;transform:translateY(-1px)}
+.ff-pref-action.ff-danger{border-color:#bdc6c2;color:#5a6362}
+.ff-pref-action.ff-danger:hover{background:#f0ebe8}
+.ff-settings-bottom{flex:none;display:flex;align-items:center;justify-content:space-between;gap:14px;border-top:1px solid #dce7e3;padding:13px 27px 17px;background:#fcfcfa}
+.ff-settings-saved{color:#64797c;font-size:11px;min-height:15px}
+.ff-settings-done{border:1px solid #183b44;border-radius:6px;background:#183b44;color:#f6fcf9;cursor:pointer;padding:11px 24px;font:700 12px 'DM Sans',sans-serif;transition:transform .2s ease,background .2s ease}
+.ff-settings-done:hover{background:#285e62;transform:translateY(-1px)}
+.ff-resume-prompt{position:fixed;bottom:20px;right:20px;z-index:65;width:min(380px,calc(100vw - 30px));border:1px solid #b7d1c9;border-radius:8px;padding:15px 17px;background:#fcfcfa;color:#1b4148;box-shadow:0 16px 50px #001b2240;font:600 12px/1.6 'DM Sans',sans-serif;animation:ff-pref-enter .3s ease both}
+.ff-resume-prompt p{margin:0 0 10px}
+.ff-resume-prompt button{border:1px solid #a8bdb8;border-radius:5px;padding:8px 12px;font:600 11px 'DM Sans',sans-serif;background:transparent;color:inherit;cursor:pointer;margin-right:7px}
+.ff-resume-prompt button:first-of-type{background:#1a3f49;color:white;border-color:#1a3f49}
+.ff-external-dialog{border:1px solid #b7ccc5;border-radius:9px;background:#fcfcfa;color:#183c43;max-width:min(450px,calc(100vw - 30px));padding:23px 26px;box-shadow:0 20px 70px #00171b66;font-family:'DM Sans',sans-serif}
+.ff-external-dialog::backdrop{background:#071b238c}
+.ff-external-dialog[open]{animation:ff-pref-enter .3s ease both}
+.ff-external-dialog h2{font:400 24px 'Libre Baskerville',Georgia,serif;margin:0 0 12px}
+.ff-external-dialog p{line-height:1.6;font-size:12px;overflow-wrap:anywhere}
+.ff-external-dialog footer{display:flex;gap:12px;background:none;padding:10px 0 0}
+.ff-external-dialog button,.ff-external-dialog a{border-radius:5px;border:1px solid #98b0ac;padding:10px 13px;background:transparent;color:inherit;font:600 12px 'DM Sans',sans-serif;cursor:pointer;text-decoration:none}
+.ff-external-dialog a{background:#1a4149;border-color:#1a4149;color:white}
+/* Settings affecting reader's content, rather than unrelated decorative elements. */
+html[data-ff-text="small"]{--ff-reading-scale:.9}
+html[data-ff-text="default"]{--ff-reading-scale:1}
+html[data-ff-text="large"]{--ff-reading-scale:1.17}
+html[data-ff-text="extra"]{--ff-reading-scale:1.32}
+html[data-ff-leading="compact"]{--ff-leading:.88}
+html[data-ff-leading="standard"]{--ff-leading:1}
+html[data-ff-leading="relaxed"]{--ff-leading:1.16}
+html .article.article p:not(.disclosure):not(.source-note):not(.ff-cite-note){font-size:calc(14px * var(--ff-reading-scale));line-height:calc(2.05 * var(--ff-leading))}
+html .ff-about-content p, html .ff-about-content li{font-size:calc(1em * var(--ff-reading-scale));line-height:calc(1.85 * var(--ff-leading))}
+@media(max-width:520px){html .article.article p:not(.disclosure):not(.source-note):not(.ff-cite-note){font-size:calc(13px * var(--ff-reading-scale))}}
+html[data-ff-width="narrow"] .paper-layout{max-width:1100px;grid-template-columns:minmax(200px,260px) minmax(0,680px)}
+html[data-ff-width="wide"] .paper-layout{max-width:1530px;grid-template-columns:minmax(200px,270px) minmax(0,1000px)}
+html[data-ff-width="narrow"] .ff-about{max-width:950px}
+html[data-ff-width="wide"] .ff-about{max-width:1350px}
+@media(max-width:900px){html[data-ff-width] .paper-layout{grid-template-columns:minmax(0,1fr);max-width:760px}}
+html[data-ff-focus="on"] .paper-layout{grid-template-columns:minmax(0,780px);justify-content:center;max-width:1200px}
+html[data-ff-focus="on"] .paper-layout .sidebar{display:none}
+html[data-ff-focus="on"] .ff-related-section{display:none}
+html[data-ff-progress="off"] .ff-reading-progress{display:none!important}
+html[data-ff-captions="off"] .article.article figure:not(.diagram) figcaption{display:none!important}
+html[data-ff-related="off"] .ff-related-section{display:none!important}
+html[data-ff-contrast="on"] .article p,html[data-ff-contrast="on"] .article .references li,html[data-ff-contrast="on"] .ff-about-content p{color:#112d33!important}
+html[data-ff-contrast="on"] .article figcaption,html[data-ff-contrast="on"] .article .source-note{color:#234148!important}
+html[data-ff-contrast="on"] .article a{text-decoration:underline;text-decoration-thickness:1.2px;text-underline-offset:3px}
+html[data-theme="dark"][data-ff-contrast="on"] .article p,html[data-theme="dark"][data-ff-contrast="on"] .article .references li,html[data-theme="dark"][data-ff-contrast="on"] .ff-about-content p{color:#f4fcfa!important}
+html[data-theme="dark"][data-ff-contrast="on"] .article figcaption,html[data-theme="dark"][data-ff-contrast="on"] .article .source-note{color:#dcece9!important}
+html[data-theme="dark"] .ff-settings-dialog{background:#152b32;color:#edf6f3;border-color:#3c5b5b}
+html[data-theme="dark"] .ff-settings-top,html[data-theme="dark"] .ff-settings-tabs,html[data-theme="dark"] .ff-settings-bottom{border-color:#35535a}
+html[data-theme="dark"] .ff-settings-bottom{background:#152b32}
+html[data-theme="dark"] .ff-settings-dismiss{border-color:#456269;background:transparent}
+html[data-theme="dark"] .ff-settings-dismiss:hover{background:#25434b}
+html[data-theme="dark"] .ff-settings-kicker,html[data-theme="dark"] .ff-settings-section>h3{color:#98c7c1}
+html[data-theme="dark"] .ff-settings-tab{color:#bdced0}
+html[data-theme="dark"] .ff-settings-tab:hover,html[data-theme="dark"] .ff-settings-tab[aria-selected="true"]{color:#f4fffc;background:#25464a;border-bottom-color:#9bd1c9}
+html[data-theme="dark"] .ff-pref-row{border-color:#344e53}
+html[data-theme="dark"] .ff-pref-text label,html[data-theme="dark"] .ff-pref-title{color:#f0f7f5}
+html[data-theme="dark"] .ff-pref-text p,html[data-theme="dark"] .ff-settings-saved{color:#afc7c7}
+html[data-theme="dark"] .ff-pref-row select{background-color:#1e3940;border-color:#517078;color:#f1f8f4}
+html[data-theme="dark"] .ff-pref-row input[type="checkbox"]:not(:checked){background:#385159;border-color:#6a8988}
+html[data-theme="dark"] .ff-pref-information{background:#1c3940;border-color:#416168;color:#c5dad7}
+html[data-theme="dark"] .ff-pref-information strong{color:#ebf8f4}
+html[data-theme="dark"] .ff-pref-action{color:#b8e2db;border-color:#507b7a}
+html[data-theme="dark"] .ff-pref-action:hover{background:#26454b}
+html[data-theme="dark"] .ff-pref-action.ff-danger{color:#d8c5c5;border-color:#68636a}
+html[data-theme="dark"] .ff-settings-done{background:#d7e9e4;border-color:#d7e9e4;color:#15343a}
+html[data-theme="dark"] .ff-settings-done:hover{background:#c1dbd5}
+html[data-theme="dark"] .ff-resume-prompt{background:#172f36;color:#edf6f3;border-color:#53746e}
+html[data-theme="dark"] .ff-external-dialog{background:#173139;color:#f4faf8;border-color:#4e7471}
+/* Respect accessibility and motion preferences, including parallax. */
+html[data-ff-motion="off"]{scroll-behavior:auto!important}
+html[data-ff-motion="off"] *,html[data-ff-motion="off"] *::before,html[data-ff-motion="off"] *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+html[data-ff-motion="off"] .hero-image{--ff-cover-shift:0px!important}
+html[data-ff-motion="off"] .ff-settings-dialog[open],html[data-ff-motion="off"] .ff-settings-dialog[open]::backdrop{animation:none!important}
+html[data-ff-motion="full"] .archive-card img{transition-duration:1.65s!important}
+@media(prefers-reduced-motion:reduce){.ff-settings-dialog[open],.ff-settings-dialog[open]::backdrop,.ff-resume-prompt{animation:none!important}.ff-pref-row input[type="checkbox"]::before{transition:none}}
+@media(max-width:560px){.ff-settings-dialog{width:calc(100vw - 16px);max-height:calc(100dvh - 16px);border-radius:9px}.ff-settings-shell{max-height:calc(100dvh - 16px)}.ff-settings-top{padding:18px 16px 13px}.ff-settings-top h2{font-size:23px}.ff-settings-tabs{padding:7px 10px;gap:1px}.ff-settings-tab{font-size:10px;padding:10px 9px;gap:5px}.ff-settings-tab svg{width:13px;height:13px}.ff-settings-scroll{padding:15px 17px}.ff-pref-row{gap:10px}.ff-pref-text label{font-size:12px}.ff-pref-text p{font-size:10px}.ff-pref-row select{min-width:118px;max-width:142px;font-size:11px}.ff-settings-bottom{padding:11px 17px}.ff-settings-done{padding:10px 17px}}
+@media print{.ff-settings-dialog,.ff-resume-prompt,.ff-external-dialog,.ff-settings-toggle{display:none!important}}
+/* Private-by-default embedded media: does not load iframe until requested. */
+.video{position:relative;overflow:hidden}
+.video iframe[data-ff-embed-url]{visibility:hidden}
+.video.ff-video-loaded iframe[data-ff-embed-url]{visibility:visible}
+.ff-video-load{position:absolute;inset:0;width:100%;height:100%;background:linear-gradient(140deg,#173740,#081a21);border:1px solid #446367;color:#dbece8;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;flex-direction:column;font-family:'DM Sans',sans-serif;transition:background-color .2s ease}
+.ff-video-load:hover{background:linear-gradient(140deg,#244e57,#0b242c)}
+.ff-video-load strong{font-size:13px}
+.ff-video-load small{font-size:11px;opacity:.72}
+.ff-video-play{display:grid;place-items:center;font-size:15px;border-radius:50%;border:1px solid #79b2b1;width:55px;height:55px;padding-left:3px;color:#c6f0e9;transition:transform .25s ease}
+.ff-video-load:hover .ff-video-play{transform:scale(1.07)}
+.video.ff-video-loaded .ff-video-load{display:none}
+
+/* Preserve the theme inside the modal: older site-wide button rules can be stronger. */
+html[data-theme="dark"] .ff-settings-dialog .ff-settings-tab[aria-selected="true"]{background:#25464a!important;color:#f4fffc!important;border-bottom-color:#9bd1c9!important}
+html[data-theme="dark"] .ff-settings-dialog .ff-settings-done{background:#d7e9e4!important;border-color:#d7e9e4!important;color:#15343a!important}
+html[data-ff-gallery-motion="off"] .ffv-dialog .ffv-ghost,html[data-ff-gallery-motion="off"] .ffv-dialog .ffv-single img{animation:none!important;transition:none!important}
+html[data-ff-gallery-motion="off"] .ffv-dialog.ffv-sliding,html[data-ff-gallery-motion="off"] .ffv-dialog .ffv-sliding{animation:none!important;transition:none!important}
+
+/* Optional unobtrusive reading view; reference list itself is never hidden. */
+html[data-ff-markers="off"] article.article a.cite{display:none!important}
