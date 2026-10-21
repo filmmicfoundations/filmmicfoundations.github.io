@@ -15,13 +15,47 @@
     const articleYear = document.getElementById('filter-article-year');
     const filmYear = document.getElementById('filter-film-year');
     const sort = document.getElementById('sort-articles');
-    const sortDetails=document.getElementById('archive-sort-dropdown');
-    const filterDetails=document.getElementById('archive-filter-dropdown');
-    sortDetails?.addEventListener('toggle',()=>{if(sortDetails.open&&filterDetails?.open)filterDetails.open=false});
-    filterDetails?.addEventListener('toggle',()=>{if(filterDetails.open&&sortDetails?.open)sortDetails.open=false});
+    // One lightweight anchored-popup controller serves Filter and Sort. Each is
+    // independent from the native select values used by search and preferences.
+    const popups=[];
+    for(const kind of ['filter','sort']){
+      const wrap=document.getElementById(`ff-${kind}-wrap`);
+      const toggle=document.getElementById(`ff-${kind}-toggle`);
+      const panel=document.getElementById(`ff-${kind}-panel`);
+      if(!wrap||!toggle||!panel)continue;
+      let isOpen=false, anim=null;
+      const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+      function setOpen(value){
+        if(value===isOpen)return;
+        isOpen=value;toggle.setAttribute('aria-expanded',String(value));
+        anim?.cancel();anim=null;
+        if(value)panel.hidden=false;panel.style.pointerEvents=value?'auto':'none';
+        if(reduced.matches){panel.hidden=!value;return;}
+        anim=panel.animate(value?
+          [{opacity:0,transform:'translateY(-6px) scale(.985)'},{opacity:1,transform:'translateY(0) scale(1)'}]:
+          [{opacity:1,transform:'translateY(0) scale(1)'},{opacity:0,transform:'translateY(-4px) scale(.99)'}],
+          {duration:value?215:135,easing:'cubic-bezier(.2,.75,.2,1)',fill:'both'});
+        const current=anim;
+        current.onfinish=()=>{if(anim!==current)return;anim=null;current.cancel();if(!isOpen)panel.hidden=true};
+      }
+      const close=()=>setOpen(false);
+      popups.push({kind,close,wrap});
+      toggle.addEventListener('click',()=>{if(!isOpen)popups.forEach(p=>p.close());setOpen(!isOpen)});
+      wrap.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();close();toggle.focus({preventScroll:true})}});
+      document.addEventListener('pointerdown',e=>{if(isOpen&&!wrap.contains(e.target))close()});
+    }
+    const sortChoices=[...document.querySelectorAll('#ff-sort-panel [data-sort]')];
+    function syncSort(){sortChoices.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.sort===sort?.value)))}
+    sortChoices.forEach(button=>button.addEventListener('click',()=>{
+      sort.value=button.dataset.sort;sort.dispatchEvent(new Event('change',{bubbles:true}));
+      syncSort();popups.find(p=>p.kind==='sort')?.close();
+      document.getElementById('ff-sort-toggle')?.focus({preventScroll:true});
+    }));
+    sort?.addEventListener('change',syncSort);
+    syncSort();
 
     const defaultSort = document.documentElement.dataset.ffSort;
-    if(sort && ['newest','oldest','az','za'].includes(defaultSort)) sort.value=defaultSort;
+    if(sort && ['newest','oldest','az','za'].includes(defaultSort)){sort.value=defaultSort;syncSort();}
     const unique = (key) => [...new Set(cards.flatMap(c => (c.dataset[key] || '').split(',').map(v=>v.trim()).filter(Boolean)))];
     for (const value of unique('genre').sort()) genre?.add(new Option(value,value));
     for (const value of unique('articleYear').sort((a,b)=>b.localeCompare(a))) articleYear?.add(new Option(value,value));
@@ -67,8 +101,7 @@
           chip.classList.add('is-removing');chip.disabled=true;
           let dismissed=false;const finish=()=>{if(dismissed)return;dismissed=true;select.value='';select.dispatchEvent(new Event('change',{bubbles:true}));select.dispatchEvent(new Event('ff:refresh-choice'));};
           if(matchMedia('(prefers-reduced-motion: reduce)').matches)finish();
-          else chip.addEventListener('transitionend',finish,{once:true});
-          if(!matchMedia('(prefers-reduced-motion: reduce)').matches)setTimeout(()=>{if(select.value)finish();},220);
+          else setTimeout(finish,185);
         });
         chips.append(chip);
       }
@@ -78,7 +111,7 @@
     function refreshFilterCount(){
       const n=[genre,articleYear,filmYear].filter(el=>el?.value).length;
       refreshChips();
-      if(activeCount){activeCount.hidden=n===0;activeCount.title=n?`${n} filter${n===1?'':'s'} active`:'';activeCount.parentElement?.classList.toggle('has-active-filters',n>0);activeCount.parentElement?.setAttribute('aria-label',n?`Show archive filters (${n} active)`:'Show archive filters')}
+      if(activeCount){activeCount.hidden=n===0;activeCount.title=n?`${n} filter${n===1?'':'s'} active`:'';const toggle=document.getElementById('ff-filter-toggle');toggle?.classList.toggle('has-active-filters',n>0);toggle?.setAttribute('aria-label',n?`Filter articles (${n} active)`:'Filter articles')}
     }
     document.getElementById('reset-filters')?.addEventListener('click',()=>{
       [genre,articleYear,filmYear].forEach(el=>{if(el)el.value=''});
@@ -91,7 +124,7 @@
     // Native selects remain the source of truth for search, reset and preferences.
     const choiceControllers=[];
     const reduceChoiceMotion=matchMedia('(prefers-reduced-motion: reduce)');
-    for(const select of [genre,articleYear,filmYear,sort]){
+    for(const select of [genre,articleYear,filmYear]){
       if(!select)continue;
       const wrapper=document.createElement('div');wrapper.className='ff-choice';
       const trigger=document.createElement('button');trigger.type='button';trigger.className='ff-choice-trigger';
@@ -122,8 +155,8 @@
         const item=document.createElement('button');item.type='button';item.dataset.value=opt.value;
         item.setAttribute('role','option');item.textContent=opt.textContent;
         item.addEventListener('click',()=>{
-          select.value=opt.value;select.dispatchEvent(new Event('change',{bubbles:true}));sync();close();trigger.focus({preventScroll:true});
-          if(select===sort)sortDetails?.removeAttribute('open');
+          select.value=opt.value;select.dispatchEvent(new Event('change',{bubbles:true}));sync();close();popups.find(p=>p.kind==='filter')?.close();trigger.focus({preventScroll:true});
+
         });menu.append(item);
       }
       sync();trigger.addEventListener('click',()=>{if(opened)close();else{choiceControllers.forEach(x=>x.close());setOpen(true)}});

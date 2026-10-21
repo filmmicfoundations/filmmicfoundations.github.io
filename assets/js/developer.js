@@ -531,61 +531,86 @@
     $('dev-download-source').href=`https://github.com/${OWNER}/${REPO}/archive/${encodeURIComponent(chosen.head_sha)}.zip`;
     $('dev-source-revision').textContent=(chosen.verified?'Latest verified deployment: ':'Latest saved revision: ')+trimSha(chosen.head_sha);
   }
+  // The published revision index is generated at deployment time from `git log`.
+  // It is same-origin and does not require the GitHub API or an admin token.
+  // REST results can enrich the list, but cannot prevent it from displaying.
+  let historyRequestId=0;
   async function refreshVersions(){
+    const requestId=++historyRequestId;
     const container=$('dev-version-list');
     container.textContent='Loading saved versions…';
     $('dev-history-more').hidden=true;
     $('dev-version-extra').replaceChildren();
-    // Commit history is the primary source; Actions may be inaccessible under
-    // some token scopes. Fetch independently and fall back to unauthenticated
-    // public repository history when GitHub rejects the token-scoped request.
+    let revisions=[],publishedRevision='';
+    let snapshotError='';
+    try{
+      const response=await fetch('../assets/release-history.json?updated='+Date.now(),{cache:'no-store'});
+      if(!response.ok)throw Error(`Website revision index: HTTP ${response.status}`);
+      const data=await response.json();
+      if(!Array.isArray(data.versions))throw Error('Invalid website revision index');
+      publishedRevision=data.published_revision||'';
+      revisions=data.versions.filter(item=>/^[a-f0-9]{40}$/i.test(item.head_sha||'')).slice(0,50).map(item=>({
+        head_sha:item.head_sha, date:item.date,
+        message:item.message||'Saved repository revision',
+        verified:item.head_sha===publishedRevision,source:'snapshot'
+      }));
+      // Show a working list right away, even if API calls later time out.
+      if(revisions.length){allHistory=revisions;renderVersions();}
+    }catch(error){snapshotError=error.message;}
     const fetchWithLimit=async(path)=>{
-      const timeout=12000;
-      const fetchOnce=()=>Promise.race([api(path),new Promise((_,reject)=>setTimeout(()=>reject(Error('GitHub request timed out.')),timeout))]);
-      try{return await fetchOnce()}catch(primary){
-        if(path.startsWith('/commits')){
-          try{
-            const response=await fetch(API+path,{headers:{Accept:'application/vnd.github+json'},cache:'no-store'});
-            if(response.ok)return await response.json();
-          }catch(_){/* retain detailed original error */}
+      const controller=new AbortController();
+      const timeout=setTimeout(()=>controller.abort(),6500);
+      const headers={'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
+      if(token)headers.Authorization=`Bearer ${token}`;
+      const fetchOnce=async(withAuth)=>{
+        const h={...headers};if(!withAuth)delete h.Authorization;
+        const response=await fetch(API+path,{headers:h,cache:'no-store',signal:controller.signal});
+        if(!response.ok)throw Error(`GitHub ${response.status}: ${path.split('?')[0]}`);
+        return response.json();
+      };
+      try{
+        try{return await fetchOnce(true)}catch(e){
+          if(path.startsWith('/commits')&&token&&!controller.signal.aborted)return await fetchOnce(false);
+          throw e;
         }
-        throw primary;
-      }
+      }finally{clearTimeout(timeout)}
     };
     const [commitsResult,deploymentsResult]=await Promise.allSettled([
-      fetchWithLimit('/commits?per_page=50'),
+      fetchWithLimit('/commits?sha='+encodeURIComponent(BRANCH)+'&per_page=50'),
       fetchWithLimit('/actions/workflows/deploy.yml/runs?status=success&per_page=50')
     ]);
-    let commits=[],successful=[];
-    if(commitsResult.status==='fulfilled'){
-      const data=commitsResult.value;
-      commits=(Array.isArray(data)?data:[]).filter(c=>c.sha).map(c=>({
-        head_sha:c.sha,date:c.commit?.committer?.date||c.commit?.author?.date,
-        message:(c.commit?.message||'Website update').split('\n')[0].slice(0,86),verified:false
-      }));
+    if(requestId!==historyRequestId)return;
+    const commits=commitsResult.status==='fulfilled'&&Array.isArray(commitsResult.value)?commitsResult.value:[];
+    const runs=deploymentsResult.status==='fulfilled'?(deploymentsResult.value.workflow_runs||[]):[];
+    const merged=new Map(revisions.map(x=>[x.head_sha,x]));
+    for(const run of runs){
+      if(!run.head_sha||!run.conclusion||run.conclusion!=='success')continue;
+      const old=merged.get(run.head_sha)||{};
+      merged.set(run.head_sha,{...old,head_sha:run.head_sha,date:old.date||run.updated_at||run.created_at,
+        message:old.message||'Successful website deployment',verified:true});
     }
-    if(deploymentsResult.status==='fulfilled'){
-      successful=(deploymentsResult.value.workflow_runs||[]).filter(run=>run.head_sha).map(run=>({
-        head_sha:run.head_sha,date:run.updated_at||run.run_started_at||run.created_at,
-        verified:true,message:'Successful website deployment'
-      }));
+    for(const item of commits){
+      if(!item.sha)continue;
+      const old=merged.get(item.sha)||{};
+      merged.set(item.sha,{...old,head_sha:item.sha,date:item.commit?.committer?.date||old.date||item.commit?.author?.date,
+        message:(item.commit?.message||old.message||'Website update').split('\n')[0].slice(0,105),
+        verified:old.verified||item.sha===publishedRevision});
     }
-    if(!successful.length&&!commits.length){
-      allHistory=[];
-      const reason=[commitsResult,deploymentsResult].filter(r=>r.status==='rejected').map(r=>r.reason?.message||'GitHub unavailable');
-      container.textContent=reason.length?'History unavailable — retry or check GitHub permissions.':'No saved repository revisions found.';
-      $('dev-history-note').textContent=(reason.join(' · ')||'GitHub returned no revisions')+' · Repository: '+OWNER+'/'+REPO+' · If the repository is private, connect a token with Contents: Read permission.';
+    allHistory=[...merged.values()].sort((a,b)=>new Date(b.date||0)-new Date(a.date||0)).slice(0,50);
+    if(!allHistory.length){
+      const issues=[snapshotError,
+        commitsResult.status==='rejected'&&commitsResult.reason?.message,
+        deploymentsResult.status==='rejected'&&deploymentsResult.reason?.message].filter(Boolean);
+      container.textContent='No versions available from this deployment.';
+      $('dev-history-note').textContent=issues.length
+        ?`Could not retrieve history: ${issues.join(' · ')}. Once this update deploys, the published revision index will be available even if the GitHub API cannot be reached.`
+        :'No saved revisions were returned. Publish an update to generate the revision index.';
       return;
     }
-    const merged=new Map();
-    for(const item of commits)merged.set(item.head_sha,item);
-    for(const item of successful){const existing=merged.get(item.head_sha);merged.set(item.head_sha,{...item,...existing,verified:true});}
-    // Manage only the newest 50 records in the portal. Git history itself is
-    // intentionally untouched: force-rewriting published history is unsafe.
-    allHistory=Array.from(merged.values()).sort((x,y)=>new Date(y.date||0)-new Date(x.date||0)).slice(0,50);
-    $('dev-history-note').textContent=successful.length
-      ?'Latest 50 saved versions. Published denotes a confirmed deployment.'
-      :'Latest 50 repository revisions. Verified deployment information is unavailable.';
+    const apiNotice=commitsResult.status==='rejected'&&snapshotError
+      ?'Some GitHub history services are unavailable; showing locally published revisions.'
+      :`Showing the latest ${allHistory.length} saved revisions. A Published label means the release was verified.`;
+    $('dev-history-note').textContent=apiNotice;
     renderVersions();
     enrichLegacyTitles().catch(()=>{});
   }
