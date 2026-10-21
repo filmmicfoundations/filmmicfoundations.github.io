@@ -192,3 +192,12 @@ A browser check was run using locally assembled HTML and CSS because local URLs 
 - Article and About Back to Top buttons dock just above the footer rather than overlapping it.
 - All native modal dialogs use shared background-scroll prevention; only the active dialog's interior is scrollable.
 - Image gallery mode visibly disables the zoom percentage along with the minus, plus and Fit controls.
+
+## v53 maintenance notes: archive controls, release history, RSS
+
+- The archive uses two independent, compact icon controls: **Filter** (a three-row vertical list for genre, article date, and film date) and **Sort** (one direct list of newest, oldest, A–Z, and Z–A). Selection state remains in the original select elements, so search, preference settings, and clear-filter actions stay synchronized. No additional UI library is needed.
+- The floating **Top** control on About and article pages is fixed during reading, then anchored in **document coordinates** immediately above each page's actual footer. It does not increase the footer height or cover footer links.
+- At each GitHub Actions deployment, `scripts/build_archive.py` also runs `scripts/build_release_history.py`. This creates `assets/release-history.json` (a public, read-only list of up to 50 saved Git revisions). The script deepens the Git checkout when necessary, using the existing checkout credentials. **No new workflow permissions or workflow-file edits are required.** The Developer Portal reads this same-origin index before using the GitHub API as an optional enrichment. Older Git commits are not erased. The first deployed version with this change populates the index.
+- The RSS subscription address is **https://filmmicfoundations.github.io/feed.xml**. It remains standards-compliant RSS 2.0 for feed readers; `assets/rss.xsl` makes it readable in browsers that support XML stylesheets. RSS is generated from article metadata, and `scripts/quality_gate.py` checks the channel and all expected feed entries, not just XML syntax.
+- The release-history snapshot contains only commit hashes, dates, and commit descriptions—no contributor names or emails. Keep any personal identities out of commit messages if publisher anonymity is important.
+- The publication workflow must be deployed through **GitHub Actions** for the static revision index and RSS generator to run. If the site's Pages source is configured as a branch instead, select GitHub Actions in the repository's Pages settings.

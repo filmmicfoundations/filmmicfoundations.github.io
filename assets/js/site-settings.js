@@ -359,16 +359,30 @@
     scheduled=false;
     const cutoff=Math.max(550,Math.floor(window.innerHeight*.82));
     const visible=window.scrollY>cutoff;
-    // The article footer is nested inside <main>; About uses a site footer.
-    // Track its viewport edge directly. This keeps the button above the footer
-    // without changing document height or switching positioning contexts.
-    const footer=document.querySelector('main > footer:not(.ffv-foot), main footer:not(.ffv-foot), body > footer:not(.ffv-foot), .site-footer');
+    // Clamp the floating utility at the footer in DOCUMENT coordinates.
+    // The footer may be a direct child of body (About) or nested in main
+    // (article). Switching fixed→absolute at the exact same pixel prevents
+    // the control from covering either footer and does not change layout.
+    const footers=[...document.querySelectorAll('footer:not(.ffv-foot)')].filter(node=>
+      !node.closest('dialog') && getComputedStyle(node).display!=='none');
+    const footer=footers.find(node=>node.closest('main')) || footers[0];
     const base=window.innerWidth<=600?16:20;
     const gap=18;
     const buttonHeight=button.offsetHeight||49;
-    const footerEdge=footer?.getBoundingClientRect().top ?? Infinity;
-    const lift=Number.isFinite(footerEdge)?Math.max(0,window.innerHeight-base-buttonHeight+gap-footerEdge):0;
-    button.style.setProperty('--ff-footer-lift',Math.round(lift)+'px');
+    const viewportBottom=window.scrollY+window.innerHeight-base-buttonHeight;
+    const footerTop=footer ? footer.getBoundingClientRect().top+window.scrollY : Infinity;
+    const stopTop=footerTop-gap-buttonHeight;
+    const parked=Number.isFinite(stopTop) && viewportBottom>=stopTop;
+    if(parked){
+      button.style.position='absolute';
+      button.style.top=Math.max(0,Math.round(stopTop))+'px';
+      button.style.bottom='auto';
+    }else{
+      button.style.position='fixed';
+      button.style.top='';
+      button.style.bottom='';
+    }
+    button.style.removeProperty('--ff-footer-lift');
     button.classList.toggle('ff-back-to-top--visible',visible);
     button.tabIndex=visible?0:-1;
     button.setAttribute('aria-hidden',visible?'false':'true');

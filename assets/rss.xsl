@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:atom="http://www.w3.org/2005/Atom">
+<xsl:output method="html" encoding="UTF-8" omit-xml-declaration="yes"/>
+<xsl:template match="/rss">
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>RSS Updates | Filmmic Foundations</title><link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<style>
+:root{color-scheme:light;background:#f8f8f4;color:#193d46;font-family:Arial,sans-serif}*{box-sizing:border-box}body{margin:0}.wrap{max-width:900px;margin:auto;padding:0 22px}.top{background:#f8f8f4;border-bottom:1px solid #d6e1de;padding:21px 0}.top a{font-size:14px;font-weight:800;letter-spacing:.08em;text-decoration:none;color:#193d46}header{padding:72px 0 45px;border-bottom:1px solid #d6e1de}.kicker{font-size:11px;letter-spacing:.16em;font-weight:700;color:#47777b}h1,h2{font-family:Georgia,serif;font-weight:400}h1{font-size:clamp(38px,6vw,64px);margin:15px 0 18px}p{color:#526b6e;line-height:1.7;max-width:630px}code{font-size:13px;overflow-wrap:anywhere;background:#e7efeb;padding:6px 8px}.action{display:inline-block;color:#fff;background:#193d46;border-radius:6px;text-decoration:none;padding:13px 17px;font-size:13px;font-weight:700;margin-top:12px}main{padding:24px 0 70px}article{padding:24px 0;border-bottom:1px solid #d6e1de}article h2{font-size:27px;margin:8px 0}article h2 a{color:#193d46;text-decoration:none}article h2 a:hover{text-decoration:underline}article small{font-size:11px;color:#567478;font-weight:700}article p{margin:8px 0 0}footer{border-top:1px solid #d6e1de;padding:30px 0;color:#567478;font-size:12px}@media(prefers-color-scheme:dark){:root{background:#10252b;color:#e9f4ef}.top{background:#10252b;border-color:#30535b}.top a,article h2 a{color:#e9f4ef}header,article,footer{border-color:#30535b}p,article small,footer{color:#b3cbc9}code{background:#23434a;color:#e9f4ef}.action{background:#d9ede7;color:#193d46}}
+</style></head><body>
+<div class="top"><div class="wrap"><a href="/">FILMMIC FOUNDATIONS</a></div></div>
+<header><div class="wrap"><div class="kicker">RESEARCH UPDATES · RSS 2.0</div><h1>Follow the archive.</h1><p>Subscribe to new short-film analyses in an RSS reader. Copy this feed URL into your reader, or browse the latest research below.</p><p><code>https://filmmicfoundations.github.io/feed.xml</code></p><a class="action" href="/">Explore articles →</a></div></header>
+<main class="wrap"><xsl:for-each select="channel/item"><article><small><xsl:value-of select="pubDate"/></small><h2><a href="{link}"><xsl:value-of select="title"/></a></h2><p><xsl:value-of select="description"/></p></article></xsl:for-each></main>
+<footer><div class="wrap">Filmmic Foundations · Short-film research. This page is also a machine-readable RSS feed.</div></footer>
+</body></html>
+</xsl:template></xsl:stylesheet>
