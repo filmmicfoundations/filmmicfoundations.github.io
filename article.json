@@ -1,43 +1,47 @@
 {
-  "title": "Alike",
+  "title": "The Black Hole",
+  "citation_title": "The Black Hole: A Portable Impossible Space: Greed, Visual Rules, and the Mechanics of a Moral Trap",
+  "citation_apa_title": "The Black Hole: A portable impossible space: Greed, visual rules, and the mechanics of a moral trap",
   "year": "2026",
   "type": "FILM ANALYSIS",
-  "description": "An evidence-led analysis of Alike (2015), exploring how color, repetitive editing, music, and stylized city spaces stage a conflict between institutional routine and creative attention.",
-  "image": "assets/alike-interpretive-city-and-tree.webp",
-  "image_alt": "Original interpretive cityscape illustration inspired by the themes of the short film Alike, not a film still",
+  "description": "A 30-minute analysis of the 2008 short: how a single visual rule turns office boredom into greed, danger, and an ironic trap.",
+  "abstract": "Phil Sansom and Olly Williams's 2008 short The Black Hole follows an exhausted office worker who receives a sheet of paper carrying an impossible aperture. In less than three minutes, an ordinary photocopier becomes the instrument of discovery, temptation, theft, and entrapment. This article argues that the film's effectiveness depends less on its warning against greed than on the precision with which it introduces and reuses a visual rule: a flat printed circle permits passage through the surface against which it is placed. The actor's gestures, the photocopier's mechanical sounds, the blue-gray lighting, and the progression from a cup to a vending machine and then a locked safe all make that rule legible without explanation.",
+  "image": "assets/black-hole-editorial-portal.webp",
+  "image_alt": "Original editorial illustration of a photocopier beside a sheet carrying a black circular portal; not a film still",
   "genre": [
-    "Animation",
-    "Drama"
+    "Live action",
+    "Fantasy",
+    "Dark comedy"
   ],
-  "date": "2026-10-21",
   "tags": [
-    "creativity",
-    "attention",
-    "education",
-    "animation",
-    "color"
+    "short film",
+    "visual storytelling",
+    "portal",
+    "greed",
+    "ethics",
+    "cinematography",
+    "sound design"
   ],
-  "order": 2,
-  "film_year": "2015",
-  "article_date": "2026-10-21",
-  "abstract": "In Alike (2015), the contrast between a uniform city and a musician’s vivid space allows color to function as narrative information. Repetition links the father’s working life to his son’s school experience, while a late gesture of recognition interrupts that routine. This reading examines color, staging, editing, sound, and animated performance, placing the film in conversation with research on autonomy and creativity without mistaking fictional allegory for empirical evidence.",
   "themes": [
-    "identity",
-    "autonomy",
-    "creativity",
-    "conformity",
-    "parent-child relationship"
+    "greed",
+    "moral escalation",
+    "confinement",
+    "workplace",
+    "control",
+    "power",
+    "irony"
   ],
   "techniques": [
-    "visual symbolism",
+    "visual effects",
+    "narrative economy",
+    "visual metaphor",
     "editing",
-    "production design",
-    "color design",
-    "sound design",
-    "animation"
+    "performance without dialogue",
+    "diegetic sound"
   ],
+  "article_date": "2026-10-21",
   "updated_date": "2026-10-21",
+  "film_year": "2008",
   "language": "en",
-  "citation_title": "Alike: Color, Conformity, and the Practice of Attention",
-  "citation_apa_title": "Alike: Color, conformity, and the practice of attention"
+  "order": 3
 }
