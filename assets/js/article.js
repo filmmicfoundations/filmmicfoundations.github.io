@@ -198,6 +198,9 @@ const closeMenu = menu => { if (!menu) return; if(window.FFDropdowns) window.FFD
     return {
       src: new URL(relative, location.href).href,
       shareUrl: new URL(relative, canonicalBase).href,
+      // Unlike Mindglass, Alike uses externally hosted authentic film stills.
+      // Honor their no-referrer policy in every image context, including preloads.
+      external: new URL(relative, location.href).origin !== location.origin,
       alt: still.alt || 'Film still',
       caption: button.closest('figure')?.querySelector('figcaption')?.textContent?.trim() || still.alt || 'Film still',
       filename: decodeURIComponent(relative.split('/').pop()?.split('?')[0] || 'filmmic-foundations-image.webp')
@@ -208,6 +211,19 @@ const closeMenu = menu => { if (!menu) return; if(window.FFDropdowns) window.FFD
   let focusReturn = null;
   const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
   const galleryButtons = [];
+  // A failed third-party source must not leave an empty or unresponsive modal.
+  // The fallback is intentionally absent for ordinary, working local film stills.
+  const imageFailure = document.createElement('div');
+  imageFailure.className = 'ffv-image-failure';
+  imageFailure.hidden = true;
+  const failureText = document.createElement('p');
+  failureText.textContent = 'This film still could not be loaded from its source.';
+  const failureLink = document.createElement('a');
+  failureLink.target = '_blank';
+  failureLink.rel = 'noopener noreferrer';
+  failureLink.textContent = 'Open the original image';
+  imageFailure.append(failureText, failureLink);
+  canvas.append(imageFailure);
   let slideshowTimer=0;
   function syncSlideshow(){
     clearInterval(slideshowTimer);slideshowTimer=0;
@@ -281,8 +297,13 @@ const closeMenu = menu => { if (!menu) return; if(window.FFDropdowns) window.FFD
         canvas.style.setProperty('--ffv-direction', `${Math.sign(distance) || 1}`);
       }
       index = requested;
-      image.src = item.src;
+      imageFailure.hidden = true;
+      failureLink.href = item.src;
+      image.referrerPolicy = item.external ? 'no-referrer' : '';
       image.alt = item.alt;
+      // Reset the old image state before changing sources. Do not wait for
+      // external preloads to resolve before making the viewer responsive.
+      image.src = item.src;
       const downloadLink = el('ffv-download');
       downloadLink.href = item.src;
       downloadLink.download = item.filename;
@@ -300,10 +321,13 @@ const closeMenu = menu => { if (!menu) return; if(window.FFDropdowns) window.FFD
       requestAnimationFrame(repositionArrows);
     }
     if (item.src === image.src && image.complete) { commit(); return; }
-    // Decode before swapping so the single image never goes blank during navigation.
+    // External hosts may block image preloads or leave them unresolved. Show
+    // the dialog immediately and let the actual image report success/failure.
+    if (item.external || !animate) { commit(); return; }
+    // Retain the smooth pre-decode transition for reliable local film stills.
     const preload = new Image();
     preload.onload = commit;
-    preload.onerror = () => { commit(); message('This image could not be loaded.'); };
+    preload.onerror = commit;
     preload.src = item.src;
     if (preload.complete && preload.naturalWidth) commit();
   }
@@ -334,9 +358,11 @@ const closeMenu = menu => { if (!menu) return; if(window.FFDropdowns) window.FFD
     tile.tabIndex = -1;
     tile.setAttribute('aria-label', `View image ${i + 1}: ${item.alt}`);
     const thumb = document.createElement('img');
+    thumb.referrerPolicy = item.external ? 'no-referrer' : '';
     thumb.src = item.src;
     thumb.alt = item.alt;
     thumb.loading = 'lazy';
+    thumb.addEventListener('error', () => tile.classList.add('ffv-tile-unavailable'));
     tile.append(thumb);
     const number = document.createElement('span');
     number.className = 'ffv-tile-number';
@@ -387,7 +413,15 @@ const closeMenu = menu => { if (!menu) return; if(window.FFDropdowns) window.FFD
   el('ffv-minus').addEventListener('click', () => setZoom(zoom - 0.3));
   el('ffv-plus').addEventListener('click', () => setZoom(zoom + 0.3));
   el('ffv-fit').addEventListener('click', () => setZoom(1));
-  image.addEventListener('load', () => {applyZoom();repositionArrows();});
+  image.addEventListener('load', () => {
+    imageFailure.hidden = true;
+    applyZoom();repositionArrows();
+  });
+  image.addEventListener('error', () => {
+    imageFailure.hidden = false;
+    image.style.transform = '';
+    message('The image host is unavailable. You can open the original source.');
+  });
   window.addEventListener('resize', () => {applyZoom();repositionArrows();}, {passive:true});
   dialog.addEventListener('click', event => { if (event.target === dialog) closeViewer(); });
   dialog.addEventListener('cancel', event => {event.preventDefault();closeViewer();});
