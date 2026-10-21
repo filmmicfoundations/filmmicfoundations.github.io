@@ -36,3 +36,7 @@ Reference example: 16-page *Mindglass Procedure: Memory, Grief, and the Repetiti
 - Figure numbers, still identities, sequence relevance and diagrams should agree between the page and PDF; the same local full-frame stills, no duplicates or thumbnail enlargements. Original web HTML diagrams can be exported to print-resolution images for PDF only.
 - Keep table of contents, consistent main text size, section heads, running heads, page numbering, margins and source links; avoid a new template per article. Use *Mindglass* as an editorial reference and *Alike* as a reminder that adding images must not reset formatting.
 - Test PDF URL in article action menu and hero; render **all pages** and check clipping, stray blank pages and line-break handling in captions. Make metadata organization-only.
+
+### Cover and preview consistency (October 2026 revision)
+
+The Mindglass Procedure PDF is the visual baseline. Use a sans-serif, title-first cover with a horizontal rule; an authentic still captioned as such; a compact article summary and 2-column film facts; a separate contents page; consistent section type, figure numbering, running headers and linked references. Place real stills near the paragraphs they support. Never substitute analytical artwork and label it "film still." If local film frames are unavailable, retain honest interpretive labels and mark the PDF as media-incomplete.

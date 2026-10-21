@@ -40,3 +40,7 @@ html[data-theme="dark"] .film-still-local img{background:#223238}
 @media (max-width:560px) {
   .alike-color-stages .alike-stage-label {font-size:22px !important; letter-spacing:normal !important;}
 }
+
+/* Cover parity: authentic frame rather than concept art; responsive crop. */
+.hero-image{background-image:url("assets/alike-ending-embrace-beneath-red-tree.jpg")!important;background-position:center 44%!important;opacity:.82!important}
+@media(max-width:640px){.hero-image{background-position:42% center!important}}

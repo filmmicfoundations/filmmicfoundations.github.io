@@ -14,3 +14,9 @@ html[data-theme=dark] .ff-film-still img{background:#16272d;border-color:#33474c
 .ff-film-still-fallback{padding:14px 18px;background:var(--ff-soft,#eaf1f0);border-left:3px solid var(--ff-accent,#5b999d);color:var(--ff-ink,#20363b);font-family:"DM Sans",sans-serif!important;font-size:12px!important;line-height:1.7!important;margin:0 0 12px!important}
 .ff-film-still-unavailable .article-image-open{display:none!important}
 html[data-theme=dark] .ff-film-still-fallback{background:#182d32!important;color:#e5f2f2!important}
+
+/* Mindglass typographic parity: sans + serif contrast in multiword film titles. */
+.hero h1{font-size:clamp(49px,7.2vw,105px)!important;line-height:1.07!important;letter-spacing:-.055em!important;max-width:1100px}
+.hero h1 em{font-family:"Libre Baskerville",Georgia,serif!important;font-size:.78em!important;letter-spacing:-.052em!important;line-height:1.16!important;font-weight:400!important}
+.hero-image{background-image:url("assets/black-hole-editorial-portal.jpg")!important}
+@media(max-width:520px){.hero h1{font-size:clamp(42px,10vw,58px)!important}.hero h1 em{font-size:.76em!important}}

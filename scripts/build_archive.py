@@ -97,7 +97,7 @@ def to_list(value):
 
 def thumbnail(image):
     if not image:return ''
-    smaller = str(Path(image).with_name(Path(image).stem+'-640.webp'))
+    smaller = str(Path(image).with_name(Path(image).stem+'-640'+Path(image).suffix))
     return smaller if smaller!='' else image
 
 
@@ -320,6 +320,18 @@ def main():
     jsonld='<script id="ff-site-schema" type="application/ld+json">'+j(site_schema)+'</script>'
     html=re.sub(r'<script id="ff-site-schema" type="application/ld\+json">.*?</script>', '',html,flags=re.S)
     html=html.replace('</head>',jsonld+'</head>',1)
+    # Embed preview manifests for every article. This avoids a fragile per-card
+    # network fetch and makes article previews work in local/offline QA too.
+    previews = {}
+    for article in articles:
+        manifest = ROOT / article['slug'] / 'preview.json'
+        if manifest.is_file():
+            previews[article['slug']] = json.loads(manifest.read_text(encoding='utf-8'))
+    preview_json = '<script id="preview-manifest" type="application/json">'+j(previews)+'</script>'
+    html = re.sub(r'<script id="preview-manifest" type="application/json">.*?</script>',
+                  lambda _: preview_json, html, flags=re.S)
+    if 'id="preview-manifest"' not in html:
+        html = html.replace('</body>', preview_json + '</body>', 1)
     HOME.write_text(html,encoding='utf-8')
     # Build compact full-text search index: it contains only publicly visible research text.
     (ROOT/'search-index.json').write_text(j({slug:text[:70000] for slug,text in fulltext.items()})+'\n',encoding='utf-8')
