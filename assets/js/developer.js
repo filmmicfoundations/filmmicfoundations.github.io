@@ -532,29 +532,50 @@
     $('dev-source-revision').textContent=(chosen.verified?'Latest verified deployment: ':'Latest saved revision: ')+trimSha(chosen.head_sha);
   }
   async function refreshVersions(){
-    const container=$('dev-version-list');container.replaceChildren();
-    container.textContent='Loading saved versions…';$('dev-history-more').hidden=true;$('dev-version-extra').replaceChildren();
-    let successful=[];let commits=[];let errors=[];
-    try{
-      const data=await api('/actions/workflows/deploy.yml/runs?status=success&per_page=100');
-      successful=(data.workflow_runs||[]).filter(run=>run.head_sha).map(run=>({head_sha:run.head_sha,date:run.updated_at||run.run_started_at||run.created_at,verified:true,message:'Successful website deployment'}));
-    }catch(e){errors.push(e.message);}
-    try{
-      const data=await api(`/commits?sha=${encodeURIComponent(BRANCH)}&per_page=100`);
-      commits=(Array.isArray(data)?data:[]).filter(c=>c.sha).map(c=>({head_sha:c.sha,date:c.commit?.committer?.date||c.commit?.author?.date,message:(c.commit?.message||'Website update').split('\n')[0].slice(0,86),verified:false}));
-    }catch(e){errors.push(e.message);}
+    const container=$('dev-version-list');
+    container.textContent='Loading saved versions…';
+    $('dev-history-more').hidden=true;
+    $('dev-version-extra').replaceChildren();
+    // Fetch the two independent histories concurrently. A restricted/slow Actions
+    // endpoint must never keep repository revisions hidden indefinitely.
+    const fetchWithLimit=async(path)=>{
+      const pending=api(path);
+      return Promise.race([pending,new Promise((_,reject)=>setTimeout(()=>reject(Error('GitHub request timed out; retry later.')),8500))]);
+    };
+    const [commitsResult,deploymentsResult]=await Promise.allSettled([
+      fetchWithLimit(`/commits?sha=${encodeURIComponent(BRANCH)}&per_page=50`),
+      fetchWithLimit('/actions/workflows/deploy.yml/runs?status=success&per_page=50')
+    ]);
+    let commits=[],successful=[];
+    if(commitsResult.status==='fulfilled'){
+      const data=commitsResult.value;
+      commits=(Array.isArray(data)?data:[]).filter(c=>c.sha).map(c=>({
+        head_sha:c.sha,date:c.commit?.committer?.date||c.commit?.author?.date,
+        message:(c.commit?.message||'Website update').split('\n')[0].slice(0,86),verified:false
+      }));
+    }
+    if(deploymentsResult.status==='fulfilled'){
+      successful=(deploymentsResult.value.workflow_runs||[]).filter(run=>run.head_sha).map(run=>({
+        head_sha:run.head_sha,date:run.updated_at||run.run_started_at||run.created_at,
+        verified:true,message:'Successful website deployment'
+      }));
+    }
     if(!successful.length&&!commits.length){
       allHistory=[];
-      container.textContent=errors.length?'Unable to load version history. Connect to GitHub or check repository permissions, then refresh.':'No repository revisions found yet.';
-      $('dev-history-note').textContent=errors.length?errors[0]:'';
+      const reason=[commitsResult,deploymentsResult].filter(r=>r.status==='rejected').map(r=>r.reason?.message||'GitHub unavailable');
+      container.textContent=reason.length?'Could not load revisions. Check GitHub access and select Refresh.':'No saved repository revisions found.';
+      $('dev-history-note').textContent=reason.join(' · ');
       return;
     }
     const merged=new Map();
     for(const item of commits)merged.set(item.head_sha,item);
     for(const item of successful){const existing=merged.get(item.head_sha);merged.set(item.head_sha,{...item,...existing,verified:true});}
-    allHistory=Array.from(merged.values()).sort((x,y)=>new Date(y.date||0)-new Date(x.date||0));
-    const onlyCommits=!successful.length;
-    $('dev-history-note').textContent=onlyCommits?'Showing saved repository revisions. GitHub did not return verified deployment history.':'Verified deployments are marked Published; other entries are saved repository revisions.';
+    // Manage only the newest 50 records in the portal. Git history itself is
+    // intentionally untouched: force-rewriting published history is unsafe.
+    allHistory=Array.from(merged.values()).sort((x,y)=>new Date(y.date||0)-new Date(x.date||0)).slice(0,50);
+    $('dev-history-note').textContent=successful.length
+      ?'Latest 50 saved versions. Published denotes a confirmed deployment.'
+      :'Latest 50 repository revisions. Verified deployment information is unavailable.';
     renderVersions();
     enrichLegacyTitles().catch(()=>{});
   }

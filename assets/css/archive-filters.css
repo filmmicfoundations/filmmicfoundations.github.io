@@ -70,3 +70,13 @@ html[data-theme=dark] .archive-filter-panel .ff-choice-menu button:is(:hover,:fo
 .archive-filter-panel .ff-choice-trigger::after{display:none!important}
 .archive-filter-panel .ff-choice-menu{animation:none!important}
 .archive-filter-panel .ff-choice-menu[hidden]{display:none!important}
+
+/* Active filters align immediately beside the filter trigger. */
+.archive-control-line{display:flex;align-items:center;flex-wrap:wrap;gap:10px}
+.archive-control-line>.ff-active-filter-chips{display:flex;align-items:center;flex:1 1 auto;min-width:0;gap:7px;margin:0!important;padding:0}
+.archive-control-line>.ff-active-filter-chips[hidden]{display:none!important}
+.archive-control-line .ff-filter-chip{white-space:nowrap;transition:opacity .18s ease,transform .18s ease,max-width .18s ease,padding .18s ease,margin .18s ease,border-width .18s ease;max-width:250px;overflow:hidden}
+.archive-control-line .ff-filter-chip.is-removing{opacity:0;transform:scale(.88) translateX(-8px);max-width:0;padding-left:0;padding-right:0;margin:0;border-width:0}
+.archive-control-line>.archive-view-options{margin-left:auto}
+@media(max-width:600px){.archive-control-line>.ff-active-filter-chips{flex-basis:auto}.archive-control-line .ff-filter-chip{font-size:10px;padding:7px 9px}}
+@media(prefers-reduced-motion:reduce){.archive-control-line .ff-filter-chip{transition:none!important}}

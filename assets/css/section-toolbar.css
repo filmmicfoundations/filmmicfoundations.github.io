@@ -104,3 +104,7 @@ html[data-ff-motion="off"] .ff-back-to-top {transition:none!important;transform:
 
 /* Avoid sudden jumps when the footer approaches the floating reading utility. */
 .ff-back-to-top{transition-property:bottom,opacity,transform,visibility,background-color,box-shadow;transition-duration:.12s,.27s,.36s,0s,.24s,.24s;transition-timing-function:ease,ease,cubic-bezier(.22,1,.36,1),linear,ease,ease}
+
+/* A footer boundary is an absolute docking point, not a floating footer overlay. */
+body{position:relative}
+.ff-back-to-top--docked{position:absolute!important;bottom:auto!important}

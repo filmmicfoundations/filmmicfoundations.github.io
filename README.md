@@ -183,3 +183,12 @@ The deployment tracker is a dismissible popup with an option to reopen it during
 - **Privacy:** access code remains a public presentation gate. GitHub authorization remains separate; no token is included in ZIPs.
 
 A browser check was run using locally assembled HTML and CSS because local URLs are restricted in the test environment. The final deployment still needs a live GitHub Pages test, particularly the Actions-status recovery path.
+
+### v51 interface maintenance
+
+- ZIP inspection runs automatically when a file is selected; no additional Inspect ZIP button is shown.
+- Version history loads repository commits and successful deployment records concurrently with a bounded request time, so an unavailable Actions endpoint cannot indefinitely block commit history. The portal displays at most 50 recent revisions. Old Git commits are **not deleted** (doing so would require unsafe history rewriting).
+- Applied archive filter chips appear beside the filter trigger and animate away on removal.
+- Article and About Back to Top buttons dock just above the footer rather than overlapping it.
+- All native modal dialogs use shared background-scroll prevention; only the active dialog's interior is scrollable.
+- Image gallery mode visibly disables the zoom percentage along with the minus, plus and Fit controls.

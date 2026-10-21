@@ -34,7 +34,7 @@
         <div class="dev-upload" id="dev-dropzone"><input id="dev-zip-file" type="file" accept=".zip,application/zip" aria-label="Select website ZIP"><label for="dev-zip-file"><span class="dev-upload-icon" aria-hidden="true">⇧</span><strong>Choose ZIP file</strong><small>or drop it here · up to 90 MB</small></label></div>
         <div class="dev-upload-info" id="dev-upload-info" hidden><span id="dev-filename"></span><button class="dev-inline-button" id="dev-clear-zip" type="button">Remove</button></div>
         <details class="dev-advanced"><summary>Advanced update options</summary><div class="dev-options"><label><input id="dev-include-workflows" type="checkbox"> Include GitHub workflow file changes</label><p>Workflow files can execute code with repository permissions; they are excluded by default. Ordinary updates should leave this off.</p></div></details>
-        <button id="dev-compare" class="dev-button outline dev-inspect-button" type="button" disabled><span aria-hidden="true">⌕</span> Inspect ZIP and compare changes</button>
+        <button id="dev-compare" class="dev-button outline dev-inspect-button" hidden aria-hidden="true" tabindex="-1" type="button" disabled><span aria-hidden="true">⌕</span> Inspect ZIP and compare changes</button>
       </section>
       </div>
       <section id="dev-publish-section" class="dev-task-block dev-publish-section" aria-labelledby="dev-review-heading">

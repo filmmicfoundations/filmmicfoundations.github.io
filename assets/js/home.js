@@ -57,7 +57,14 @@
         const label=document.createElement('span');label.textContent=`${title}: ${select.value}`;
         const x=document.createElement('span');x.className='ff-filter-chip-x';x.setAttribute('aria-hidden','true');x.textContent='×';
         chip.append(label,x);
-        chip.addEventListener('click',()=>{select.value='';select.dispatchEvent(new Event('change',{bubbles:true}));document.querySelector(`#${select.id}`)?.dispatchEvent(new Event('ff:refresh-choice'));});
+        chip.addEventListener('click',()=>{
+          if(chip.classList.contains('is-removing'))return;
+          chip.classList.add('is-removing');chip.disabled=true;
+          let dismissed=false;const finish=()=>{if(dismissed)return;dismissed=true;select.value='';select.dispatchEvent(new Event('change',{bubbles:true}));select.dispatchEvent(new Event('ff:refresh-choice'));};
+          if(matchMedia('(prefers-reduced-motion: reduce)').matches)finish();
+          else chip.addEventListener('transitionend',finish,{once:true});
+          if(!matchMedia('(prefers-reduced-motion: reduce)').matches)setTimeout(()=>{if(select.value)finish();},220);
+        });
         chips.append(chip);
       }
     }

@@ -214,3 +214,7 @@ html[data-theme="dark"] .ff-pref-choice-list button:is(:hover,:focus-visible,[ar
 .ff-settings-tab-icon{display:block;width:17px;height:17px;flex:none}
 @media(max-width:650px){.ff-settings-dialog{height:calc(100dvh - 16px)}.ff-settings-main{min-height:0}.ff-settings-scroll{flex:1 1 auto;height:auto;overflow-y:auto}}
 @media(prefers-reduced-motion:reduce){.ff-settings-scroll{scroll-behavior:auto}}
+
+/* Site-wide background scroll lock while any modal is visible. */
+html.ff-global-dialog-open,html.ff-global-dialog-open body{overflow-y:hidden!important;overscroll-behavior:none!important}
+html.ff-global-dialog-open{scrollbar-gutter:stable}

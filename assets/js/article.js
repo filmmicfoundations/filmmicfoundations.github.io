@@ -315,6 +315,8 @@ const closeMenu = menu => { if (!menu) return; if(window.FFDropdowns) window.FFD
     toggle.setAttribute('aria-expanded', String(galleryMode));
     toggle.setAttribute('aria-label', galleryMode ? 'Show single image' : 'Show gallery');
     el('ffv-toggle-label').textContent = galleryMode ? 'Single' : 'Gallery';
+    zoomOutput.classList.toggle('is-disabled',galleryMode);
+    zoomOutput.setAttribute('aria-disabled',String(galleryMode));
     for (const id of ['ffv-minus', 'ffv-plus', 'ffv-fit']) {
       el(id).disabled = galleryMode;
     }

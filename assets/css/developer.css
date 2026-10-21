@@ -393,3 +393,6 @@ html:has(body.ff-dev-page dialog[open]),body.ff-dev-page:has(dialog[open]){overf
 @media(prefers-reduced-motion:reduce){.ff-dev-page .dev-deploy-track.is-checking::after{animation:none}}
 /* Prevent browser scroll anchoring from compensating during disclosure morphs. */
 .ff-dev-page .dev-accordion-body,.ff-dev-page .dev-version-more-content{overflow-anchor:none}
+
+/* ZIP inspection is automatic on selection, not an extra user step. */
+#dev-compare[hidden]{display:none!important}

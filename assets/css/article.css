@@ -505,3 +505,6 @@ html[data-theme="dark"] .ff-cite-section{background:#172b30;border-color:#426164
 
 /* Keep the viewer's download control responsive but non-repeatable while saving. */
 .ffv-download[aria-busy="true"] { opacity:.6; pointer-events:none; }
+
+/* Match the disabled zoom controls when the viewer is in Gallery mode. */
+.ffv-zoom output.is-disabled{color:#8c9d9e;opacity:.48}

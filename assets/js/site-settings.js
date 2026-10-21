@@ -361,9 +361,16 @@
     const visible=window.scrollY>cutoff;
     const footer=document.querySelector('body > footer, main + footer, .site-footer');
     const safeBottom=window.innerWidth<=600?16:20;
-    const footerTop=footer?.getBoundingClientRect().top ?? window.innerHeight+100;
-    const neededBottom=Math.max(safeBottom,Math.round(window.innerHeight-footerTop+18));
-    button.style.setProperty('--ff-floating-bottom',neededBottom+'px');
+    const gap=18;
+    // Dock at the article boundary in document coordinates, not over the footer.
+    const footerTop=footer ? footer.getBoundingClientRect().top+window.scrollY : Infinity;
+    const buttonHeight=button.offsetHeight||49;
+    const shouldDock=Number.isFinite(footerTop) && window.scrollY+window.innerHeight-safeBottom-buttonHeight>=footerTop-gap;
+    button.classList.toggle('ff-back-to-top--docked',shouldDock);
+    if(shouldDock){
+      const bodyTop=document.body.getBoundingClientRect().top+window.scrollY;
+      button.style.top=Math.max(0,footerTop-bodyTop-gap-buttonHeight)+'px';
+    }else button.style.removeProperty('top');
     button.classList.toggle('ff-back-to-top--visible',visible);
     button.tabIndex=visible?0:-1;
     button.setAttribute('aria-hidden',visible?'false':'true');
@@ -376,4 +383,29 @@
     window.scrollTo({top:0,behavior:noMotion?'instant':'smooth'});
   });
   update();
+})();
+
+
+/* Shared modal policy: whenever any modal dialog is open, the document behind
+   it cannot scroll; the active dialog retains its internal scrolling. */
+(()=>{
+  const sync=()=>{
+    const open=!!document.querySelector('dialog[open]');
+    document.documentElement.classList.toggle('ff-global-dialog-open',open);
+    document.body.classList.toggle('ff-global-dialog-open',open);
+  };
+  const observer=new MutationObserver(sync);
+  observer.observe(document.documentElement,{subtree:true,attributes:true,attributeFilter:['open'],childList:true});
+  const inDialog=node=>node instanceof Element&&!!node.closest('dialog[open]');
+  document.addEventListener('wheel',event=>{
+    if(document.querySelector('dialog[open]')&&!inDialog(event.target))event.preventDefault();
+  },{passive:false,capture:true});
+  document.addEventListener('touchmove',event=>{
+    if(document.querySelector('dialog[open]')&&!inDialog(event.target))event.preventDefault();
+  },{passive:false,capture:true});
+  document.addEventListener('keydown',event=>{
+    if(!document.querySelector('dialog[open]')||inDialog(event.target))return;
+    if(['PageDown','PageUp','ArrowDown','ArrowUp',' ','Home','End'].includes(event.key))event.preventDefault();
+  },true);
+  sync();
 })();
