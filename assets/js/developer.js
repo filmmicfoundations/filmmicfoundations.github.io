@@ -6,6 +6,7 @@
   const OWNER='filmmicfoundations', REPO='filmmicfoundations.github.io', BRANCH='main';
   const API=`https://api.github.com/repos/${OWNER}/${REPO}`;
   const SESSION_TOKEN_KEY='ff-dev-github-token-v1';
+  const ACCESS_SESSION_KEY='ff-dev-tab-unlocked-v1';
   const PENDING_DEPLOY_KEY='ff-dev-pending-deploy-v1';
   const DEPLOY_COMPLETED_KEY='ff-dev-deploy-completed-v1';
   const AUTO_RETURN_KEY='ff-dev-auto-return-v1';
@@ -613,8 +614,9 @@
     document.querySelectorAll('[data-panel]').forEach(p=>p.hidden=p.dataset.panel!==tab);
   }
   function unlockWorkspace(){
+    document.documentElement.classList.remove('ff-dev-tab-resume');
     $('dev-access-code').value='';$('dev-login-error').textContent='';$('dev-lock').classList.remove('is-leaving');$('dev-workspace').classList.remove('is-leaving');$('dev-lock').hidden=true;$('dev-workspace').hidden=false;
-    const tab=location.hash.slice(1);showTab(['updates','versions','standards'].includes(tab)?tab:'updates');
+    const tab=location.hash.slice(1);showTab(tab==='standards'?'versions':['updates','versions'].includes(tab)?tab:'updates');
     window.scrollTo({top:0,behavior:'instant'});
     const completed=readDeployState(DEPLOY_COMPLETED_KEY);
     if(completed?.sha){
@@ -631,13 +633,37 @@
   $('dev-login-form').addEventListener('submit',e=>{
     e.preventDefault();
     if($('dev-access-code').value==='123'){
+      try{sessionStorage.setItem(ACCESS_SESSION_KEY,'1');}catch{}
       $('dev-lock').classList.add('is-leaving');
       if(matchMedia('(prefers-reduced-motion: reduce)').matches)unlockWorkspace();
       else setTimeout(unlockWorkspace,180);
     }
     else{$('dev-login-error').textContent='Incorrect access code.';$('dev-access-code').value='';}
   });
+  // A confirmation prevents accidentally clearing a connected session.
+  const lockDialog=$('dev-lock-confirm');
+  let lockDialogTimer=0;
+  let lockFocus=null;
+  function closeLockConfirmation(){
+    if(!lockDialog.open||lockDialog.classList.contains('is-closing'))return;
+    lockDialog.classList.add('is-closing');
+    const finish=()=>{lockDialog.close();lockDialog.classList.remove('is-closing');lockFocus?.focus?.({preventScroll:true});};
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches)finish();
+    else lockDialogTimer=setTimeout(finish,170);
+  }
   $('dev-lock-again').addEventListener('click',()=>{
+    clearTimeout(lockDialogTimer);lockDialog.classList.remove('is-closing');
+    lockFocus=document.activeElement;
+    if(!lockDialog.open)lockDialog.showModal();
+    $('dev-lock-cancel').focus({preventScroll:true});
+  });
+  $('dev-lock-cancel').addEventListener('click',closeLockConfirmation);
+  $('dev-lock-cancel-x').addEventListener('click',closeLockConfirmation);
+  lockDialog.addEventListener('cancel',event=>{event.preventDefault();closeLockConfirmation();});
+  lockDialog.addEventListener('click',event=>{if(event.target===lockDialog)closeLockConfirmation();});
+  $('dev-lock-confirm-yes').addEventListener('click',()=>{
+    clearTimeout(lockDialogTimer);lockDialog.close();lockDialog.classList.remove('is-closing');
+    try{sessionStorage.removeItem(ACCESS_SESSION_KEY);sessionStorage.removeItem(AUTO_RETURN_KEY);}catch{}
     disconnect();$('dev-access-code').value='';$('dev-workspace').classList.add('is-leaving');
     const finish=()=>{$('dev-workspace').hidden=true;$('dev-workspace').classList.remove('is-leaving');$('dev-lock').hidden=false;window.scrollTo(0,0);};
     if(matchMedia('(prefers-reduced-motion: reduce)').matches)finish();else setTimeout(finish,180);
@@ -678,15 +704,9 @@
     stopDeploymentMonitor();
     watchDeployment(currentDeploySha,currentDeployProbe);
   });
-  document.querySelectorAll('[data-standard-view]').forEach(button=>button.addEventListener('click',()=>{
-    const value=button.dataset.standardView;
-    $('dev-standards-list').classList.toggle('is-list',value==='list');
-    document.querySelectorAll('[data-standard-view]').forEach(b=>{b.classList.toggle('is-selected',b===button);b.setAttribute('aria-pressed',String(b===button));});
-    try{sessionStorage.setItem('ff-dev-standards-view',value);}catch{}
-  }));
-  try{const view=sessionStorage.getItem('ff-dev-standards-view');if(view==='list')document.querySelector('[data-standard-view="list"]').click();}catch{}
   updateReleaseSuggestion();
   updatePublishButton();
   refreshVersions();
-  try{if(sessionStorage.getItem(AUTO_RETURN_KEY)==='1'){sessionStorage.removeItem(AUTO_RETURN_KEY);unlockWorkspace();}}catch{}
+  try{const resumed=sessionStorage.getItem(AUTO_RETURN_KEY)==='1';if(resumed)sessionStorage.removeItem(AUTO_RETURN_KEY);
+    if(resumed||sessionStorage.getItem(ACCESS_SESSION_KEY)==='1'){unlockWorkspace();}}catch{}
 })();

@@ -57,18 +57,44 @@
     refreshFilterCount();
 
     // Replace platform-native gray dropdowns with themed buttons and choice menus.
+    const choiceControllers=[];
+    const reduceChoiceMotion=matchMedia('(prefers-reduced-motion: reduce)');
     for(const select of [genre,articleYear,filmYear,sort]){
       if(!select)continue;
       const wrapper=document.createElement('div');wrapper.className='ff-choice';
       const trigger=document.createElement('button');trigger.type='button';trigger.className='ff-choice-trigger';trigger.setAttribute('aria-haspopup','listbox');trigger.setAttribute('aria-expanded','false');
       const menu=document.createElement('div');menu.className='ff-choice-menu';menu.setAttribute('role','listbox');menu.hidden=true;
       function sync(){trigger.textContent=select.selectedOptions[0]?.textContent||'Choose';menu.querySelectorAll('button').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.value===select.value)))}
-      function close(){menu.hidden=true;trigger.setAttribute('aria-expanded','false')}
-      function open(){document.querySelectorAll('.ff-choice-menu').forEach(m=>m.hidden=true);document.querySelectorAll('.ff-choice-trigger').forEach(b=>b.setAttribute('aria-expanded','false'));menu.hidden=false;trigger.setAttribute('aria-expanded','true');menu.querySelector('button[aria-selected="true"]')?.focus()}
+      let choiceOpen=false;
+      let motion=null;
+      const frames=[{opacity:0,transform:'translateY(-6px) scale(.985)'},{opacity:1,transform:'translateY(0) scale(1)'}];
+      function setChoice(opened){
+        if(choiceOpen===opened)return;
+        choiceOpen=opened;
+        trigger.setAttribute('aria-expanded',String(opened));
+        menu.style.pointerEvents=opened?'':'none';
+        if(opened)menu.hidden=false;
+        if(reduceChoiceMotion.matches){motion?.cancel();motion=null;menu.hidden=!opened;return;}
+        if(!motion){
+          motion=menu.animate(frames,{duration:225,easing:'cubic-bezier(.2,.75,.2,1)',fill:'both'});
+          if(!opened){motion.pause();motion.currentTime=225;}
+        }
+        const current=motion;
+        current.playbackRate=opened?1:-(225/125);
+        current.play();
+        current.onfinish=()=>{
+          if(current!==motion)return;
+          menu.hidden=!choiceOpen;
+          current.cancel();motion=null;
+        };
+      }
+      function close(){setChoice(false)}
+      function open(){choiceControllers.forEach(controller=>controller.close());setChoice(true);menu.querySelector('button[aria-selected="true"]')?.focus()}
+      choiceControllers.push({close});
       for(const opt of select.options){const item=document.createElement('button');item.type='button';item.dataset.value=opt.value;item.textContent=opt.textContent;item.setAttribute('role','option');item.addEventListener('click',()=>{select.value=item.dataset.value;select.dispatchEvent(new Event('change',{bubbles:true}));sync();close();trigger.focus()});menu.append(item)}
       select.classList.add('ff-native-select');select.insertAdjacentElement('afterend',wrapper);wrapper.append(trigger,menu);sync();
-      trigger.addEventListener('click',()=>menu.hidden?open():close());
-      wrapper.addEventListener('keydown',e=>{if(e.key==='Escape'){close();trigger.focus()}if(e.key==='ArrowDown'&&!menu.hidden){e.preventDefault();(document.activeElement.nextElementSibling||menu.firstElementChild)?.focus()}if(e.key==='ArrowUp'&&!menu.hidden){e.preventDefault();(document.activeElement.previousElementSibling||menu.lastElementChild)?.focus()}});
+      trigger.addEventListener('click',()=>choiceOpen?close():open());
+      wrapper.addEventListener('keydown',e=>{if(e.key==='Escape'){close();trigger.focus()}if(e.key==='ArrowDown'&&choiceOpen){e.preventDefault();(document.activeElement.nextElementSibling||menu.firstElementChild)?.focus()}if(e.key==='ArrowUp'&&choiceOpen){e.preventDefault();(document.activeElement.previousElementSibling||menu.lastElementChild)?.focus()}});
       document.addEventListener('click',e=>{if(!wrapper.contains(e.target))close()});
       select.addEventListener('change',sync);
     }

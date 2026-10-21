@@ -1,0 +1,9 @@
+/* Unified dropdown motion; the archive filter retains its reversible animation. */
+.mobile-contents>summary, .dev-advanced>summary, .dev-standard-details>summary{cursor:pointer}
+.mobile-contents[open] .mobile-contents-list {transform-origin:top right;will-change:opacity,transform}
+.dev-advanced[open]>:not(summary),.dev-standard-details[open]>:not(summary){transform-origin:top center}
+.mobile-contents>summary::after{transition:transform .27s cubic-bezier(.22,.75,.2,1)!important}
+.ff-choice-menu{animation:none!important;transform-origin:top center;will-change:opacity,transform}
+.ff-choice-trigger::after{transition:transform .25s cubic-bezier(.22,.75,.2,1)}
+.ff-choice-trigger[aria-expanded=true]::after{transform:translateY(2px) rotate(225deg)}
+@media(prefers-reduced-motion:reduce){.mobile-contents>summary::after,.ff-choice-trigger::after{transition:none!important}}

@@ -89,7 +89,7 @@ If all selected files already match GitHub, the portal explains that nothing nee
 
 ## Developer Portal v43
 
-The `/dev/` interface has three compact sections: Updates, Backups, and Standards.
+The `/dev/` interface has two compact sections: Updates, and Backups & Guides (with a combined publication standards download).
 The temporary code `123` is only a visual gate on public GitHub Pages, not authentication.
 Actual publishing and restoring require a repository-scoped, fine-grained GitHub token.
 
@@ -149,3 +149,25 @@ publication.
 
 This release has been tested against simulated GitHub API and deployment responses;
 real deployments must still be verified on the live GitHub Pages site.
+
+
+### v45: Social previews and developer history
+
+The homepage title and description are unchanged. A broadly compatible 1200×630 JPEG is now used for the site-wide social card, with explicit Open Graph dimensions, site name, Twitter image/title/description, PNG favicons (32 and 192 px), an SVG icon and an Apple touch icon. Third-party apps may still show their own source label such as GitHub rather than the website title.
+
+The Developer Portal history now merges successful GitHub Pages runs with main-branch Git commits. Only confirmed workflow runs are labeled **Published**; other entries say **Repository revision**, and restoring those is not proof they deployed successfully. GitHub only provides revisions still present in the repository history, not arbitrary ZIP files created outside the repository. Restore operations remain destructive to later site content; download a backup first.
+
+### Developer Portal — release tracking (v46)
+
+The deployment tracker is a dismissible popup with an option to reopen it during an active release. It checks GitHub Actions and verifies a changed public asset when available; if status is temporarily inaccessible, monitoring can be retried rather than getting stuck on a permanent error. An optional release description controls the Git commit title, while a filename-based suggestion is used by default. Older generic commit titles can be summarized from their changed filenames when GitHub allows access. Publication Standards supports grid and list layouts. The shared navigation uses an accessible Home icon.
+
+*The completion indicator describes verified stages, not an estimated transfer percentage. A token with insufficient GitHub Actions read permission may limit workflow detail. Source ZIPs and rollback commits remain available independently of this visual status.*
+
+
+## Developer Portal v47 navigation
+
+- **Updates** handles repository connection and validated ZIP publishing.
+- **Backups & guides** combines repository history, source downloads, and publication standards. Download the complete guide, or expand **Individual files** for seven separate references.
+- The access code (`123`, a public client-side interface gate) is remembered in the current browser tab using session storage. **Lock** asks for confirmation before clearing the remembered access state and any stored GitHub token. Closing a tab normally clears session storage, but browser session restoration can retain it.
+- Disclosure menus, mobile tables of contents, and homepage filter choices use consistent open/close animation timing. Native operating-system select menus in Reading Preferences remain OS-controlled and cannot have reliable custom transitions without replacing the accessible native controls.
+- The access code does not secure the publicly delivered frontend. GitHub authorization remains necessary for publishing, and repository-scoped short-lived tokens are recommended.

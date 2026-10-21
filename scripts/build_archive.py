@@ -202,6 +202,10 @@ def ensure_shared_settings(page):
     page=re.sub(r'<script[^>]+src="\.\./assets/js/site-header\.js"[^>]*></script>', '',page)
     if 'assets/css/site-settings.css' not in page:
         page=page.replace('</head>','<link rel="stylesheet" href="../assets/css/site-settings.css"></head>',1)
+    if 'assets/css/dropdowns.css' not in page:
+        page=page.replace('</head>','<link rel="stylesheet" href="../assets/css/dropdowns.css"></head>',1)
+    if 'assets/js/dropdowns.js' not in page:
+        page=page.replace('</body>','<script defer src="../assets/js/dropdowns.js"></script></body>',1)
     if 'assets/js/site-settings.js' not in page:
         page=page.replace('</body>','<script defer src="../assets/js/site-settings.js"></script></body>',1)
     return page
