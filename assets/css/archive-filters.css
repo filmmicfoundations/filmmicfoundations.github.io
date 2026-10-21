@@ -1,0 +1,72 @@
+/* Filmmic Foundations — archive filtering, one component-level visual layer.
+   The original select elements remain the authoritative state. */
+.archive-filter-dropdown{position:relative;z-index:40;min-width:48px}
+.archive-filter-dropdown>summary{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  width:48px!important;height:48px!important;min-width:48px!important;min-height:48px!important;
+  max-width:48px!important;max-height:48px!important;padding:0!important;
+  background:var(--ff-cream)!important;color:var(--ff-blue)!important;
+  border:1px solid color-mix(in srgb,var(--ff-blue) 18%,transparent)!important;border-radius:8px!important;
+  box-shadow:none!important;cursor:pointer;transition:background .2s,border-color .2s!important;
+}
+.archive-filter-dropdown>summary:is(:hover,:focus-visible),.archive-filter-dropdown[open]>summary{
+  background:var(--ff-soft)!important;border-color:color-mix(in srgb,var(--ff-blue) 36%,transparent)!important;
+}
+.archive-filter-dropdown>summary svg{width:20px!important;height:20px!important;flex:0 0 20px!important}
+.archive-filter-dropdown>summary .active-filter-count:not([hidden]){
+  position:absolute!important;inset:auto 5px 4px auto!important;width:5px!important;height:5px!important;
+  min-width:5px!important;max-width:5px!important;border-radius:50%!important;
+  padding:0!important;border:0!important;background:#419591!important;font-size:0!important;line-height:0!important;
+}
+.archive-filter-dropdown .archive-filter-panel{
+  position:absolute!important;top:calc(100% + 10px)!important;left:0!important;
+  width:min(585px,calc(100vw - 32px))!important;max-width:calc(100vw - 32px)!important;
+  border:1px solid color-mix(in srgb,var(--ff-blue) 9%,transparent)!important;
+  border-radius:11px!important;padding:19px!important;background:var(--ff-cream)!important;
+  box-shadow:0 16px 38px #102b3020!important;z-index:50;transform-origin:top left;
+}
+.archive-filter-panel .filter-panel-heading{padding:0 0 14px!important;margin:0 0 16px!important;border-color:color-mix(in srgb,var(--ff-blue) 10%,transparent)!important}
+.archive-filter-panel .filter-field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px!important}
+.archive-filter-panel .filter-field-grid label{position:relative!important;display:flex;flex-direction:column;gap:7px!important;min-width:0}
+.archive-filter-panel .filter-field-grid label::after{display:none!important}
+.archive-filter-panel .filter-field-grid select.ff-native-select{display:none!important}
+.archive-filter-panel .ff-choice{position:relative!important;min-width:0;width:100%;display:block!important}
+.archive-filter-panel .ff-choice-trigger{
+  display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;
+  width:100%!important;min-height:42px!important;text-align:left!important;padding:10px 13px!important;
+  color:var(--ff-blue)!important;background:color-mix(in srgb,var(--ff-blue) 3%,var(--ff-cream))!important;
+  border:1px solid color-mix(in srgb,var(--ff-blue) 15%,transparent)!important;
+  border-radius:7px!important;box-shadow:none!important;
+  font:600 12px/1.4 'DM Sans',sans-serif!important;cursor:pointer!important;
+  transition:background-color .18s ease,border-color .18s ease!important;
+}
+.archive-filter-panel .ff-choice-trigger:is(:hover,:focus-visible),.archive-filter-panel .ff-choice-trigger[aria-expanded=true]{background:var(--ff-soft)!important;border-color:color-mix(in srgb,var(--ff-blue) 35%,transparent)!important}
+.archive-filter-panel .ff-choice-arrow{font:600 20px/1 'DM Sans',sans-serif;opacity:.65;transition:transform .2s ease;transform:translateY(-2px)}
+.archive-filter-panel .ff-choice-trigger[aria-expanded=true] .ff-choice-arrow{transform:translateY(2px) rotate(180deg)}
+.archive-filter-panel .ff-choice-menu{
+  position:absolute!important;top:calc(100% + 5px)!important;left:0!important;right:0!important;
+  display:grid!important;gap:2px;max-height:min(270px,40vh);overflow:auto!important;
+  padding:6px!important;margin:0!important;background:var(--ff-cream)!important;
+  border:1px solid color-mix(in srgb,var(--ff-blue) 13%,transparent)!important;
+  border-radius:8px!important;box-shadow:0 14px 28px #102b3028!important;z-index:100!important;
+}
+.archive-filter-panel .ff-choice-menu[hidden]{display:none!important}
+.archive-filter-panel .ff-choice-menu button{
+  display:block!important;width:100%!important;text-align:left!important;min-height:36px!important;
+  padding:8px 10px!important;margin:0!important;border:0!important;border-radius:5px!important;
+  box-shadow:none!important;background:transparent!important;color:var(--ff-blue)!important;
+  font:500 12px/1.4 'DM Sans',sans-serif!important;cursor:pointer;
+}
+.archive-filter-panel .ff-choice-menu button:is(:hover,:focus-visible),.archive-filter-panel .ff-choice-menu button[aria-selected=true]{background:var(--ff-soft)!important}
+html[data-theme=dark] .archive-filter-dropdown>summary,
+html[data-theme=dark] .archive-filter-dropdown .archive-filter-panel,
+html[data-theme=dark] .archive-filter-panel .ff-choice-menu{background:var(--ff-panel)!important;color:var(--ff-ink)!important;border-color:var(--ff-border)!important}
+html[data-theme=dark] .archive-filter-panel .ff-choice-trigger{background:color-mix(in srgb,var(--ff-panel) 92%,white)!important;color:var(--ff-ink)!important;border-color:var(--ff-border)!important}
+html[data-theme=dark] .archive-filter-panel .ff-choice-menu button{color:var(--ff-ink)!important}
+html[data-theme=dark] .archive-filter-panel .ff-choice-menu button:is(:hover,:focus-visible),html[data-theme=dark] .archive-filter-panel .ff-choice-menu button[aria-selected=true]{background:color-mix(in srgb,var(--ff-panel) 85%,#83aba8)!important}
+@media(max-width:600px){.archive-filter-dropdown .archive-filter-panel{padding:14px!important}.archive-filter-panel .filter-field-grid{grid-template-columns:1fr!important;gap:13px!important}}
+@media(prefers-reduced-motion:reduce){.archive-filter-dropdown *{transition:none!important}}
+/* Remove decorative arrows and entrance animations from retired filter styles. */
+.archive-filter-panel .ff-choice-trigger::after{display:none!important}
+.archive-filter-panel .ff-choice-menu{animation:none!important}
+.archive-filter-panel .ff-choice-menu[hidden]{display:none!important}

@@ -75,46 +75,54 @@
     [genre,articleYear,filmYear].forEach(el=>el?.addEventListener('change',refreshFilterCount));
     refreshFilterCount();
 
-    // Replace platform-native gray dropdowns with themed buttons and choice menus.
+    // Archive filter fields: one controller, one visual treatment.
+    // Native selects remain the source of truth for search, reset and preferences.
     const choiceControllers=[];
     const reduceChoiceMotion=matchMedia('(prefers-reduced-motion: reduce)');
     for(const select of [genre,articleYear,filmYear,sort]){
       if(!select)continue;
       const wrapper=document.createElement('div');wrapper.className='ff-choice';
-      const trigger=document.createElement('button');trigger.type='button';trigger.className='ff-choice-trigger';trigger.setAttribute('aria-haspopup','listbox');trigger.setAttribute('aria-expanded','false');
+      const trigger=document.createElement('button');trigger.type='button';trigger.className='ff-choice-trigger';
+      trigger.setAttribute('aria-haspopup','listbox');trigger.setAttribute('aria-expanded','false');
       const menu=document.createElement('div');menu.className='ff-choice-menu';menu.setAttribute('role','listbox');menu.hidden=true;
-      function sync(){trigger.textContent=select.selectedOptions[0]?.textContent||'Choose';menu.querySelectorAll('button').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.value===select.value)))}
-      let choiceOpen=false;
-      let motion=null;
-      const frames=[{opacity:0,transform:'translateY(-6px) scale(.985)'},{opacity:1,transform:'translateY(0) scale(1)'}];
-      function setChoice(opened){
-        if(choiceOpen===opened)return;
-        choiceOpen=opened;
-        trigger.setAttribute('aria-expanded',String(opened));
-        menu.style.pointerEvents=opened?'':'none';
-        if(opened)menu.hidden=false;
-        if(reduceChoiceMotion.matches){motion?.cancel();motion=null;menu.hidden=!opened;return;}
-        if(!motion){
-          motion=menu.animate(frames,{duration:225,easing:'cubic-bezier(.2,.75,.2,1)',fill:'both'});
-          if(!opened){motion.pause();motion.currentTime=225;}
-        }
-        const current=motion;
-        current.playbackRate=opened?1:-(225/125);
-        current.play();
-        current.onfinish=()=>{
-          if(current!==motion)return;
-          menu.hidden=!choiceOpen;
-          current.cancel();motion=null;
-        };
+      wrapper.append(trigger,menu);select.insertAdjacentElement('afterend',wrapper);select.classList.add('ff-native-select');
+      const arrow=document.createElement('span');arrow.className='ff-choice-arrow';arrow.setAttribute('aria-hidden','true');arrow.textContent='⌄';
+      let opened=false,transition=null,closeTimer=null;
+      function sync(){
+        trigger.replaceChildren(document.createTextNode(select.selectedOptions[0]?.textContent||'Select'),arrow);
+        for(const item of menu.querySelectorAll('[role="option"]')) item.setAttribute('aria-selected',String(item.dataset.value===select.value));
       }
-      function close(){setChoice(false)}
-      function open(){choiceControllers.forEach(controller=>controller.close());setChoice(true);menu.querySelector('button[aria-selected="true"]')?.focus()}
+      function setOpen(next){
+        if(opened===next)return;opened=next;trigger.setAttribute('aria-expanded',String(next));
+        clearTimeout(closeTimer);transition?.cancel();transition=null;
+        if(next)menu.hidden=false;
+        if(reduceChoiceMotion.matches){menu.hidden=!next;return;}
+        transition=menu.animate(next?[
+          {opacity:0,transform:'translateY(-5px) scale(.985)'},{opacity:1,transform:'translateY(0) scale(1)'}
+        ]:[{opacity:1,transform:'translateY(0) scale(1)'},{opacity:0,transform:'translateY(-4px) scale(.99)'}],
+        {duration:next?210:125,easing:'cubic-bezier(.2,.75,.2,1)',fill:'both'});
+        const current=transition;
+        current.onfinish=()=>{if(transition!==current)return;transition=null;current.cancel();if(!opened)menu.hidden=true};
+      }
+      function close(){setOpen(false)}
       choiceControllers.push({close});
-      for(const opt of select.options){const item=document.createElement('button');item.type='button';item.dataset.value=opt.value;item.textContent=opt.textContent;item.setAttribute('role','option');item.addEventListener('click',()=>{select.value=item.dataset.value;select.dispatchEvent(new Event('change',{bubbles:true}));sync();close();trigger.focus()});menu.append(item)}
-      select.classList.add('ff-native-select');select.insertAdjacentElement('afterend',wrapper);wrapper.append(trigger,menu);sync();
-      trigger.addEventListener('click',()=>choiceOpen?close():open());
-      wrapper.addEventListener('keydown',e=>{if(e.key==='Escape'){close();trigger.focus()}if(e.key==='ArrowDown'&&choiceOpen){e.preventDefault();(document.activeElement.nextElementSibling||menu.firstElementChild)?.focus()}if(e.key==='ArrowUp'&&choiceOpen){e.preventDefault();(document.activeElement.previousElementSibling||menu.lastElementChild)?.focus()}});
-      document.addEventListener('click',e=>{if(!wrapper.contains(e.target))close()});
+      for(const opt of select.options){
+        const item=document.createElement('button');item.type='button';item.dataset.value=opt.value;
+        item.setAttribute('role','option');item.textContent=opt.textContent;
+        item.addEventListener('click',()=>{
+          select.value=opt.value;select.dispatchEvent(new Event('change',{bubbles:true}));sync();close();trigger.focus({preventScroll:true});
+        });menu.append(item);
+      }
+      sync();trigger.addEventListener('click',()=>{if(opened)close();else{choiceControllers.forEach(x=>x.close());setOpen(true)}});
+      wrapper.addEventListener('keydown',event=>{
+        if(event.key==='Escape'){close();trigger.focus({preventScroll:true});return}
+        if((event.key==='ArrowDown'||event.key==='ArrowUp')&&!opened){event.preventDefault();choiceControllers.forEach(x=>x.close());setOpen(true);menu.querySelector('[aria-selected="true"]')?.focus({preventScroll:true});return}
+        if(opened&&(event.key==='ArrowDown'||event.key==='ArrowUp')){
+          event.preventDefault();const options=[...menu.querySelectorAll('[role="option"]')];
+          const i=options.indexOf(document.activeElement);options[(i+(event.key==='ArrowDown'?1:-1)+options.length)%options.length]?.focus({preventScroll:true});
+        }
+      });
+      document.addEventListener('pointerdown',event=>{if(opened&&!wrapper.contains(event.target))close()});
       select.addEventListener('change',sync);select.addEventListener('ff:refresh-choice',sync);
     }
     [input,genre,articleYear,filmYear,sort].forEach(el=>el?.addEventListener(el===input?'input':'change',update));
