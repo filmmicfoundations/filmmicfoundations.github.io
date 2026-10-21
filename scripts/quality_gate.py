@@ -239,7 +239,23 @@ def editorial_consistency():
                 match=re.search(r'\bsrc\s*=\s*["\']([^"\']+)',tag,re.I)
                 if not match:continue
                 img=match.group(1)
-                if img.startswith(('https:','http:','//')):error(f'{name}: viewer must use locally archived film stills: {img}')
+                if img.startswith(('https:','http:','//')):
+                    # Specific, documented emergency exceptions are allowed with a visible warning.
+                    # All future articles still require local stills by default. Never implicitly
+                    # whitelist an arbitrary third-party URL.
+                    exception_file=path.parent/'EXTERNAL_IMAGE_EXCEPTION.json'
+                    try:
+                        exception=json.loads(exception_file.read_text(encoding='utf-8'))
+                        allowed=(exception.get('status')=='temporary_exception'
+                                 and exception.get('article')==name
+                                 and img in exception.get('sources',[])
+                                 and 'Image source' in raw)
+                    except (OSError,ValueError):
+                        allowed=False
+                    if allowed:
+                        warn(f'{name}: TEMPORARY nonlocal film still requires verified JPEG replacement: {img}')
+                    else:
+                        error(f'{name}: viewer must use locally archived film stills: {img}')
                 if not all(re.search(r'\b'+attr+r'\s*=',tag,re.I) for attr in ('width','height')):
                     error(f'{name}: viewer image missing intrinsic width/height: {img}')
                 viewer_paths.append(img)
@@ -295,6 +311,13 @@ def generated_assets():
     for source in ['index.html','404.html','about/index.html']:
         html=(ROOT/source).read_text(encoding='utf-8')
         if 'assets/js/site-settings.js' not in html:error(f'{source}: shared settings / header script missing')
+    # Regression guard: an article-only ZIP must never publish its index.html at the site root.
+    portal=(ROOT/'assets/js/developer.js').read_text(encoding='utf-8')
+    if not all(marker in portal for marker in (
+        "names.includes(first+'/404.html')",
+        "names.includes(first+'/scripts/build_archive.py')",
+        "!names.includes(first+'/article.json')")):
+        error('Developer Portal ZIP unwrapping guard is missing: article uploads could replace the homepage')
 
 
 def main():

@@ -1,0 +1,13 @@
+{
+  "article": "the-black-hole",
+  "status": "temporary_exception",
+  "reason": "Authentic local film frames were not retrievable in the source-building environment. Until locally verified copies can be supplied, credited offsite image sources are embedded as a documented, non-ideal recovery to restore inline figures.",
+  "required_next_step": "Replace each remote source with a verified local JPEG/WebP, include -640 responsive files, embed those same unique stills in the PDF, and remove this exception file.",
+  "sources": [
+    "https://image.tmdb.org/t/p/w1280/uaXUn7VVsYejigBOvVyWbTdW26A.jpg",
+    "https://m.media-amazon.com/images/M/MV5BNmVlZTg1OGQtNjE1ZS00MDRiLWJjMGUtZGNiMGQyOWQzZjFjXkEyXkFqcGc%40._V1_.jpg",
+    "https://omarchesemedia.files.wordpress.com/2019/10/black-hole-1.png?w=1200",
+    "https://static.squarespace.com/static/51b3dc8ee4b051b96ceb10de/51ce6099e4b0d911b4489b79/51ce61f3e4b0d911b44a7555/1356547283023/1000w/blckhole122122892126.png",
+    "https://i.vimeocdn.com/video/655023131-bc72184da8c9eb818d72e5f68dd72dd6c70370885d21aacc604c3eb7191598df-d_890?region=us"
+  ]
+}

@@ -310,9 +310,16 @@
       const first=names[0]?.split('/')[0];
       // A ZIP containing only dev/index.html or film-slug/index.html is a PATCH,
       // not a wrapped repository. Never silently strip its folder name.
+      // An article pack also contains index.html, style.css and assets/ inside
+      // its film-slug/ folder. Those are NOT proof of a wrapped repository:
+      // stripping that slug previously overwrote the actual homepage.
+      // Only unwrap a complete, recognizable site tree.
       const isWrappedRepository=first && !['dev','about','assets','standards','scripts','.github'].includes(first)
         && names.every(n=>n.startsWith(first+'/')) && names.includes(first+'/index.html')
-        && (names.includes(first+'/style.css') || names.includes(first+'/404.html') || names.some(n=>n.startsWith(first+'/assets/')));
+        && names.includes(first+'/404.html')
+        && names.includes(first+'/scripts/build_archive.py')
+        && names.includes(first+'/assets/css/home.css')
+        && !names.includes(first+'/article.json');
       if(isWrappedRepository){
         list=list.map(x=>({file:x,path:x.name.slice(first.length+1)}));
       }else{
