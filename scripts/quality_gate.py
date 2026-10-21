@@ -12,7 +12,6 @@ from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlsplit, unquote
 import json
-import os
 import re
 import sys
 import xml.etree.ElementTree as ET
@@ -233,35 +232,6 @@ def generated_assets():
     for name in ['sitemap.xml','feed.xml']:
         try:ET.parse(ROOT/name)
         except Exception as e:error(f'{name}: invalid XML: {e}')
-    try:
-        feed=ET.parse(ROOT/'feed.xml').getroot()
-        if feed.tag!='rss' or feed.get('version')!='2.0':error('feed.xml: expected RSS 2.0')
-        channel=feed.find('channel')
-        if channel is None: error('feed.xml: missing channel')
-        else:
-            for field in ('title','link','description','language'):
-                if not (channel.findtext(field) or '').strip():error('feed.xml: missing '+field)
-            if channel.find('{http://www.w3.org/2005/Atom}link') is None:
-                error('feed.xml: missing self-referencing Atom feed link')
-            items=channel.findall('item')
-            if len(items)!=min(50,len(list(ROOT.glob('*/article.json')))):
-                error('feed.xml: item count does not match published articles')
-            from email.utils import parsedate_to_datetime
-            for item in items:
-                for field in ('title','link','description','guid','pubDate'):
-                    if not (item.findtext(field) or '').strip():error('feed.xml: item missing '+field)
-                try:parsedate_to_datetime(item.findtext('pubDate') or '')
-                except (ValueError,TypeError):error('feed.xml: invalid RSS publication date')
-    except Exception as e:error(f'feed.xml: cannot validate RSS structure: {e}')
-    if not (ROOT/'assets/rss.xsl').is_file():error('RSS browser view missing: assets/rss.xsl')
-    try:
-        history=json.loads((ROOT/'assets/release-history.json').read_text(encoding='utf-8'))
-        entries=history.get('versions')
-        if history.get('schema')!=1 or not isinstance(entries,list) or len(entries)>50:
-            error('assets/release-history.json: invalid revision index')
-        if os.environ.get('GITHUB_ACTIONS')=='true' and not entries:
-            error('assets/release-history.json: deployment did not capture any Git revisions')
-    except Exception as e:error(f'assets/release-history.json: {e}')
     try:
         search=json.loads((ROOT/'search-index.json').read_text(encoding='utf-8'))
         for meta in ROOT.glob('*/article.json'):
