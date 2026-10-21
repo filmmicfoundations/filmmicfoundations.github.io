@@ -241,3 +241,27 @@ html[data-theme=dark] .ff-dev-page{--dev-paper:#111f25;--dev-card:#1a2c33;--dev-
 .ff-dev-page .dev-deploy-footnote{font:10px/1.6 'DM Sans',sans-serif;color:var(--dev-muted);margin:14px 0 0!important}
 @media(max-width:650px){.ff-dev-page .dev-deploy-panel{padding:16px 14px}.ff-dev-page .dev-deploy-stages{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:12px}.ff-dev-page .dev-deploy-stages>li{font-size:10px}}
 @media(prefers-reduced-motion:reduce){.ff-dev-page .dev-deploy-panel{animation:none}.ff-dev-page .dev-deploy-track>span,.ff-dev-page .dev-deploy-step-dot{transition:none}}
+
+/* v45 — consolidated, restrained portal motion and readable history. */
+@keyframes ff-dev-arrive{from{opacity:0;transform:translateY(13px) scale(.992)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes ff-dev-depart{from{opacity:1;transform:translateY(0) scale(1)}to{opacity:0;transform:translateY(8px) scale(.99)}}
+.ff-dev-page .dev-lock:not([hidden]) .dev-lock-card{animation:ff-dev-arrive .42s cubic-bezier(.19,.85,.25,1) both}
+.ff-dev-page .dev-lock.is-leaving .dev-lock-card,.ff-dev-page .dev-workspace.is-leaving{animation:ff-dev-depart .18s ease-in both}
+.ff-dev-page .dev-workspace:not([hidden]):not(.is-leaving){animation:ff-dev-arrive .38s cubic-bezier(.19,.85,.25,1) both}
+.ff-dev-page .dev-panel{animation:ff-dev-arrive .3s cubic-bezier(.19,.85,.25,1) both}
+.ff-dev-page .dev-version-list{gap:8px}
+.ff-dev-page .dev-version{border-radius:5px;transition:border-color .22s ease,box-shadow .25s ease,background .22s ease;gap:18px}
+.ff-dev-page .dev-version:hover{border-color:var(--dev-accent);box-shadow:0 9px 25px rgba(6,33,38,.055)}
+.ff-dev-page .dev-version-details{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:5px}
+.ff-dev-page .dev-version-details strong{font-size:13px;font-weight:700;line-height:1.5;overflow-wrap:anywhere}
+.ff-dev-page .dev-version-badge{font:700 9px/1.5 'DM Sans',sans-serif;letter-spacing:.09em;text-transform:uppercase;color:var(--dev-muted)}
+.ff-dev-page .dev-version-badge.is-verified{color:var(--dev-accent)}
+.ff-dev-page .dev-version-actions{display:flex;gap:8px;align-items:center;flex-shrink:0}
+.ff-dev-page .dev-version-actions .dev-button{min-height:37px;padding:7px 12px;font-size:11px}
+.ff-dev-page .dev-history-note{color:var(--dev-muted);font-size:11px;margin:0 0 12px;line-height:1.55}
+.ff-dev-page .dev-history-more{margin-top:12px;padding:9px 0}
+.ff-dev-page .dev-history-head{margin-top:24px;margin-bottom:10px}
+.ff-dev-page .dev-restore-help{margin-top:20px}
+.ff-dev-page .dev-restore-help p{font-size:12px;color:var(--dev-muted);max-width:680px}
+@media(max-width:550px){.ff-dev-page .dev-version{flex-direction:row;align-items:center;flex-wrap:wrap}.ff-dev-page .dev-version-actions{width:100%}.ff-dev-page .dev-version-actions .dev-button{flex:1}}
+@media(prefers-reduced-motion:reduce){.ff-dev-page .dev-lock:not([hidden]) .dev-lock-card,.ff-dev-page .dev-lock.is-leaving .dev-lock-card,.ff-dev-page .dev-workspace.is-leaving,.ff-dev-page .dev-workspace:not([hidden]):not(.is-leaving),.ff-dev-page .dev-panel{animation:none!important}.ff-dev-page .dev-version{transition:none}}

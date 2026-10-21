@@ -417,31 +417,71 @@
     finally{setBusy(false);}
   }
 
+  let historyLimit=6;
+  let allHistory=[];
+  function dateText(value){
+    if(!value)return 'Date unavailable';
+    const date=new Date(value);
+    return Number.isNaN(date.getTime())?'Date unavailable':date.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});
+  }
+  function renderVersions(){
+    const list=$('dev-version-list');list.replaceChildren();
+    if(!allHistory.length){list.textContent='No saved repository revisions were found.';return;}
+    allHistory.slice(0,historyLimit).forEach((entry,i)=>{
+      const row=document.createElement('article');row.className='dev-version';
+      const information=document.createElement('div');information.className='dev-version-details';
+      const badge=document.createElement('span');badge.className='dev-version-badge'+(entry.verified?' is-verified':'');
+      badge.textContent=entry.verified?'Published':'Repository revision';
+      const title=document.createElement('strong');title.textContent=entry.message||'Website update';
+      const extra=document.createElement('small');extra.textContent=`${dateText(entry.date)} · ${trimSha(entry.head_sha)}`;
+      information.append(badge,title,extra);
+      const actions=document.createElement('div');actions.className='dev-version-actions';
+      const download=document.createElement('a');download.className='dev-button outline';download.textContent='ZIP';
+      download.title='Download this exact repository revision';
+      download.href=`https://github.com/${OWNER}/${REPO}/archive/${encodeURIComponent(entry.head_sha)}.zip`;
+      const restoreButton=document.createElement('button');restoreButton.type='button';restoreButton.className='dev-button outline';
+      restoreButton.textContent='Restore';restoreButton.disabled=!token||entry.head_sha===allHistory[0].head_sha||busy;
+      restoreButton.title=!token?'Connect to GitHub to restore':entry.head_sha===allHistory[0].head_sha?'Already the latest revision':'Restore this revision';
+      restoreButton.addEventListener('click',()=>restore(entry));
+      actions.append(download,restoreButton);row.append(information,actions);list.append(row);
+    });
+    const more=$('dev-history-more');more.hidden=allHistory.length<=historyLimit;
+    more.textContent=`Show more (${allHistory.length-historyLimit} remaining)`;
+    const newestPublished=allHistory.find(x=>x.verified);
+    const chosen=newestPublished||allHistory[0];
+    $('dev-download-source').href=`https://github.com/${OWNER}/${REPO}/archive/${encodeURIComponent(chosen.head_sha)}.zip`;
+    $('dev-source-revision').textContent=(chosen.verified?'Latest verified deployment: ':'Latest saved revision: ')+trimSha(chosen.head_sha);
+  }
   async function refreshVersions(){
     const container=$('dev-version-list');container.replaceChildren();
-    if(!token){container.textContent='Connect to GitHub to view successful deployment history.';return;}
+    container.textContent='Loading saved versions…';$('dev-history-more').hidden=true;
+    let successful=[];let commits=[];let errors=[];
     try{
-      const data=await api('/actions/workflows/deploy.yml/runs?status=success&per_page=12');
-      versions=(data.workflow_runs||[]).filter(run=>run.head_sha).slice(0,10);
-      if(!versions.length){container.textContent='No successful deployment runs were found. No rollback targets can be verified.';return;}
-      versions.forEach((run,i)=>{
-        const row=document.createElement('div');row.className='dev-version';
-        const text=document.createElement('div');const title=document.createElement('strong');title.textContent=(i===0?'Latest successful deployment · ':'Published release · ')+trimSha(run.head_sha);
-        const desc=document.createElement('small');desc.textContent=(run.run_started_at||run.created_at||'').slice(0,16).replace('T',' ')+ ' UTC';text.append(title,desc);
-        const buttons=document.createElement('div');buttons.style.display='flex';buttons.style.gap='8px';buttons.style.flexWrap='wrap';
-        const link=document.createElement('a');link.className='dev-button outline';link.textContent='Download';link.href=`https://github.com/${OWNER}/${REPO}/archive/${encodeURIComponent(run.head_sha)}.zip`;link.setAttribute('download','');
-        const button=document.createElement('button');button.type='button';button.className='dev-button outline';button.textContent='Restore';button.disabled=i===0;button.addEventListener('click',()=>restore(run));
-        buttons.append(link,button);row.append(text,buttons);container.append(row);
-      });
-      const good=versions[0].head_sha;
-      $('dev-download-source').href=`https://github.com/${OWNER}/${REPO}/archive/${encodeURIComponent(good)}.zip`;
-      $('dev-source-revision').textContent=`Last successful deployment: ${trimSha(good)} · automatically updated`;
-    }catch(e){container.textContent=`Unable to load verified deployment history: ${e.message}. Grant Actions read permission and try again.`;}
+      const data=await api('/actions/workflows/deploy.yml/runs?status=success&per_page=100');
+      successful=(data.workflow_runs||[]).filter(run=>run.head_sha).map(run=>({head_sha:run.head_sha,date:run.updated_at||run.run_started_at||run.created_at,verified:true,message:'Successful website deployment'}));
+    }catch(e){errors.push(e.message);}
+    try{
+      const data=await api(`/commits?sha=${encodeURIComponent(BRANCH)}&per_page=100`);
+      commits=(Array.isArray(data)?data:[]).filter(c=>c.sha).map(c=>({head_sha:c.sha,date:c.commit?.committer?.date||c.commit?.author?.date,message:(c.commit?.message||'Website update').split('\n')[0].slice(0,86),verified:false}));
+    }catch(e){errors.push(e.message);}
+    if(!successful.length&&!commits.length){
+      allHistory=[];
+      container.textContent=errors.length?'Unable to load version history. Connect to GitHub or check repository permissions, then refresh.':'No repository revisions found yet.';
+      $('dev-history-note').textContent=errors.length?errors[0]:'';
+      return;
+    }
+    const merged=new Map();
+    for(const item of commits)merged.set(item.head_sha,item);
+    for(const item of successful){const existing=merged.get(item.head_sha);merged.set(item.head_sha,{...item,...existing,verified:true});}
+    allHistory=Array.from(merged.values()).sort((x,y)=>new Date(y.date||0)-new Date(x.date||0));
+    const onlyCommits=!successful.length;
+    $('dev-history-note').textContent=onlyCommits?'Showing saved repository revisions. GitHub did not return verified deployment history.':'Verified deployments are marked Published; other entries are saved repository revisions.';
+    historyLimit=6;renderVersions();
   }
 
   async function restore(run){
     if(!token||busy)return;
-    if(!window.confirm(`Restore the complete repository state from successful deployment ${trimSha(run.head_sha)}?\n\nThis will create a NEW commit and start a deployment. Updates since that version will no longer be present in the working tree. Git history remains available.`))return;
+    if(!window.confirm(`Restore repository revision ${trimSha(run.head_sha)}?\n\n${run.verified?"This version has a confirmed successful deployment.":"This is a saved commit, not a verified deployment."}\n\nRestoring creates a new commit and republishes the site. Files changed after this revision will be replaced. Continue?`))return;
     setBusy(true);
     try{
       const current=await headAndTree();
@@ -500,11 +540,12 @@
     updatePublishButton();
   }
   function showTab(tab){
+    if(tab==='versions'&&!allHistory.length)refreshVersions().catch(()=>{});
     document.querySelectorAll('[data-tab]').forEach(b=>{if(b.dataset.tab===tab)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
     document.querySelectorAll('[data-panel]').forEach(p=>p.hidden=p.dataset.panel!==tab);
   }
   function unlockWorkspace(){
-    $('dev-access-code').value='';$('dev-login-error').textContent='';$('dev-lock').hidden=true;$('dev-workspace').hidden=false;
+    $('dev-access-code').value='';$('dev-login-error').textContent='';$('dev-lock').classList.remove('is-leaving');$('dev-workspace').classList.remove('is-leaving');$('dev-lock').hidden=true;$('dev-workspace').hidden=false;
     const tab=location.hash.slice(1);showTab(['updates','versions','standards'].includes(tab)?tab:'updates');
     window.scrollTo({top:0,behavior:'instant'});
     const completed=readDeployState(DEPLOY_COMPLETED_KEY);
@@ -521,11 +562,17 @@
   }
   $('dev-login-form').addEventListener('submit',e=>{
     e.preventDefault();
-    if($('dev-access-code').value==='123')unlockWorkspace();
+    if($('dev-access-code').value==='123'){
+      $('dev-lock').classList.add('is-leaving');
+      if(matchMedia('(prefers-reduced-motion: reduce)').matches)unlockWorkspace();
+      else setTimeout(unlockWorkspace,180);
+    }
     else{$('dev-login-error').textContent='Incorrect access code.';$('dev-access-code').value='';}
   });
   $('dev-lock-again').addEventListener('click',()=>{
-    disconnect();$('dev-access-code').value='';$('dev-lock').hidden=false;$('dev-workspace').hidden=true;window.scrollTo(0,0);
+    disconnect();$('dev-access-code').value='';$('dev-workspace').classList.add('is-leaving');
+    const finish=()=>{$('dev-workspace').hidden=true;$('dev-workspace').classList.remove('is-leaving');$('dev-lock').hidden=false;window.scrollTo(0,0);};
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches)finish();else setTimeout(finish,180);
   });
   document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{showTab(b.dataset.tab);history.replaceState(null,'',`#${b.dataset.tab}`);}));
   $('dev-token-help-link').addEventListener('click',()=>openTokenGuide());
@@ -540,6 +587,7 @@
   $('dev-confirm-update').addEventListener('change',updatePublishButton);
   $('dev-publish').addEventListener('click',publish);
   $('dev-refresh-versions').addEventListener('click',refreshVersions);
+  $('dev-history-more').addEventListener('click',()=>{historyLimit+=8;renderVersions();});
   $('dev-deploy-reload').addEventListener('click',reloadPortal);
   $('dev-quick-token-form').addEventListener('submit',async e=>{e.preventDefault();await connectWith($('dev-quick-token').value.trim());});
   $('dev-quick-disconnect').addEventListener('click',disconnect);
