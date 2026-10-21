@@ -14,6 +14,8 @@
   const $=id=>document.getElementById(id);
   let token='', archive=null, manifest=[], changes=[], baselineSha='', baselineTree='', busy=false, versions=[], connectedUser='', lastInspectionError='', justPublished=false;
   let monitorGeneration=0, monitorActive=false, reloadTimer=0;
+  let currentDeploySha='', currentDeployProbe=null;
+
   const setStatus=(id,msg)=>{$(id).textContent=msg;};
   const trimSha=sha=>String(sha||'').slice(0,10);
   const escapeFile=p=> p.replace(/^\/+/, '');
@@ -112,7 +114,18 @@
   const DEPLOY_STEPS=['files','commit','build','live'];
   const PUBLIC_ORIGIN='https://filmmicfoundations.github.io/';
   const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+  function showDeploymentDialog(){
+    const dialog=$('dev-deploy-dialog');
+    if(!dialog.open)dialog.showModal();
+  }
+  function closeDeploymentDialog(){
+    const dialog=$('dev-deploy-dialog');
+    if(!dialog.open)return;
+    dialog.classList.add('is-closing');
+    setTimeout(()=>{dialog.close();dialog.classList.remove('is-closing');},matchMedia('(prefers-reduced-motion: reduce)').matches?0:160);
+  }
   function deploymentStage(step,title,detail,{done=false,failed=false}={}){
+    showDeploymentDialog();
     const panel=$('dev-deploy-panel');panel.hidden=false;
     panel.classList.toggle('is-complete',done);panel.classList.toggle('is-failed',failed);
     $('dev-deploy-title').textContent=title;
@@ -127,7 +140,8 @@
       el.classList.toggle('is-current',!done&&!failed&&i===index);
       el.querySelector('.dev-deploy-step-dot').textContent=(done||i<index)?'✓':String(i+1);
     });
-    $('dev-deploy-reload').hidden=!done;
+    $('dev-deploy-reload').hidden=!(done||failed);
+    $('dev-deploy-retry').hidden=!(failed||(!done&&step==='build'&&/unavailable|longer/i.test(title))); 
   }
   function readDeployState(key){try{return JSON.parse(sessionStorage.getItem(key)||'null');}catch{return null;}}
   function writeDeployState(key,value){try{if(value)sessionStorage.setItem(key,JSON.stringify(value));else sessionStorage.removeItem(key);}catch{}}
@@ -159,10 +173,12 @@
     deploymentStage('build','Deployment needs attention',message,{failed:true});
     setStatus('dev-update-status',message);
     if(sha)$('dev-deploy-actions-link').href=`https://github.com/${OWNER}/${REPO}/actions`;
-    writeDeployState(PENDING_DEPLOY_KEY,null);monitorActive=false;
+    $('dev-open-progress').hidden=false;
+    monitorActive=false; // Retain pending revision so retry works even after refreshing.
   }
   function refreshPortalAfterDeployment(sha,verified){
     writeDeployState(PENDING_DEPLOY_KEY,null);
+    $('dev-open-progress').hidden=true;
     writeDeployState(DEPLOY_COMPLETED_KEY,{sha,verified});
     try{sessionStorage.setItem(AUTO_RETURN_KEY,'1');}catch{}
     deploymentStage('live','Website updated',verified?'The updated file is now being served. Reloading the portal…':'GitHub Pages reports a successful deployment. Reloading the portal…',{done:true});
@@ -175,14 +191,17 @@
   }
   async function watchDeployment(sha,probe=null){
     if(!token||monitorActive)return;
+    currentDeploySha=sha;currentDeployProbe=probe;
     const generation=++monitorGeneration;monitorActive=true;
     justPublished=true;updatePublishButton();
     $('dev-deploy-actions-link').href=`https://github.com/${OWNER}/${REPO}/actions`;
     deploymentStage('build','Waiting for GitHub Pages','GitHub is scheduling the website build.');
+    $('dev-open-progress').hidden=false;
     let failures=0;
     const deadline=Date.now()+12*60*1000;
     try{
       while(generation===monitorGeneration&&token&&Date.now()<deadline){
+        if(probe && await checkLiveFile(probe,sha)){refreshPortalAfterDeployment(sha,true);return;}
         try{
           const data=await api(`/actions/workflows/deploy.yml/runs?head_sha=${encodeURIComponent(sha)}&per_page=10`);
           const run=(data.workflow_runs||[]).find(r=>r.head_sha===sha);
@@ -225,15 +244,23 @@
           failures++;
           if(!token||generation!==monitorGeneration)return;
           if(failures>=4){
-            deploymentStage('build','Status temporarily unavailable',`GitHub could not be reached to confirm deployment: ${error.message}. Open GitHub Actions or retry after reconnecting.`,{failed:true});
-            return;
+            // Read-only workflow status may be blocked even for a token with Contents access.
+            // Keep trying with a slower cadence and independently verify any changed public file.
+            if(probe && await checkLiveFile(probe,sha)){
+              refreshPortalAfterDeployment(sha,true);
+              return;
+            }
+            deploymentStage('build','Status temporarily unavailable','GitHub workflow status is unavailable. The update may still be deploying; checking again automatically. You can also retry now or inspect GitHub Actions.');
+            $('dev-deploy-retry').hidden=false;
+            await delay(9000);
+            continue;
           }
           deploymentStage('build','Reconnecting to GitHub','The progress check was interrupted. Retrying…');
         }
         await delay(DEPLOY_POLL_MS);
       }
       if(generation===monitorGeneration&&token){
-        deploymentStage('build','Deployment is taking longer than expected','The update was submitted, but the workflow did not finish within twelve minutes. Check GitHub Actions; no automatic reload will occur.',{failed:true});
+        deploymentStage('build','Monitoring paused','The update was submitted, but deployment could not be confirmed. Retry the status check or open GitHub Actions.',{failed:true});
       }
     }finally{if(generation===monitorGeneration)monitorActive=false;}
   }
@@ -378,11 +405,36 @@
         setStatus('dev-update-status','ZIP structure and CRC validated locally. Connect to GitHub above to compare files and enable publishing.');
       }
       renderFiles();
+      updateReleaseSuggestion();
       if(token&&changes.length===0)setStatus('dev-update-status','This ZIP is valid, but all its files are already up to date. Choose another ZIP to publish a new change.');
     }catch(e){$('dev-review').hidden=true;changes=[];baselineSha='';lastInspectionError=e.message;setStatus('dev-update-status',`Could not inspect the ZIP: ${e.message}`);}
     finally{setBusy(false);}
   }
 
+  function suggestedReleaseTitle(files){
+    const names=files.map(f=>f.path);
+    const topics=[];
+    const has=p=>names.some(n=>p.test(n));
+    if(has(/(^|\/)dev\/|developer\.(js|css)$/))topics.push('developer portal');
+    if(has(/site-header\.|(^|\/)index\.html$|favicon/))topics.push('navigation');
+    if(has(/(^|\/)standards\/|publication|PDF_DESIGN/))topics.push('publication standards');
+    if(has(/mindglassprocedure|article\.(js|css)/))topics.push('article pages');
+    if(has(/home\.(js|css)/))topics.push('research archive');
+    if(has(/settings/))topics.push('reader settings');
+    if(has(/404\.html/))topics.push('404 page');
+    if(has(/\.github\//))topics.push('publishing workflow');
+    const label=topics.slice(0,3);
+    if(!label.length){
+      const stems=names.slice(0,2).map(p=>p.split('/').pop().replace(/\.[^.]+$/,'').replace(/[-_]/g,' '));
+      label.push(...stems);
+    }
+    return `Update ${label.join(', ')} (${files.length} file${files.length===1?'':'s'})`.slice(0,90);
+  }
+  function updateReleaseSuggestion(){
+    const suggestion=changes.length?suggestedReleaseTitle(changes):'Upload and inspect a ZIP to generate a suggested title.';
+    $('dev-release-suggestion').textContent='Suggested: '+suggestion;
+    $('dev-release-title').placeholder=changes.length?suggestion:'Suggested automatically from changed files';
+  }
   async function publish(){
     if(explainPublishBlocker())return;
     const confirmation=`Publish ${changes.length} new/modified file(s) to ${OWNER}/${REPO}?\n\nFiles absent from the ZIP will be preserved. GitHub Actions will validate and deploy automatically.`;
@@ -403,7 +455,7 @@
       setStatus('dev-update-status','Creating versioned publication commit…');
       deploymentStage('commit','Creating release','The changed files have been transferred. Committing the update to GitHub.');
       const tree=await api('/git/trees',{method:'POST',body:{base_tree:baselineTree,tree:treeChanges}});
-      const commit=await api('/git/commits',{method:'POST',body:{message:`Update Filmmic Foundations via developer portal (${changes.length} files)`,tree:tree.sha,parents:[baselineSha]}});
+      const commit=await api('/git/commits',{method:'POST',body:{message:($('dev-release-title').value.trim()||suggestedReleaseTitle(changes)),tree:tree.sha,parents:[baselineSha]}});
       await api(`/git/refs/heads/${BRANCH}`,{method:'PATCH',body:{sha:commit.sha,force:false}});
       const probe=selectProbe(changes);
       writeDeployState(PENDING_DEPLOY_KEY,{sha:commit.sha,probe,started:Date.now()});
@@ -424,6 +476,19 @@
     const date=new Date(value);
     return Number.isNaN(date.getTime())?'Date unavailable':date.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});
   }
+  async function enrichLegacyTitles(){
+    const older=allHistory.filter(entry=>/^Update Filmmic Foundations via developer portal \(/i.test(entry.message||'')&&!entry.autotitled).slice(0,6);
+    if(!older.length)return;
+    await Promise.all(older.map(async entry=>{
+      entry.autotitled=true;
+      try{
+        const details=await api(`/commits/${entry.head_sha}`);
+        const files=(details.files||[]).map(item=>({path:item.filename}));
+        if(files.length){entry.message=suggestedReleaseTitle(files);entry.generatedTitle=true;}
+      }catch{ /* History remains usable if commit details are unavailable. */ }
+    }));
+    renderVersions();
+  }
   function renderVersions(){
     const list=$('dev-version-list');list.replaceChildren();
     if(!allHistory.length){list.textContent='No saved repository revisions were found.';return;}
@@ -432,7 +497,7 @@
       const information=document.createElement('div');information.className='dev-version-details';
       const badge=document.createElement('span');badge.className='dev-version-badge'+(entry.verified?' is-verified':'');
       badge.textContent=entry.verified?'Published':'Repository revision';
-      const title=document.createElement('strong');title.textContent=entry.message||'Website update';
+      const title=document.createElement('strong');title.textContent=(entry.message||'Website update').replace(/^Update Filmmic Foundations via developer portal \((\d+) files?\)$/i,(_,count)=>`Developer portal release · ${count} files`);
       const extra=document.createElement('small');extra.textContent=`${dateText(entry.date)} · ${trimSha(entry.head_sha)}`;
       information.append(badge,title,extra);
       const actions=document.createElement('div');actions.className='dev-version-actions';
@@ -477,6 +542,7 @@
     const onlyCommits=!successful.length;
     $('dev-history-note').textContent=onlyCommits?'Showing saved repository revisions. GitHub did not return verified deployment history.':'Verified deployments are marked Published; other entries are saved repository revisions.';
     historyLimit=6;renderVersions();
+    enrichLegacyTitles().catch(()=>{});
   }
 
   async function restore(run){
@@ -489,7 +555,9 @@
       const target=await api(`/git/commits/${run.head_sha}`);
       const rollback=await api('/git/commits',{method:'POST',body:{message:`Restore Filmmic Foundations to successful deployment ${trimSha(run.head_sha)}`,tree:target.tree.sha,parents:[current.sha]}});
       await api(`/git/refs/heads/${BRANCH}`,{method:'PATCH',body:{sha:rollback.sha,force:false}});
-      $('dev-version-list').insertAdjacentHTML('afterbegin','<p class="dev-small">Restore commit created. GitHub Actions is deploying; verify its status before considering restoration complete.</p>');
+      const pendingRestore={sha:rollback.sha,probe:null,started:Date.now()};
+      writeDeployState(PENDING_DEPLOY_KEY,pendingRestore);
+      watchDeployment(rollback.sha,null).catch(e=>showDeploymentFailure(e.message,rollback.sha));
       setStatus('dev-update-status',`Restoration commit ${trimSha(rollback.sha)} submitted to GitHub.`);
       await refreshVersions();
     }catch(e){const p=document.createElement('p');p.className='dev-error';p.textContent=`Restore failed: ${e.message}`;$('dev-version-list').prepend(p);}
@@ -498,7 +566,7 @@
 
   function resetInspection(){
     manifest=[];changes=[];baselineSha='';baselineTree='';lastInspectionError='';justPublished=false;
-    $('dev-review').hidden=true;$('dev-confirm-update').checked=false;updatePublishButton();
+    $('dev-review').hidden=true;$('dev-confirm-update').checked=false;updateReleaseSuggestion();updatePublishButton();
   }
   async function connectWith(value){
     if(!value)return;
@@ -601,6 +669,23 @@
     if(!/\.zip$/i.test(file.name)){setStatus('dev-update-status','Please choose a .zip file.');return;}
     $('dev-zip-file').value='';chooseZip(file);
   });
+  $('dev-deploy-close').addEventListener('click',closeDeploymentDialog);
+  $('dev-open-progress').addEventListener('click',showDeploymentDialog);
+  $('dev-deploy-dialog').addEventListener('cancel',event=>{event.preventDefault();closeDeploymentDialog();});
+  $('dev-deploy-retry').addEventListener('click',()=>{
+    if(!currentDeploySha){const pending=readDeployState(PENDING_DEPLOY_KEY);currentDeploySha=pending?.sha||'';currentDeployProbe=pending?.probe||null;}
+    if(!currentDeploySha){deploymentStage('build','No pending release','No release is available for tracking.',{failed:true});return;}
+    stopDeploymentMonitor();
+    watchDeployment(currentDeploySha,currentDeployProbe);
+  });
+  document.querySelectorAll('[data-standard-view]').forEach(button=>button.addEventListener('click',()=>{
+    const value=button.dataset.standardView;
+    $('dev-standards-list').classList.toggle('is-list',value==='list');
+    document.querySelectorAll('[data-standard-view]').forEach(b=>{b.classList.toggle('is-selected',b===button);b.setAttribute('aria-pressed',String(b===button));});
+    try{sessionStorage.setItem('ff-dev-standards-view',value);}catch{}
+  }));
+  try{const view=sessionStorage.getItem('ff-dev-standards-view');if(view==='list')document.querySelector('[data-standard-view="list"]').click();}catch{}
+  updateReleaseSuggestion();
   updatePublishButton();
   refreshVersions();
   try{if(sessionStorage.getItem(AUTO_RETURN_KEY)==='1'){sessionStorage.removeItem(AUTO_RETURN_KEY);unlockWorkspace();}}catch{}

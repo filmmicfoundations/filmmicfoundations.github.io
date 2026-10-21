@@ -9,7 +9,7 @@
 <script defer="" src="../assets/js/site-settings.js"></script><script defer="" src="../assets/js/jszip.min.js"></script><script defer="" src="../assets/js/developer.js"></script>
 <link href="../assets/images/favicon-32.png" rel="icon" sizes="32x32" type="image/png"/><link href="../assets/images/favicon-192.png" rel="icon" sizes="192x192" type="image/png"/><link href="../favicon.ico" rel="icon" sizes="any" type="image/x-icon"/><link href="../favicon.svg" rel="icon" type="image/svg+xml"/><link href="../assets/images/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/><meta content="Filmmic Foundations" property="og:site_name"/></head><body class="ff-dev-page">
 <a class="ff-skip-link" href="#dev-main">Skip to developer portal</a>
-<header class="topbar ff-site-header"><a class="brand ff-site-brand" href="../">FILMMIC <span>FOUNDATIONS</span></a><nav class="site-nav site-nav-simple ff-site-nav" aria-label="Main navigation"><a class="nav-link" href="../">Home</a><a class="nav-link" href="../#articles">Explore articles</a><a class="nav-link" href="../about/">About</a><button class="ff-settings-toggle" type="button" aria-label="Open settings" aria-haspopup="dialog" aria-controls="ff-settings-dialog" title="Reading preferences"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M 8.2 5.42 L 10.03 4.66 L 9.46 2.53 L 14.54 2.53 L 13.97 4.66 L 15.8 5.42 L 17.37 6.63 L 18.93 5.07 L 21.47 9.46 L 19.34 10.03 L 19.6 12 L 19.34 13.97 L 21.47 14.54 L 18.93 18.93 L 17.37 17.37 L 15.8 18.58 L 13.97 19.34 L 14.54 21.47 L 9.46 21.47 L 10.03 19.34 L 8.2 18.58 L 6.63 17.37 L 5.07 18.93 L 2.53 14.54 L 4.66 13.97 L 4.4 12 L 4.66 10.03 L 2.53 9.46 L 5.07 5.07 L 6.63 6.63 Z"/><circle cx="12" cy="12" r="3.1"/></svg></button></nav></header>
+<header class="topbar ff-site-header"><a class="brand ff-site-brand" href="../">FILMMIC <span>FOUNDATIONS</span></a><nav class="site-nav site-nav-simple ff-site-nav" aria-label="Main navigation"><a class="nav-link ff-home-link" href="../" aria-label="Home" title="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg></a><a class="nav-link" href="../#articles">Explore articles</a><a class="nav-link" href="../about/">About</a><button class="ff-settings-toggle" type="button" aria-label="Open settings" aria-haspopup="dialog" aria-controls="ff-settings-dialog" title="Reading preferences"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M 8.2 5.42 L 10.03 4.66 L 9.46 2.53 L 14.54 2.53 L 13.97 4.66 L 15.8 5.42 L 17.37 6.63 L 18.93 5.07 L 21.47 9.46 L 19.34 10.03 L 19.6 12 L 19.34 13.97 L 21.47 14.54 L 18.93 18.93 L 17.37 17.37 L 15.8 18.58 L 13.97 19.34 L 14.54 21.47 L 9.46 21.47 L 10.03 19.34 L 8.2 18.58 L 6.63 17.37 L 5.07 18.93 L 2.53 14.54 L 4.66 13.97 L 4.4 12 L 4.66 10.03 L 2.53 9.46 L 5.07 5.07 L 6.63 6.63 Z"/><circle cx="12" cy="12" r="3.1"/></svg></button></nav></header>
 <main id="dev-main">
 <section id="dev-lock" class="dev-lock" aria-labelledby="dev-lock-title">
   <div class="dev-lock-card"><div class="dev-lock-symbol" aria-hidden="true">⌁</div><p class="dev-overline">FILMMIC FOUNDATIONS · DEVELOPER TOOLS</p><h1 id="dev-lock-title">Enter the portal.</h1><p>Enter the access code to open development tools. Publishing requires separate GitHub authorization.</p>
@@ -47,23 +47,13 @@
           <p data-check="inspection"><span class="dev-check-icon" aria-hidden="true">○</span> Changes identified</p>
           <p data-check="approved"><span class="dev-check-icon" aria-hidden="true">○</span> Review approved</p>
         </div>
+        <label class="dev-release-label" for="dev-release-title">Release description <span>(optional)</span></label><input id="dev-release-title" class="dev-release-input" type="text" maxlength="90" placeholder="Suggested automatically from changed files" autocomplete="off"/><p id="dev-release-suggestion" class="dev-release-hint" aria-live="polite"></p>
         <button id="dev-publish" class="dev-button primary dev-publish-button" type="button" data-ready="false" aria-describedby="dev-publish-reason">Publish update <span aria-hidden="true">↗</span></button>
         <div class="dev-next-step" id="dev-publish-reason" role="status" aria-live="polite">Connect GitHub to begin.</div>
       </section>
+      <button class="dev-inline-button dev-open-progress" id="dev-open-progress" type="button" hidden>View deployment progress ↗</button>
       <div class="dev-message" id="dev-update-status" aria-live="polite" role="status">Select a ZIP to inspect. Nothing is published until changes are approved.</div>
-      <section class="dev-deploy-panel" id="dev-deploy-panel" hidden aria-label="Deployment progress">
-        <div class="dev-deploy-head"><div><p class="dev-eyebrow">LIVE RELEASE STATUS</p><h3 id="dev-deploy-title">Preparing deployment</h3></div><span id="dev-deploy-badge" class="dev-deploy-badge">In progress</span></div>
-        <div id="dev-deploy-track" class="dev-deploy-track" role="progressbar" aria-label="Publication stages" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0"><span id="dev-deploy-fill"></span></div>
-        <p id="dev-deploy-detail" class="dev-deploy-detail" role="status" aria-live="polite">Waiting for publication.</p>
-        <ol class="dev-deploy-stages">
-          <li data-deploy-step="files"><span class="dev-deploy-step-dot" aria-hidden="true">1</span>Transfer files</li>
-          <li data-deploy-step="commit"><span class="dev-deploy-step-dot" aria-hidden="true">2</span>Create release</li>
-          <li data-deploy-step="build"><span class="dev-deploy-step-dot" aria-hidden="true">3</span>GitHub Pages</li>
-          <li data-deploy-step="live"><span class="dev-deploy-step-dot" aria-hidden="true">4</span>Live website</li>
-        </ol>
-        <div class="dev-deploy-actions"><a id="dev-deploy-actions-link" href="https://github.com/filmmicfoundations/filmmicfoundations.github.io/actions" target="_blank" rel="noopener noreferrer">View deployment on GitHub ↗</a><button id="dev-deploy-reload" type="button" class="dev-inline-button" hidden>Reload portal now</button></div>
-        <p class="dev-deploy-footnote">Progress follows actual GitHub results. No estimated completion time is shown.</p>
-      </section>
+
 
     </section>
     <section class="dev-panel" data-panel="versions" aria-labelledby="versions-title" hidden><span class="dev-eyebrow">RELEASE HISTORY</span><h2 id="versions-title">Backups &amp; restore.</h2><p class="dev-lead">Browse saved versions, download a snapshot, or restore an earlier state.</p>
@@ -75,19 +65,38 @@
       <details class="dev-advanced dev-restore-help"><summary>How restoring works</summary><p>Restoring creates a new commit based on the selected revision and triggers a new deployment. Git history is kept, but newer site changes can be replaced. A saved commit is not necessarily a verified working deployment. Make a backup before restoring an older revision.</p></details>
     </section>
     <section class="dev-panel" data-panel="standards" aria-labelledby="standards-title" hidden><span class="dev-eyebrow">DESIGN &amp; EDITORIAL SYSTEM</span><h2 id="standards-title">Publication standards.</h2><p class="dev-lead">Consistent styling, source verification, analytical writing, article metadata, and PDF design.</p>
-      <div class="dev-download-card"><div><strong>Complete publication standards</strong><p>All machine-readable rules, templates, article schema and a human-readable PDF in one archive.</p></div><a class="dev-button primary" href="../standards/Filmmic_Foundations_Standards_Package.zip" download>Download guide ↓</a></div>
-      <div class="dev-guide-grid">
-        <a href="../standards/FILMMIC_FOUNDATIONS_STANDARD.md" download><strong>Publication standard</strong><small>Website, research voice, visual identity, sourcing &amp; workflow</small><span>Markdown ↓</span></a>
-        <a href="../standards/AI_AUTHORING_RULES.md" download><strong>AI authoring rules</strong><small>Instructions for AI agents drafting or editing new articles</small><span>Markdown ↓</span></a>
-        <a href="../standards/PDF_DESIGN_SPEC.md" download><strong>PDF design specification</strong><small>Research paper layout, figures, typography and attribution</small><span>Markdown ↓</span></a>
-        <a href="../standards/ARTICLE_SCHEMA.json" download><strong>Article metadata schema</strong><small>Machine-readable fields for future films and articles</small><span>JSON ↓</span></a>
-        <a href="../standards/ARTICLE_TEMPLATE.md" download><strong>Article template</strong><small>Flexible evidence-led writing structure</small><span>Markdown ↓</span></a>
-        <a href="../standards/PUBLICATION_CHECKLIST.md" download><strong>Publication checklist</strong><small>Research, privacy, consistency and regression checks</small><span>Markdown ↓</span></a>
-        <a href="../standards/Filmmic_Foundations_Publication_Standard.pdf" download><strong>Reference edition</strong><small>Formatted guide for human reference</small><span>PDF ↓</span></a>
+      <div class="dev-download-card"><div><strong>Complete publication standards</strong><p>All machine-readable rules, templates, article schema and a human-readable PDF in one archive.</p></div><a class="dev-button primary" href="../standards/Filmmic_Foundations_Standards_Package.zip" download>Download guide <svg class="dev-download-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M4 16v4h16v-4"/></svg></a></div>
+      <div class="dev-standard-controls" aria-label="Standards layout"><span>Browse documents</span><div class="dev-standard-views" role="group" aria-label="Document view"><button class="is-selected" data-standard-view="grid" type="button" aria-label="Grid view" aria-pressed="true" title="Grid"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></button><button data-standard-view="list" type="button" aria-label="List view" aria-pressed="false" title="List"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h12M9 12h12M9 18h12M3 6h2M3 12h2M3 18h2"/></svg></button></div></div>
+      <div class="dev-guide-grid" id="dev-standards-list">
+        <a href="../standards/FILMMIC_FOUNDATIONS_STANDARD.md" download><strong>Publication standard</strong><small>Website, research voice, visual identity, sourcing &amp; workflow</small><span class="dev-document-action"><small>Markdown</small><svg class="dev-download-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M4 16v4h16v-4"/></svg></span></a>
+        <a href="../standards/AI_AUTHORING_RULES.md" download><strong>AI authoring rules</strong><small>Instructions for AI agents drafting or editing new articles</small><span class="dev-document-action"><small>Markdown</small><svg class="dev-download-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M4 16v4h16v-4"/></svg></span></a>
+        <a href="../standards/PDF_DESIGN_SPEC.md" download><strong>PDF design specification</strong><small>Research paper layout, figures, typography and attribution</small><span class="dev-document-action"><small>Markdown</small><svg class="dev-download-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M4 16v4h16v-4"/></svg></span></a>
+        <a href="../standards/ARTICLE_SCHEMA.json" download><strong>Article metadata schema</strong><small>Machine-readable fields for future films and articles</small><span class="dev-document-action"><small>JSON</small><svg class="dev-download-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M4 16v4h16v-4"/></svg></span></a>
+        <a href="../standards/ARTICLE_TEMPLATE.md" download><strong>Article template</strong><small>Flexible evidence-led writing structure</small><span class="dev-document-action"><small>Markdown</small><svg class="dev-download-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M4 16v4h16v-4"/></svg></span></a>
+        <a href="../standards/PUBLICATION_CHECKLIST.md" download><strong>Publication checklist</strong><small>Research, privacy, consistency and regression checks</small><span class="dev-document-action"><small>Markdown</small><svg class="dev-download-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M4 16v4h16v-4"/></svg></span></a>
+        <a href="../standards/Filmmic_Foundations_Publication_Standard.pdf" download><strong>Reference edition</strong><small>Formatted guide for human reference</small><span class="dev-document-action"><small>PDF</small><svg class="dev-download-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M4 16v4h16v-4"/></svg></span></a>
       </div><div class="dev-message">The guide is a living publication standard, not evidence that a new article is factually correct. Every paper still requires source and film verification.</div>
     </section>
   </div></div>
 </div>
+
+
+<dialog id="dev-deploy-dialog" class="dev-deploy-dialog" aria-label="Website deployment progress" aria-modal="true">
+  <div class="dev-deploy-dialog-top"><span class="dev-eyebrow">WEBSITE RELEASE</span><button type="button" class="dev-dialog-close" id="dev-deploy-close" aria-label="Close deployment progress">×</button></div>
+      <section class="dev-deploy-panel" id="dev-deploy-panel" aria-label="Deployment progress">
+        <div class="dev-deploy-head"><div><p class="dev-eyebrow">LIVE RELEASE STATUS</p><h3 id="dev-deploy-title">Preparing deployment</h3></div><span id="dev-deploy-badge" class="dev-deploy-badge">In progress</span></div>
+        <div id="dev-deploy-track" class="dev-deploy-track" role="progressbar" aria-label="Publication stages" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0"><span id="dev-deploy-fill"></span></div>
+        <p id="dev-deploy-detail" class="dev-deploy-detail" role="status" aria-live="polite">Waiting for publication.</p>
+        <ol class="dev-deploy-stages">
+          <li data-deploy-step="files"><span class="dev-deploy-step-dot" aria-hidden="true">1</span>Transfer files</li>
+          <li data-deploy-step="commit"><span class="dev-deploy-step-dot" aria-hidden="true">2</span>Create release</li>
+          <li data-deploy-step="build"><span class="dev-deploy-step-dot" aria-hidden="true">3</span>GitHub Pages</li>
+          <li data-deploy-step="live"><span class="dev-deploy-step-dot" aria-hidden="true">4</span>Live website</li>
+        </ol>
+        <div class="dev-deploy-actions"><a id="dev-deploy-actions-link" href="https://github.com/filmmicfoundations/filmmicfoundations.github.io/actions" target="_blank" rel="noopener noreferrer">View deployment on GitHub ↗</a><button id="dev-deploy-retry" type="button" class="dev-inline-button" hidden>Retry status</button><button id="dev-deploy-reload" type="button" class="dev-inline-button" hidden>Reload portal now</button></div>
+        <p class="dev-deploy-footnote">Progress follows actual GitHub results. No estimated completion time is shown.</p>
+      </section>
+</dialog>
 
 <dialog id="dev-token-guide" class="dev-token-guide" aria-labelledby="dev-token-guide-title" aria-describedby="dev-token-guide-intro">
   <div class="dev-guide-head"><div><p class="dev-eyebrow">GITHUB AUTHORIZATION</p><h2 id="dev-token-guide-title">GitHub access token</h2></div><button class="dev-dialog-close" id="dev-token-guide-close" type="button" aria-label="Close token instructions">×</button></div>
