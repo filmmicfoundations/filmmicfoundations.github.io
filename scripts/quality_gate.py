@@ -196,6 +196,26 @@ def validate_article(article_json):
         except Exception as e:error(f'{preview.relative_to(ROOT)}: invalid preview manifest: {e}')
 
 
+def editorial_consistency():
+    """All published long-form analyses must satisfy the promised reading range.
+
+    The archive builder computes the label from the actual article content at
+    225 words/minute, so checking the generated label cannot make a short
+    article appear longer through manually edited metadata.
+    """
+    for path in ROOT.glob('*/article.json'):
+        name=path.parent.name
+        page=(path.parent/'index.html').read_text(encoding='utf-8')
+        m=re.search(r'<strong>Reading time</strong>\s*(\d+)\s*min',page)
+        if not m:error(f'{name}: reading-time metadata is missing')
+        elif not 20 <= int(m.group(1)) <= 30:
+            error(f'{name}: long-form articles must have a genuine 20–30 minute reading time; found {m.group(1)} min')
+        positions=[page.find('id="watch"'),page.find('id="suggested-articles"'),page.rfind('<footer')]
+        if not (positions[0]>=0 and positions[1]>positions[0] and positions[2]>positions[1]):
+            error(f'{name}: Suggested Articles must follow Watch the Film and precede the footer')
+        if any('article-image-open' in figure.group(0) for figure in re.finditer(r'<figure\b[^>]*class="[^"]*diagram[^"]*"[^>]*>.*?</figure>',page,re.S)):
+            error(f'{name}: diagrams must not register as lightbox items')
+
 def privacy_assets():
     # Publication pages may contain factual filmmaker credits; do not confuse
     # them with the identity of the publication's owner.
@@ -250,6 +270,7 @@ def main():
     articles=list(ROOT.glob('*/article.json'))
     if not articles:error('No published articles')
     for a in articles:validate_article(a)
+    editorial_consistency()
     generated_assets()
     privacy_assets()
     for m in WARNINGS:print('WARNING:',m)

@@ -2,7 +2,7 @@
   "title": "Alike",
   "year": "2026",
   "type": "FILM ANALYSIS",
-  "description": "An evidence-led analysis of Alike (2015), exploring how color, repetitive editing, music, and stylized city spaces stage a conflict between institutional routine and creative attention.",
+  "description": "An extended critical reading of Alike (2015): color and animation, urban routine, parenting, music, schooling, creative attention, and reception.",
   "image": "assets/alike-interpretive-city-and-tree.webp",
   "image_alt": "Original interpretive cityscape illustration inspired by the themes of the short film Alike, not a film still",
   "genre": [
@@ -15,12 +15,17 @@
     "attention",
     "education",
     "animation",
-    "color"
+    "color",
+    "parenting",
+    "autonomy",
+    "labor",
+    "music",
+    "reception"
   ],
   "order": 2,
   "film_year": "2015",
   "article_date": "2026-10-21",
-  "abstract": "In Alike (2015), the contrast between a uniform city and a musician’s vivid space allows color to function as narrative information. Repetition links the father’s working life to his son’s school experience, while a late gesture of recognition interrupts that routine. This reading examines color, staging, editing, sound, and animated performance, placing the film in conversation with research on autonomy and creativity without mistaking fictional allegory for empirical evidence.",
+  "abstract": "Through a close reading of animated performance, color, repeated spaces, musical interruption, and parent-child attention, this expanded analysis interprets Alike (2015) in conversation with filmmakers’ accounts, education and motivation research, and clearly attributed tertiary commentary.",
   "themes": [
     "identity",
     "autonomy",

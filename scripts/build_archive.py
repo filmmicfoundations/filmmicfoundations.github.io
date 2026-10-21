@@ -156,8 +156,8 @@ def related_markup(article,others):
         cover=match.get('image') or ''
         img=(f'<img alt="{escape(match.get("image_alt",match["title"]),quote=True)}" loading="lazy" decoding="async" src="../{slug}/{escape(cover,quote=True)}">') if cover else ''
         cards.append(f'<a class="ff-related-card" href="../{slug}/">{img}<div class="ff-related-content"><small>{escape(match.get("type","FILM ANALYSIS"))}</small><h3>{escape(match["title"])}</h3><p>{escape(match["description"])}</p></div></a>')
-    return ('<section class="ff-related-section" id="related-research" aria-labelledby="ff-related-heading"><div class="ff-related-inner">'
-            '<span class="ff-related-kicker">CONTINUE READING</span><h2 id="ff-related-heading">Related research</h2>'
+    return ('<section class="ff-related-section" id="suggested-articles" aria-labelledby="ff-related-heading"><div class="ff-related-inner">'
+            '<span class="ff-related-kicker">READ NEXT</span><h2 id="ff-related-heading">Suggested articles</h2>'
             '<p class="ff-related-intro">Further analyses with overlapping themes or filmmaking techniques. Suggestions are selected automatically from this archive.</p>'
             '<div class="ff-related-grid">'+''.join(cards)+'</div></div></section>')
 
@@ -222,7 +222,7 @@ def patch_articles(articles,full_text):
             # can use the closing main/footer as an insertion point instead.
             marker='\n'+RELATED_START+'\n'+RELATED_END+'\n'
             if '<section class="watch"' in page:
-                page=page.replace('<section class="watch"',marker+'<section class="watch"',1)
+                page=page.replace('</main>',marker+'</main>',1)
             elif '<footer' in page:
                 page=page.replace('<footer',marker+'<footer',1)
             elif '</main>' in page:
