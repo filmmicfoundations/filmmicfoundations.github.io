@@ -205,3 +205,12 @@ html[data-theme="dark"] .ff-pref-choice-list button:is(:hover,:focus-visible,[ar
 }
 @media(prefers-reduced-motion:reduce){.ff-pref-choice-button,.ff-pref-choice-button:after{transition:none!important}}
 .ff-pref-choice.ff-choice-above .ff-pref-choice-list{top:auto;bottom:calc(100% + 5px);transform-origin:bottom center}
+
+/* v49: a consistent dialog footprint prevents category-induced resize jumps. */
+.ff-settings-dialog{height:min(730px,calc(100dvh - 30px));min-height:0;overflow:hidden}
+.ff-settings-shell{height:100%;max-height:100%!important;min-height:0}
+.ff-settings-main{min-height:0;flex:1 1 auto;overflow:hidden}
+.ff-settings-scroll{min-height:0;height:100%;overscroll-behavior:contain}
+.ff-settings-tab-icon{display:block;width:17px;height:17px;flex:none}
+@media(max-width:650px){.ff-settings-dialog{height:calc(100dvh - 16px)}.ff-settings-main{min-height:0}.ff-settings-scroll{flex:1 1 auto;height:auto;overflow-y:auto}}
+@media(prefers-reduced-motion:reduce){.ff-settings-scroll{scroll-behavior:auto}}

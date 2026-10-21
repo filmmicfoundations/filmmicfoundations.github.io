@@ -26,7 +26,7 @@
     galleryMotion:'on', slideshow:'off', markers:'on', media:'auto', shortcuts:'on', external:'direct'
   });
   const sections = [
-    {id:'appearance',label:'Appearance',symbol:'◐',groups:[
+    {id:'appearance',label:'Appearance',symbol:'appearance',groups:[
       {name:'Color & typography',fields:[
         ['theme','Color theme','Light is the default; System follows your device.',[['light','Light'],['dark','Dark'],['system','System']]],
         ['text','Text size','Adjust article and editorial text.',[['small','Small'],['default','Standard'],['large','Large'],['extra','Extra large']]],
@@ -38,7 +38,7 @@
         ['motion','Animation intensity','Off follows accessibility needs; Subtle retains the site design.',[['off','Off'],['subtle','Subtle'],['full','Full']]]
       ]}
     ]},
-    {id:'reading',label:'Reading',symbol:'▤',groups:[
+    {id:'reading',label:'Reading',symbol:'book',groups:[
       {name:'Distraction-free reading',fields:[
         ['focus','Focus mode','Hide the research sidebar and related-reading cards.'],
         ['progress','Reading progress','Show the thin progress indicator on papers and About.'],
@@ -50,7 +50,7 @@
         ['related','Related research','Show automatic recommendations when similar papers exist.']
       ]}
     ]},
-    {id:'research',label:'Research',symbol:'⌁',groups:[
+    {id:'research',label:'Research',symbol:'research',groups:[
       {name:'Academic tools',fields:[
         ['citation','Preferred citation style','Default style shown in article citation tools.',[['mla','MLA 9'],['apa','APA 7'],['chicago','Chicago'],['ieee','IEEE']]],
         ['pdf','PDF behavior','Open in a new tab or save the PDF to your device.',[['new-tab','Open new tab'],['download','Download file']]],
@@ -61,7 +61,7 @@
         ['sort','Archive sorting','Default order for the research archive.',[['newest','Newest first'],['oldest','Oldest first'],['az','Title A–Z'],['za','Title Z–A']]]
       ]}
     ]},
-    {id:'general',label:'General',symbol:'☷',groups:[
+    {id:'general',label:'General',symbol:'controls',groups:[
       {name:'Images & media',fields:[
         ['viewer','Image viewer opens in','Start with a single image or the full thumbnail gallery.',[['single','Single image'],['gallery','Gallery']]],
         ['galleryMotion','Photo transitions','Animate movement between stills in the image viewer.'],
@@ -127,7 +127,8 @@
   dialog.className='ff-settings-dialog';dialog.id='ff-settings-dialog';
   dialog.setAttribute('aria-labelledby','ff-settings-heading');
   const panels=sections.map((section,index)=>`<section class="ff-settings-panel" id="ff-settings-${section.id}" role="tabpanel" aria-labelledby="ff-tab-${section.id}" ${index?'hidden':''}>${section.groups.map(group=>`<div class="ff-settings-section"><h3>${group.name}</h3>${group.fields.map(([key,title,desc,choices])=>`<div class="ff-pref-row"><div class="ff-pref-text"><label for="ff-pref-${key}">${title}</label><p id="ff-pref-help-${key}">${desc}</p></div>${choices?`<select id="ff-pref-${key}" name="${key}" aria-describedby="ff-pref-help-${key}">${choices.map(([v,label])=>`<option value="${v}">${label}</option>`).join('')}</select>`:`<input type="checkbox" id="ff-pref-${key}" name="${key}" aria-describedby="ff-pref-help-${key}">`}</div>`).join('')}</div>`).join('')}${section.id==='general'?`<div class="ff-pref-information"><strong>Privacy by design</strong>Preferences and optional reading positions are stored only in your browser. No account is required, and the settings panel does not transmit them to Filmmic Foundations. External video services may receive requests when you choose to load them.</div><div class="ff-pref-actions"><button type="button" class="ff-pref-action" id="ff-clear-positions">Clear saved reading positions</button><button type="button" class="ff-pref-action ff-danger" id="ff-reset-settings">Reset all preferences</button></div>`:''}</section>`).join('');
-  dialog.innerHTML=`<div class="ff-settings-shell"><div class="ff-settings-top"><div><span class="ff-settings-kicker">FILMMIC FOUNDATIONS / READER SETTINGS</span><h2 id="ff-settings-heading">Make it yours.</h2><p class="ff-settings-intro">A comfortable way to read and explore. Changes save automatically.</p></div><button type="button" class="ff-settings-dismiss" aria-label="Close settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">${srcIcons.close}</svg></button></div><div class="ff-settings-main"><div class="ff-settings-tabs" role="tablist" aria-label="Settings categories">${sections.map((section,index)=>`<button type="button" role="tab" id="ff-tab-${section.id}" class="ff-settings-tab" aria-controls="ff-settings-${section.id}" aria-selected="${index===0}" tabindex="${index===0?0:-1}"><span aria-hidden="true">${section.symbol}</span>${section.label}</button>`).join('')}</div><div class="ff-settings-scroll">${panels}</div></div><div class="ff-settings-bottom"><span class="ff-settings-saved" id="ff-settings-status" role="status" aria-live="polite">Changes saved locally</span><button class="ff-settings-done" type="button">Done</button></div></div>`;
+  const tabIcons={appearance:'<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18Z"/>',book:'<path d="M12 6c-3.5-2-7-2-10-1v14c3-1 6.5-1 10 1 3.5-2 7-2 10-1V5c-3-1-6.5-1-10 1Zm0 0v14"/>',research:'<path d="M5 3h14v18H5zM8 7h8M8 11h8M8 15h5"/>',controls:'<path d="M4 7h16M4 12h16M4 17h16"/><circle cx="9" cy="7" r="2" fill="var(--ff-cream,#fcfcfa)"/><circle cx="16" cy="12" r="2" fill="var(--ff-cream,#fcfcfa)"/><circle cx="10" cy="17" r="2" fill="var(--ff-cream,#fcfcfa)"/>'};
+  dialog.innerHTML=`<div class="ff-settings-shell"><div class="ff-settings-top"><div><span class="ff-settings-kicker">FILMMIC FOUNDATIONS / READER SETTINGS</span><h2 id="ff-settings-heading">Reading preferences</h2><p class="ff-settings-intro">Adjust the reading and research experience. Preferences save automatically.</p></div><button type="button" class="ff-settings-dismiss" aria-label="Close settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">${srcIcons.close}</svg></button></div><div class="ff-settings-main"><div class="ff-settings-tabs" role="tablist" aria-label="Settings categories">${sections.map((section,index)=>`<button type="button" role="tab" id="ff-tab-${section.id}" class="ff-settings-tab" aria-controls="ff-settings-${section.id}" aria-selected="${index===0}" tabindex="${index===0?0:-1}"><svg class="ff-settings-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${tabIcons[section.symbol]}</svg>${section.label}</button>`).join('')}</div><div class="ff-settings-scroll">${panels}</div></div><div class="ff-settings-bottom"><span class="ff-settings-saved" id="ff-settings-status" role="status" aria-live="polite">Changes saved locally</span><button class="ff-settings-done" type="button">Done</button></div></div>`;
   document.body.append(dialog);
 
   // Uniform animated choice popovers; original selects remain the form's source of truth.
@@ -202,8 +203,16 @@
   const tabs=[...dialog.querySelectorAll('[role="tab"]')];
   function setTab(id,focus=false){
     tabs.forEach(tab=>{const selected=tab.id==='ff-tab-'+id;tab.setAttribute('aria-selected',String(selected));tab.tabIndex=selected?0:-1;if(selected&&focus)tab.focus()});
-    dialog.querySelectorAll('[role="tabpanel"]').forEach(el=>el.hidden=el.id!=='ff-settings-'+id);
-    dialog.querySelector('.ff-settings-scroll').scrollTop=0;
+    const scroller=dialog.querySelector('.ff-settings-scroll');
+    const panels=[...dialog.querySelectorAll('[role="tabpanel"]')];
+    const outgoing=panels.find(el=>!el.hidden);
+    const incoming=panels.find(el=>el.id==='ff-settings-'+id);
+    if(outgoing===incoming)return;
+    // Dialog dimensions remain stable. Only inner content crossfades; no page reflow.
+    scroller.getAnimations().forEach(a=>a.cancel());
+    panels.forEach(el=>el.hidden=el!==incoming);
+    scroller.scrollTop=0;
+    if(!isReduced())scroller.animate([{opacity:.65,transform:'translateY(5px)'},{opacity:1,transform:'translateY(0)'}],{duration:215,easing:'cubic-bezier(.2,.75,.2,1)'});
   }
   tabs.forEach((tab,i)=>{
     tab.addEventListener('click',()=>setTab(tab.id.substring(7)));
@@ -333,9 +342,10 @@
 (() => {
   'use strict';
   const toolbar=document.querySelector('.ff-section-toolbar');
-  if(!toolbar)return;
+  const developer=document.body.classList.contains('ff-dev-page');
+  if(!toolbar && !developer)return;
   // Future articles that copied an earlier menu should also get the clean layout.
-  toolbar.querySelectorAll('.reading-tool[href="#top"],.ff-about-to-top').forEach(link=>link.remove());
+  toolbar?.querySelectorAll('.reading-tool[href="#top"],.ff-about-to-top').forEach(link=>link.remove());
   const button=document.createElement('button');
   button.type='button';
   button.className='ff-back-to-top';

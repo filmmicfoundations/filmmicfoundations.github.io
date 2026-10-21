@@ -42,16 +42,35 @@
       if(empty)empty.hidden=count>0;
       if(clear)clear.hidden=!query;
       if(status)status.textContent=`${count} of ${cards.length} articles`;
+      refreshChips();
+    }
+    // Compact removable chips mirror active selections. The original form fields
+    // remain the sole filtering state, so all reset, search, and sort behavior agrees.
+    const chips=document.getElementById('ff-active-filter-chips');
+    function refreshChips(){
+      if(!chips)return;
+      const active=[['Genre',genre],['Article',articleYear],['Film',filmYear]].filter(([,el])=>el?.value);
+      chips.replaceChildren();chips.hidden=!active.length;
+      for(const [title,select] of active){
+        const chip=document.createElement('button');chip.type='button';chip.className='ff-filter-chip';
+        chip.setAttribute('aria-label',`Remove ${title.toLowerCase()} filter: ${select.value}`);
+        const label=document.createElement('span');label.textContent=`${title}: ${select.value}`;
+        const x=document.createElement('span');x.className='ff-filter-chip-x';x.setAttribute('aria-hidden','true');x.textContent='×';
+        chip.append(label,x);
+        chip.addEventListener('click',()=>{select.value='';select.dispatchEvent(new Event('change',{bubbles:true}));document.querySelector(`#${select.id}`)?.dispatchEvent(new Event('ff:refresh-choice'));});
+        chips.append(chip);
+      }
     }
     // Keep filter controls tucked away, and show a small count when active.
     const activeCount=document.getElementById('active-filter-count');
     function refreshFilterCount(){
       const n=[genre,articleYear,filmYear].filter(el=>el?.value).length;
+      refreshChips();
       if(activeCount){activeCount.hidden=n===0;activeCount.title=n?`${n} filter${n===1?'':'s'} active`:'';activeCount.parentElement?.classList.toggle('has-active-filters',n>0);activeCount.parentElement?.setAttribute('aria-label',n?`Show archive filters (${n} active)`:'Show archive filters')}
     }
     document.getElementById('reset-filters')?.addEventListener('click',()=>{
       [genre,articleYear,filmYear].forEach(el=>{if(el)el.value=''});
-      if(sort)sort.value='newest';update();refreshFilterCount();
+      if(sort)sort.value='newest';[genre,articleYear,filmYear,sort].forEach(el=>el?.dispatchEvent(new Event('ff:refresh-choice')));update();refreshFilterCount();
     });
     [genre,articleYear,filmYear].forEach(el=>el?.addEventListener('change',refreshFilterCount));
     refreshFilterCount();
@@ -96,7 +115,7 @@
       trigger.addEventListener('click',()=>choiceOpen?close():open());
       wrapper.addEventListener('keydown',e=>{if(e.key==='Escape'){close();trigger.focus()}if(e.key==='ArrowDown'&&choiceOpen){e.preventDefault();(document.activeElement.nextElementSibling||menu.firstElementChild)?.focus()}if(e.key==='ArrowUp'&&choiceOpen){e.preventDefault();(document.activeElement.previousElementSibling||menu.lastElementChild)?.focus()}});
       document.addEventListener('click',e=>{if(!wrapper.contains(e.target))close()});
-      select.addEventListener('change',sync);
+      select.addEventListener('change',sync);select.addEventListener('ff:refresh-choice',sync);
     }
     [input,genre,articleYear,filmYear,sort].forEach(el=>el?.addEventListener(el===input?'input':'change',update));
     sort?.addEventListener('change',()=>window.dispatchEvent(new CustomEvent('ff:archive-sort',{detail:sort.value})));
