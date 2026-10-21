@@ -188,6 +188,11 @@ def ensure_shared_settings(page):
     Existing pages are left alone unless the shared stylesheet or script is missing.
     """
     home=HOME.read_text(encoding='utf-8')
+    # Keep the shared icon-only Home link consistent in newly generated articles.
+    icon=re.search(r'<a class="nav-link ff-home-link".*?</a>',home,re.S)
+    if icon and 'ff-home-link' not in page:
+        page=re.sub(r'<a class="nav-link"(\s+href="[^"]+"[^>]*)>Home</a>',
+                    lambda m: '<a class="nav-link ff-home-link"'+m.group(1)+' aria-label="Home" title="Home">'+re.search(r'<svg.*?</svg>',icon.group(0),re.S).group(0)+'</a>',page,count=1)
     gear=re.search(r'<button class="ff-settings-toggle".*?</button>', home, flags=re.S)
     if not gear:raise ValueError('Homepage shared settings control is missing')
     if 'class="ff-settings-toggle"' not in page:
@@ -197,6 +202,10 @@ def ensure_shared_settings(page):
     page=re.sub(r'<script[^>]+src="\.\./assets/js/site-header\.js"[^>]*></script>', '',page)
     if 'assets/css/site-settings.css' not in page:
         page=page.replace('</head>','<link rel="stylesheet" href="../assets/css/site-settings.css"></head>',1)
+    if 'assets/css/dropdowns.css' not in page:
+        page=page.replace('</head>','<link rel="stylesheet" href="../assets/css/dropdowns.css"></head>',1)
+    if 'assets/js/dropdowns.js' not in page:
+        page=page.replace('</body>','<script defer src="../assets/js/dropdowns.js"></script></body>',1)
     if 'assets/js/site-settings.js' not in page:
         page=page.replace('</body>','<script defer src="../assets/js/site-settings.js"></script></body>',1)
     return page

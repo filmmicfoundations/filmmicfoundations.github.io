@@ -112,3 +112,5 @@ html.ff-theme-animating .ff-site-header .ff-settings-toggle {
 /* Common developer footer link, matching editorial footer styles. */
 footer .ff-dev-footer-link{font:600 11px/1.5 "DM Sans",sans-serif;letter-spacing:.025em;text-decoration:none;color:inherit;opacity:.8;transition:opacity .2s ease}
 footer .ff-dev-footer-link:hover,footer .ff-dev-footer-link:focus-visible{opacity:1;text-decoration:underline;text-underline-offset:4px}
+
+.ff-site-nav .ff-home-link{display:inline-flex;align-items:center;justify-content:center;min-width:32px}.ff-site-nav .ff-home-link svg{width:19px;height:19px;display:block;transition:transform .24s ease}.ff-site-nav .ff-home-link:hover svg{transform:translateY(-1px)}@media(prefers-reduced-motion:reduce){.ff-site-nav .ff-home-link svg{transition:none}}

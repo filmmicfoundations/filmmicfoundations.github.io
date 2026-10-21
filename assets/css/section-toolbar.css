@@ -61,7 +61,7 @@ html[data-theme="dark"] .ff-section-toolbar { background:#214b54!important; }
 .ff-back-to-top {
   position:fixed;
   right:clamp(16px,2.4vw,34px);
-  bottom:max(20px,env(safe-area-inset-bottom,0px) + 16px);
+  bottom:max(var(--ff-floating-bottom,20px),env(safe-area-inset-bottom,0px) + 16px);
   z-index:54;
   display:inline-flex;
   align-items:center;
@@ -97,7 +97,14 @@ html[data-theme="dark"] .ff-back-to-top {background:#d7e9e4;color:#183940;border
 html[data-theme="dark"] .ff-back-to-top--visible:hover{background:#fff}
 /* A modal takes precedence over the floating utility; avoid a bright island behind it. */
 body:has(dialog[open]) .ff-back-to-top {opacity:0;pointer-events:none;transform:translateY(12px)}
-@media (max-width:600px) { .ff-back-to-top {right:16px;bottom:max(16px,env(safe-area-inset-bottom,0px) + 12px);min-height:45px;padding:0 15px;font-size:11px;gap:8px;} }
+@media (max-width:600px) { .ff-back-to-top {right:16px;bottom:max(var(--ff-floating-bottom,16px),env(safe-area-inset-bottom,0px) + 12px);min-height:45px;padding:0 15px;font-size:11px;gap:8px;} }
 @media (prefers-reduced-motion:reduce) { .ff-back-to-top,.ff-back-to-top--visible,.ff-back-to-top:hover {transition:none;transform:none} }
 html[data-ff-motion="off"] .ff-back-to-top {transition:none!important;transform:none!important}
 @media print { .ff-back-to-top{display:none!important} }
+
+/* Avoid sudden jumps when the footer approaches the floating reading utility. */
+.ff-back-to-top{transition-property:bottom,opacity,transform,visibility,background-color,box-shadow;transition-duration:.12s,.27s,.36s,0s,.24s,.24s;transition-timing-function:ease,ease,cubic-bezier(.22,1,.36,1),linear,ease,ease}
+
+/* The floating utility follows the footer edge without changing layout. */
+.ff-back-to-top{bottom:calc(max(var(--ff-floating-bottom,20px),env(safe-area-inset-bottom,0px) + 16px) + var(--ff-footer-lift,0px));}
+@media(max-width:600px){.ff-back-to-top{bottom:calc(max(var(--ff-floating-bottom,16px),env(safe-area-inset-bottom,0px) + 12px) + var(--ff-footer-lift,0px));}}

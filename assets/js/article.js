@@ -1,4 +1,6 @@
 /* Filmmic Foundations · consolidated site behavior. No dependencies. */
+const closeMenu = menu => { if (!menu) return; if(window.FFDropdowns) window.FFDropdowns.close(menu); else menu.open=false; };
+
 
 /* ../site-features.js */
 /* Offset in-article navigation below the two sticky toolbars. */
@@ -14,7 +16,7 @@
     const offset=(header?.getBoundingClientRect().height||0)+(toolbar?.getBoundingClientRect().height||0)+22;
     window.scrollTo({top:target.getBoundingClientRect().top+window.scrollY-offset,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
     history.replaceState(null,'',`#${id}`);
-    menus.forEach(menu=>{menu.open=false});
+    menus.forEach(menu=>{closeMenu(menu)});
   }));
 })();
 
@@ -34,9 +36,9 @@
  if('ResizeObserver' in window){const observer=new ResizeObserver(measure);observer.observe(header);observer.observe(toolbar)}
  window.addEventListener('resize',measure,{passive:true});
  const menu=toolbar.querySelector('.mobile-contents');
- menu?.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{menu.open=false}));
- document.addEventListener('click',event=>{if(menu?.open&&!menu.contains(event.target))menu.open=false});
- document.addEventListener('keydown',event=>{if(event.key==='Escape'&&menu?.open)menu.open=false});
+ menu?.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{closeMenu(menu)}));
+ document.addEventListener('click',event=>{if(menu?.open&&!menu.contains(event.target))closeMenu(menu)});
+ document.addEventListener('keydown',event=>{if(event.key==='Escape'&&menu?.open)closeMenu(menu)});
  const sectionLinks=[...toolbar.querySelectorAll('a[href^="#"]')];
  const headings=[...document.querySelectorAll('article h2[id]')];
  if('IntersectionObserver' in window){
@@ -313,6 +315,8 @@
     toggle.setAttribute('aria-expanded', String(galleryMode));
     toggle.setAttribute('aria-label', galleryMode ? 'Show single image' : 'Show gallery');
     el('ffv-toggle-label').textContent = galleryMode ? 'Single' : 'Gallery';
+    zoomOutput.classList.toggle('is-disabled',galleryMode);
+    zoomOutput.setAttribute('aria-disabled',String(galleryMode));
     for (const id of ['ffv-minus', 'ffv-plus', 'ffv-fit']) {
       el(id).disabled = galleryMode;
     }

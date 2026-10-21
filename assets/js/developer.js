@@ -6,6 +6,7 @@
   const OWNER='filmmicfoundations', REPO='filmmicfoundations.github.io', BRANCH='main';
   const API=`https://api.github.com/repos/${OWNER}/${REPO}`;
   const SESSION_TOKEN_KEY='ff-dev-github-token-v1';
+  const ACCESS_SESSION_KEY='ff-dev-tab-unlocked-v1';
   const PENDING_DEPLOY_KEY='ff-dev-pending-deploy-v1';
   const DEPLOY_COMPLETED_KEY='ff-dev-deploy-completed-v1';
   const AUTO_RETURN_KEY='ff-dev-auto-return-v1';
@@ -14,6 +15,9 @@
   const $=id=>document.getElementById(id);
   let token='', archive=null, manifest=[], changes=[], baselineSha='', baselineTree='', busy=false, versions=[], connectedUser='', lastInspectionError='', justPublished=false;
   let monitorGeneration=0, monitorActive=false, reloadTimer=0;
+  let currentDeploySha='', currentDeployProbe=null;
+  let progressDismissed=false;
+
   const setStatus=(id,msg)=>{$(id).textContent=msg;};
   const trimSha=sha=>String(sha||'').slice(0,10);
   const escapeFile=p=> p.replace(/^\/+/, '');
@@ -112,22 +116,39 @@
   const DEPLOY_STEPS=['files','commit','build','live'];
   const PUBLIC_ORIGIN='https://filmmicfoundations.github.io/';
   const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+  function showDeploymentDialog(force=false){
+    if(force)progressDismissed=false;
+    if(progressDismissed)return;
+    const dialog=$('dev-deploy-dialog');
+    if(!dialog.open)dialog.showModal();
+  }
+  function closeDeploymentDialog(){
+    progressDismissed=true;
+    const dialog=$('dev-deploy-dialog');
+    if(!dialog.open)return;
+    dialog.classList.add('is-closing');
+    setTimeout(()=>{dialog.close();dialog.classList.remove('is-closing');},matchMedia('(prefers-reduced-motion: reduce)').matches?0:160);
+  }
   function deploymentStage(step,title,detail,{done=false,failed=false}={}){
+    showDeploymentDialog();
     const panel=$('dev-deploy-panel');panel.hidden=false;
     panel.classList.toggle('is-complete',done);panel.classList.toggle('is-failed',failed);
     $('dev-deploy-title').textContent=title;
     $('dev-deploy-badge').textContent=failed?'Needs attention':done?'Published':'In progress';
     $('dev-deploy-detail').textContent=detail;
     const index=Math.max(0,DEPLOY_STEPS.indexOf(step));
+    $('dev-deploy-track').classList.toggle('is-checking',!done&&!failed && step==='build');
     $('dev-deploy-track').setAttribute('aria-valuenow',String(done?4:index));
     $('dev-deploy-fill').style.width=`${done?100:index*25}%`;
+    $('dev-deploy-track').setAttribute('aria-valuetext',done?'Published':failed?'Needs attention':title);
     document.querySelectorAll('[data-deploy-step]').forEach(el=>{
       const i=DEPLOY_STEPS.indexOf(el.dataset.deployStep);
       el.classList.toggle('is-done',done||i<index);
       el.classList.toggle('is-current',!done&&!failed&&i===index);
       el.querySelector('.dev-deploy-step-dot').textContent=(done||i<index)?'✓':String(i+1);
     });
-    $('dev-deploy-reload').hidden=!done;
+    $('dev-deploy-reload').hidden=!(done||failed);
+    $('dev-deploy-retry').hidden=!(failed||(!done&&step==='build'&&/unavailable|longer/i.test(title))); 
   }
   function readDeployState(key){try{return JSON.parse(sessionStorage.getItem(key)||'null');}catch{return null;}}
   function writeDeployState(key,value){try{if(value)sessionStorage.setItem(key,JSON.stringify(value));else sessionStorage.removeItem(key);}catch{}}
@@ -146,11 +167,11 @@
   }
   function liveUrl(path,sha){const url=new URL(path,PUBLIC_ORIGIN);url.searchParams.set('ff_release',sha.slice(0,12));url.searchParams.set('ff_check',Date.now().toString());return url.href;}
   async function checkLiveFile(probe,sha){
+    if(!probe)return false; // A reachable homepage alone never proves a new release is live.
     const url=liveUrl(probe?.path||'dev/index.html',sha);
     try{
       const res=await fetch(url,{cache:'no-store',credentials:'omit',redirect:'follow'});
       if(!res.ok)return false;
-      if(!probe)return true; // No matching package asset: confirm public site responds, without claiming exact revision verification.
       const bytes=new Uint8Array(await res.arrayBuffer());
       return await blobSha(bytes)===probe.sha;
     }catch{return false;}
@@ -159,10 +180,12 @@
     deploymentStage('build','Deployment needs attention',message,{failed:true});
     setStatus('dev-update-status',message);
     if(sha)$('dev-deploy-actions-link').href=`https://github.com/${OWNER}/${REPO}/actions`;
-    writeDeployState(PENDING_DEPLOY_KEY,null);monitorActive=false;
+    $('dev-open-progress').hidden=false;
+    monitorActive=false; // Retain pending revision so retry works even after refreshing.
   }
   function refreshPortalAfterDeployment(sha,verified){
     writeDeployState(PENDING_DEPLOY_KEY,null);
+    $('dev-open-progress').hidden=true;
     writeDeployState(DEPLOY_COMPLETED_KEY,{sha,verified});
     try{sessionStorage.setItem(AUTO_RETURN_KEY,'1');}catch{}
     deploymentStage('live','Website updated',verified?'The updated file is now being served. Reloading the portal…':'GitHub Pages reports a successful deployment. Reloading the portal…',{done:true});
@@ -175,14 +198,19 @@
   }
   async function watchDeployment(sha,probe=null){
     if(!token||monitorActive)return;
+    currentDeploySha=sha;currentDeployProbe=probe;
     const generation=++monitorGeneration;monitorActive=true;
     justPublished=true;updatePublishButton();
     $('dev-deploy-actions-link').href=`https://github.com/${OWNER}/${REPO}/actions`;
     deploymentStage('build','Waiting for GitHub Pages','GitHub is scheduling the website build.');
+    $('dev-open-progress').hidden=false;
     let failures=0;
-    const deadline=Date.now()+12*60*1000;
+    const record=readDeployState(PENDING_DEPLOY_KEY);
+    const submitted=record?.sha===sha&&Number.isFinite(record.started)?record.started:Date.now();
+    const deadline=submitted+7*60*1000;
     try{
       while(generation===monitorGeneration&&token&&Date.now()<deadline){
+        if(probe && await checkLiveFile(probe,sha)){refreshPortalAfterDeployment(sha,true);return;}
         try{
           const data=await api(`/actions/workflows/deploy.yml/runs?head_sha=${encodeURIComponent(sha)}&per_page=10`);
           const run=(data.workflow_runs||[]).find(r=>r.head_sha===sha);
@@ -196,14 +224,14 @@
                 return;
               }
               deploymentStage('live','GitHub Pages published','Deployment succeeded. Checking when the updated website is available…');
-              for(let n=0;n<20&&generation===monitorGeneration&&token;n++){
+              for(let n=0;n<(probe?20:1)&&generation===monitorGeneration&&token;n++){
                 if(await checkLiveFile(probe,sha)){
                   refreshPortalAfterDeployment(sha,!!probe);return;
                 }
                 await delay(3000);
               }
               // An older workflow might change only generated assets, or CDN propagation can lag.
-              deploymentStage('live','Deployment completed','GitHub Pages reports success, but the updated public file could not yet be independently confirmed. Use Reload when ready.');
+              deploymentStage('live','Deployment succeeded','GitHub Pages reports success. Live-file verification is unavailable, so use Reload when ready.');
               $('dev-deploy-reload').hidden=false;
               setStatus('dev-update-status','Deployment successful on GitHub, but the public-site check timed out. You can reload manually or inspect GitHub Pages.');
               writeDeployState(PENDING_DEPLOY_KEY,null);
@@ -224,16 +252,27 @@
         }catch(error){
           failures++;
           if(!token||generation!==monitorGeneration)return;
-          if(failures>=4){
-            deploymentStage('build','Status temporarily unavailable',`GitHub could not be reached to confirm deployment: ${error.message}. Open GitHub Actions or retry after reconnecting.`,{failed:true});
-            return;
+          if(failures>=3){
+            // Read-only workflow status may be blocked even for a token with Contents access.
+            // Keep trying with a slower cadence and independently verify any changed public file.
+            if(probe && await checkLiveFile(probe,sha)){
+              refreshPortalAfterDeployment(sha,true);
+              return;
+            }
+            deploymentStage('build','Checking the published files','GitHub workflow status is unavailable. Checking the public website independently; use GitHub Actions for the build report.');
+            $('dev-deploy-retry').hidden=false;
+            await delay(9000);
+            continue;
           }
           deploymentStage('build','Reconnecting to GitHub','The progress check was interrupted. Retrying…');
         }
         await delay(DEPLOY_POLL_MS);
       }
       if(generation===monitorGeneration&&token){
-        deploymentStage('build','Deployment is taking longer than expected','The update was submitted, but the workflow did not finish within twelve minutes. Check GitHub Actions; no automatic reload will occur.',{failed:true});
+        writeDeployState(PENDING_DEPLOY_KEY,null);
+        deploymentStage('build','Unable to verify the live release','GitHub accepted the commit, but deployment confirmation timed out. Check GitHub Pages or retry the status check.',{failed:true});
+        $('dev-deploy-retry').hidden=false;
+        setStatus('dev-update-status','The update commit is saved, but the live website has not been verified. See deployment status for details.');
       }
     }finally{if(generation===monitorGeneration)monitorActive=false;}
   }
@@ -378,16 +417,42 @@
         setStatus('dev-update-status','ZIP structure and CRC validated locally. Connect to GitHub above to compare files and enable publishing.');
       }
       renderFiles();
+      updateReleaseSuggestion();
       if(token&&changes.length===0)setStatus('dev-update-status','This ZIP is valid, but all its files are already up to date. Choose another ZIP to publish a new change.');
     }catch(e){$('dev-review').hidden=true;changes=[];baselineSha='';lastInspectionError=e.message;setStatus('dev-update-status',`Could not inspect the ZIP: ${e.message}`);}
     finally{setBusy(false);}
   }
 
+  function suggestedReleaseTitle(files){
+    const names=files.map(f=>f.path);
+    const topics=[];
+    const has=p=>names.some(n=>p.test(n));
+    if(has(/(^|\/)dev\/|developer\.(js|css)$/))topics.push('developer portal');
+    if(has(/site-header\.|(^|\/)index\.html$|favicon/))topics.push('navigation');
+    if(has(/(^|\/)standards\/|publication|PDF_DESIGN/))topics.push('publication standards');
+    if(has(/mindglassprocedure|article\.(js|css)/))topics.push('article pages');
+    if(has(/home\.(js|css)/))topics.push('research archive');
+    if(has(/settings/))topics.push('reader settings');
+    if(has(/404\.html/))topics.push('404 page');
+    if(has(/\.github\//))topics.push('publishing workflow');
+    const label=topics.slice(0,3);
+    if(!label.length){
+      const stems=names.slice(0,2).map(p=>p.split('/').pop().replace(/\.[^.]+$/,'').replace(/[-_]/g,' '));
+      label.push(...stems);
+    }
+    return `Update ${label.join(', ')} (${files.length} file${files.length===1?'':'s'})`.slice(0,90);
+  }
+  function updateReleaseSuggestion(){
+    const suggestion=changes.length?suggestedReleaseTitle(changes):'Upload and inspect a ZIP to generate a suggested title.';
+    $('dev-release-suggestion').textContent='Suggested: '+suggestion;
+    $('dev-release-title').placeholder=changes.length?suggestion:'Suggested automatically from changed files';
+  }
   async function publish(){
     if(explainPublishBlocker())return;
     const confirmation=`Publish ${changes.length} new/modified file(s) to ${OWNER}/${REPO}?\n\nFiles absent from the ZIP will be preserved. GitHub Actions will validate and deploy automatically.`;
     if(!window.confirm(confirmation))return;
     setBusy(true);
+    progressDismissed=false;
     deploymentStage('files','Preparing update',`Preparing ${changes.length} modified file(s) for GitHub.`);
     try{
       const now=await headAndTree();
@@ -403,7 +468,7 @@
       setStatus('dev-update-status','Creating versioned publication commit…');
       deploymentStage('commit','Creating release','The changed files have been transferred. Committing the update to GitHub.');
       const tree=await api('/git/trees',{method:'POST',body:{base_tree:baselineTree,tree:treeChanges}});
-      const commit=await api('/git/commits',{method:'POST',body:{message:`Update Filmmic Foundations via developer portal (${changes.length} files)`,tree:tree.sha,parents:[baselineSha]}});
+      const commit=await api('/git/commits',{method:'POST',body:{message:($('dev-release-title').value.trim()||suggestedReleaseTitle(changes)),tree:tree.sha,parents:[baselineSha]}});
       await api(`/git/refs/heads/${BRANCH}`,{method:'PATCH',body:{sha:commit.sha,force:false}});
       const probe=selectProbe(changes);
       writeDeployState(PENDING_DEPLOY_KEY,{sha:commit.sha,probe,started:Date.now()});
@@ -417,31 +482,117 @@
     finally{setBusy(false);}
   }
 
+  let allHistory=[];
+  function dateText(value){
+    if(!value)return 'Date unavailable';
+    const date=new Date(value);
+    return Number.isNaN(date.getTime())?'Date unavailable':date.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});
+  }
+  async function enrichLegacyTitles(){
+    const older=allHistory.filter(entry=>/^Update Filmmic Foundations via developer portal \(/i.test(entry.message||'')&&!entry.autotitled).slice(0,6);
+    if(!older.length)return;
+    await Promise.all(older.map(async entry=>{
+      entry.autotitled=true;
+      try{
+        const details=await api(`/commits/${entry.head_sha}`);
+        const files=(details.files||[]).map(item=>({path:item.filename}));
+        if(files.length){entry.message=suggestedReleaseTitle(files);entry.generatedTitle=true;}
+      }catch{ /* History remains usable if commit details are unavailable. */ }
+    }));
+    renderVersions();
+  }
+  function renderVersions(){
+    const list=$('dev-version-list');list.replaceChildren();
+    if(!allHistory.length){list.textContent='No saved repository revisions were found.';return;}
+    const olderHistory=allHistory.slice(4);
+    const extra=$('dev-version-extra');extra.replaceChildren();
+    allHistory.forEach((entry,i)=>{
+      const row=document.createElement('article');row.className='dev-version';
+      const information=document.createElement('div');information.className='dev-version-details';
+      const badge=document.createElement('span');badge.className='dev-version-badge'+(entry.verified?' is-verified':'');
+      badge.textContent=entry.verified?'Published':'Repository revision';
+      const title=document.createElement('strong');title.textContent=(entry.message||'Website update').replace(/^Update Filmmic Foundations via developer portal \((\d+) files?\)$/i,(_,count)=>`Developer portal release · ${count} files`);
+      const extra=document.createElement('small');extra.textContent=`${dateText(entry.date)} · ${trimSha(entry.head_sha)}`;
+      information.append(badge,title,extra);
+      const actions=document.createElement('div');actions.className='dev-version-actions';
+      const download=document.createElement('a');download.className='dev-button outline';download.textContent='ZIP';
+      download.title='Download this exact repository revision';
+      download.href=`https://github.com/${OWNER}/${REPO}/archive/${encodeURIComponent(entry.head_sha)}.zip`;
+      const restoreButton=document.createElement('button');restoreButton.type='button';restoreButton.className='dev-button outline';
+      restoreButton.textContent='Restore';restoreButton.disabled=!token||entry.head_sha===allHistory[0].head_sha||busy;
+      restoreButton.title=!token?'Connect to GitHub to restore':entry.head_sha===allHistory[0].head_sha?'Already the latest revision':'Restore this revision';
+      restoreButton.addEventListener('click',()=>restore(entry));
+      actions.append(download,restoreButton);row.append(information,actions);(i<4?list:extra).append(row);
+    });
+    const more=$('dev-history-more');more.hidden=olderHistory.length===0;
+    $('dev-history-more-label').textContent=`Older versions (${olderHistory.length})`;
+    const newestPublished=allHistory.find(x=>x.verified);
+    const chosen=newestPublished||allHistory[0];
+    $('dev-download-source').href=`https://github.com/${OWNER}/${REPO}/archive/${encodeURIComponent(chosen.head_sha)}.zip`;
+    $('dev-source-revision').textContent=(chosen.verified?'Latest verified deployment: ':'Latest saved revision: ')+trimSha(chosen.head_sha);
+  }
   async function refreshVersions(){
-    const container=$('dev-version-list');container.replaceChildren();
-    if(!token){container.textContent='Connect to GitHub to view successful deployment history.';return;}
-    try{
-      const data=await api('/actions/workflows/deploy.yml/runs?status=success&per_page=12');
-      versions=(data.workflow_runs||[]).filter(run=>run.head_sha).slice(0,10);
-      if(!versions.length){container.textContent='No successful deployment runs were found. No rollback targets can be verified.';return;}
-      versions.forEach((run,i)=>{
-        const row=document.createElement('div');row.className='dev-version';
-        const text=document.createElement('div');const title=document.createElement('strong');title.textContent=(i===0?'Latest successful deployment · ':'Published release · ')+trimSha(run.head_sha);
-        const desc=document.createElement('small');desc.textContent=(run.run_started_at||run.created_at||'').slice(0,16).replace('T',' ')+ ' UTC';text.append(title,desc);
-        const buttons=document.createElement('div');buttons.style.display='flex';buttons.style.gap='8px';buttons.style.flexWrap='wrap';
-        const link=document.createElement('a');link.className='dev-button outline';link.textContent='Download';link.href=`https://github.com/${OWNER}/${REPO}/archive/${encodeURIComponent(run.head_sha)}.zip`;link.setAttribute('download','');
-        const button=document.createElement('button');button.type='button';button.className='dev-button outline';button.textContent='Restore';button.disabled=i===0;button.addEventListener('click',()=>restore(run));
-        buttons.append(link,button);row.append(text,buttons);container.append(row);
-      });
-      const good=versions[0].head_sha;
-      $('dev-download-source').href=`https://github.com/${OWNER}/${REPO}/archive/${encodeURIComponent(good)}.zip`;
-      $('dev-source-revision').textContent=`Last successful deployment: ${trimSha(good)} · automatically updated`;
-    }catch(e){container.textContent=`Unable to load verified deployment history: ${e.message}. Grant Actions read permission and try again.`;}
+    const container=$('dev-version-list');
+    container.textContent='Loading saved versions…';
+    $('dev-history-more').hidden=true;
+    $('dev-version-extra').replaceChildren();
+    // Commit history is the primary source; Actions may be inaccessible under
+    // some token scopes. Fetch independently and fall back to unauthenticated
+    // public repository history when GitHub rejects the token-scoped request.
+    const fetchWithLimit=async(path)=>{
+      const timeout=12000;
+      const fetchOnce=()=>Promise.race([api(path),new Promise((_,reject)=>setTimeout(()=>reject(Error('GitHub request timed out.')),timeout))]);
+      try{return await fetchOnce()}catch(primary){
+        if(path.startsWith('/commits')){
+          try{
+            const response=await fetch(API+path,{headers:{Accept:'application/vnd.github+json'},cache:'no-store'});
+            if(response.ok)return await response.json();
+          }catch(_){/* retain detailed original error */}
+        }
+        throw primary;
+      }
+    };
+    const [commitsResult,deploymentsResult]=await Promise.allSettled([
+      fetchWithLimit('/commits?per_page=50'),
+      fetchWithLimit('/actions/workflows/deploy.yml/runs?status=success&per_page=50')
+    ]);
+    let commits=[],successful=[];
+    if(commitsResult.status==='fulfilled'){
+      const data=commitsResult.value;
+      commits=(Array.isArray(data)?data:[]).filter(c=>c.sha).map(c=>({
+        head_sha:c.sha,date:c.commit?.committer?.date||c.commit?.author?.date,
+        message:(c.commit?.message||'Website update').split('\n')[0].slice(0,86),verified:false
+      }));
+    }
+    if(deploymentsResult.status==='fulfilled'){
+      successful=(deploymentsResult.value.workflow_runs||[]).filter(run=>run.head_sha).map(run=>({
+        head_sha:run.head_sha,date:run.updated_at||run.run_started_at||run.created_at,
+        verified:true,message:'Successful website deployment'
+      }));
+    }
+    if(!successful.length&&!commits.length){
+      allHistory=[];
+      const reason=[commitsResult,deploymentsResult].filter(r=>r.status==='rejected').map(r=>r.reason?.message||'GitHub unavailable');
+      container.textContent=reason.length?'History unavailable — retry or check GitHub permissions.':'No saved repository revisions found.';
+      $('dev-history-note').textContent=(reason.join(' · ')||'GitHub returned no revisions')+' · Repository: '+OWNER+'/'+REPO+' · If the repository is private, connect a token with Contents: Read permission.';
+      return;
+    }
+    const merged=new Map();
+    for(const item of commits)merged.set(item.head_sha,item);
+    for(const item of successful){const existing=merged.get(item.head_sha);merged.set(item.head_sha,{...item,...existing,verified:true});}
+    // Manage only the newest 50 records in the portal. Git history itself is
+    // intentionally untouched: force-rewriting published history is unsafe.
+    allHistory=Array.from(merged.values()).sort((x,y)=>new Date(y.date||0)-new Date(x.date||0)).slice(0,50);
+    $('dev-history-note').textContent=successful.length
+      ?'Latest 50 saved versions. Published denotes a confirmed deployment.'
+      :'Latest 50 repository revisions. Verified deployment information is unavailable.';
+    renderVersions();
+    enrichLegacyTitles().catch(()=>{});
   }
 
   async function restore(run){
     if(!token||busy)return;
-    if(!window.confirm(`Restore the complete repository state from successful deployment ${trimSha(run.head_sha)}?\n\nThis will create a NEW commit and start a deployment. Updates since that version will no longer be present in the working tree. Git history remains available.`))return;
+    if(!window.confirm(`Restore repository revision ${trimSha(run.head_sha)}?\n\n${run.verified?"This version has a confirmed successful deployment.":"This is a saved commit, not a verified deployment."}\n\nRestoring creates a new commit and republishes the site. Files changed after this revision will be replaced. Continue?`))return;
     setBusy(true);
     try{
       const current=await headAndTree();
@@ -449,7 +600,9 @@
       const target=await api(`/git/commits/${run.head_sha}`);
       const rollback=await api('/git/commits',{method:'POST',body:{message:`Restore Filmmic Foundations to successful deployment ${trimSha(run.head_sha)}`,tree:target.tree.sha,parents:[current.sha]}});
       await api(`/git/refs/heads/${BRANCH}`,{method:'PATCH',body:{sha:rollback.sha,force:false}});
-      $('dev-version-list').insertAdjacentHTML('afterbegin','<p class="dev-small">Restore commit created. GitHub Actions is deploying; verify its status before considering restoration complete.</p>');
+      const pendingRestore={sha:rollback.sha,probe:null,started:Date.now()};
+      writeDeployState(PENDING_DEPLOY_KEY,pendingRestore);
+      watchDeployment(rollback.sha,null).catch(e=>showDeploymentFailure(e.message,rollback.sha));
       setStatus('dev-update-status',`Restoration commit ${trimSha(rollback.sha)} submitted to GitHub.`);
       await refreshVersions();
     }catch(e){const p=document.createElement('p');p.className='dev-error';p.textContent=`Restore failed: ${e.message}`;$('dev-version-list').prepend(p);}
@@ -458,7 +611,7 @@
 
   function resetInspection(){
     manifest=[];changes=[];baselineSha='';baselineTree='';lastInspectionError='';justPublished=false;
-    $('dev-review').hidden=true;$('dev-confirm-update').checked=false;updatePublishButton();
+    $('dev-review').hidden=true;$('dev-confirm-update').checked=false;updateReleaseSuggestion();updatePublishButton();
   }
   async function connectWith(value){
     if(!value)return;
@@ -477,7 +630,10 @@
       else setStatus('dev-update-status','GitHub connected. Choose a ZIP above to continue.');
       refreshVersions().catch(()=>{});
       const pending=readDeployState(PENDING_DEPLOY_KEY);
-      if(pending?.sha&&!monitorActive){justPublished=true;watchDeployment(pending.sha,pending.probe||null).catch(err=>showDeploymentFailure(`Unable to resume deployment check: ${err.message}`,pending.sha));}
+      if(pending?.started && Date.now()-pending.started>10*60*1000){
+        writeDeployState(PENDING_DEPLOY_KEY,null);
+        setStatus('dev-update-status','A previous release was submitted but its live status could not be verified. Check GitHub Actions before attempting another update.');
+      }else if(pending?.sha&&!monitorActive){justPublished=true;watchDeployment(pending.sha,pending.probe||null).catch(err=>showDeploymentFailure(`Unable to resume deployment check: ${err.message}`,pending.sha));}
     }catch(err){token='';connectedUser='';saveSessionToken('');setStatus('dev-connection-status',`Could not connect: ${err.message}`);setStatus('dev-update-status',`GitHub connection failed: ${err.message}. Check token access and try again.`);}
     updatePublishButton();
   }
@@ -500,12 +656,14 @@
     updatePublishButton();
   }
   function showTab(tab){
-    document.querySelectorAll('[data-tab]').forEach(b=>{if(b.dataset.tab===tab)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
-    document.querySelectorAll('[data-panel]').forEach(p=>p.hidden=p.dataset.panel!==tab);
+    const key=tab==='standards'?'guides':tab==='versions'?'versions':'updates';
+    const target=$('dev-section-'+key);if(target){if(window.FFDropdowns)window.FFDropdowns.open(target);else target.open=true;}
+    if(key==='versions'&&!allHistory.length)refreshVersions().catch(()=>{});
   }
   function unlockWorkspace(){
-    $('dev-access-code').value='';$('dev-login-error').textContent='';$('dev-lock').hidden=true;$('dev-workspace').hidden=false;
-    const tab=location.hash.slice(1);showTab(['updates','versions','standards'].includes(tab)?tab:'updates');
+    document.documentElement.classList.remove('ff-dev-tab-resume');
+    $('dev-access-code').value='';$('dev-login-error').textContent='';$('dev-lock').classList.remove('is-leaving');$('dev-workspace').classList.remove('is-leaving');$('dev-lock').hidden=true;$('dev-workspace').hidden=false;
+    const tab=location.hash.slice(1);showTab(tab==='standards'?'versions':['updates','versions'].includes(tab)?tab:'updates');
     window.scrollTo({top:0,behavior:'instant'});
     const completed=readDeployState(DEPLOY_COMPLETED_KEY);
     if(completed?.sha){
@@ -521,13 +679,43 @@
   }
   $('dev-login-form').addEventListener('submit',e=>{
     e.preventDefault();
-    if($('dev-access-code').value==='123')unlockWorkspace();
+    if($('dev-access-code').value==='123'){
+      try{sessionStorage.setItem(ACCESS_SESSION_KEY,'1');}catch{}
+      $('dev-lock').classList.add('is-leaving');
+      if(matchMedia('(prefers-reduced-motion: reduce)').matches)unlockWorkspace();
+      else setTimeout(unlockWorkspace,180);
+    }
     else{$('dev-login-error').textContent='Incorrect access code.';$('dev-access-code').value='';}
   });
+  // A confirmation prevents accidentally clearing a connected session.
+  const lockDialog=$('dev-lock-confirm');
+  let lockDialogTimer=0;
+  let lockFocus=null;
+  function closeLockConfirmation(){
+    if(!lockDialog.open||lockDialog.classList.contains('is-closing'))return;
+    lockDialog.classList.add('is-closing');
+    const finish=()=>{lockDialog.close();lockDialog.classList.remove('is-closing');lockFocus?.focus?.({preventScroll:true});};
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches)finish();
+    else lockDialogTimer=setTimeout(finish,170);
+  }
   $('dev-lock-again').addEventListener('click',()=>{
-    disconnect();$('dev-access-code').value='';$('dev-lock').hidden=false;$('dev-workspace').hidden=true;window.scrollTo(0,0);
+    clearTimeout(lockDialogTimer);lockDialog.classList.remove('is-closing');
+    lockFocus=document.activeElement;
+    if(!lockDialog.open)lockDialog.showModal();
+    $('dev-lock-cancel').focus({preventScroll:true});
   });
-  document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{showTab(b.dataset.tab);history.replaceState(null,'',`#${b.dataset.tab}`);}));
+  $('dev-lock-cancel').addEventListener('click',closeLockConfirmation);
+  $('dev-lock-cancel-x').addEventListener('click',closeLockConfirmation);
+  lockDialog.addEventListener('cancel',event=>{event.preventDefault();closeLockConfirmation();});
+  lockDialog.addEventListener('click',event=>{if(event.target===lockDialog)closeLockConfirmation();});
+  $('dev-lock-confirm-yes').addEventListener('click',()=>{
+    clearTimeout(lockDialogTimer);lockDialog.close();lockDialog.classList.remove('is-closing');
+    try{sessionStorage.removeItem(ACCESS_SESSION_KEY);sessionStorage.removeItem(AUTO_RETURN_KEY);}catch{}
+    disconnect();$('dev-access-code').value='';$('dev-workspace').classList.add('is-leaving');
+    const finish=()=>{$('dev-workspace').hidden=true;$('dev-workspace').classList.remove('is-leaving');$('dev-lock').hidden=false;window.scrollTo(0,0);};
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches)finish();else setTimeout(finish,180);
+  });
+  // Updates, Backups, and Guides are directly accessible as smooth disclosures.
   $('dev-token-help-link').addEventListener('click',()=>openTokenGuide());
   $('dev-token-guide-close').addEventListener('click',closeTokenGuide);
   $('dev-token-guide-done').addEventListener('click',closeTokenGuide);
@@ -540,6 +728,7 @@
   $('dev-confirm-update').addEventListener('change',updatePublishButton);
   $('dev-publish').addEventListener('click',publish);
   $('dev-refresh-versions').addEventListener('click',refreshVersions);
+  // Older revisions live in a separate expandable disclosure; no Show More paging state.
   $('dev-deploy-reload').addEventListener('click',reloadPortal);
   $('dev-quick-token-form').addEventListener('submit',async e=>{e.preventDefault();await connectWith($('dev-quick-token').value.trim());});
   $('dev-quick-disconnect').addEventListener('click',disconnect);
@@ -553,7 +742,22 @@
     if(!/\.zip$/i.test(file.name)){setStatus('dev-update-status','Please choose a .zip file.');return;}
     $('dev-zip-file').value='';chooseZip(file);
   });
+  $('dev-deploy-close').addEventListener('click',closeDeploymentDialog);
+  $('dev-open-progress').addEventListener('click',()=>showDeploymentDialog(true));
+  $('dev-deploy-dialog').addEventListener('cancel',event=>{event.preventDefault();closeDeploymentDialog();});
+  $('dev-deploy-retry').addEventListener('click',()=>{
+    if(!currentDeploySha){const pending=readDeployState(PENDING_DEPLOY_KEY);currentDeploySha=pending?.sha||'';currentDeployProbe=pending?.probe||null;}
+    if(!currentDeploySha){deploymentStage('build','No pending release','No release is available for tracking.',{failed:true});return;}
+    stopDeploymentMonitor();
+    watchDeployment(currentDeploySha,currentDeployProbe);
+  });
+  // Section disclosure stays on the same page; history is fetched lazily if needed.
+  document.getElementById('dev-section-versions')?.addEventListener('toggle',event=>{
+    if(event.target.open && !allHistory.length && token)refreshVersions().catch(()=>{});
+  });
+  updateReleaseSuggestion();
   updatePublishButton();
   refreshVersions();
-  try{if(sessionStorage.getItem(AUTO_RETURN_KEY)==='1'){sessionStorage.removeItem(AUTO_RETURN_KEY);unlockWorkspace();}}catch{}
+  try{const resumed=sessionStorage.getItem(AUTO_RETURN_KEY)==='1';if(resumed)sessionStorage.removeItem(AUTO_RETURN_KEY);
+    if(resumed||sessionStorage.getItem(ACCESS_SESSION_KEY)==='1'){unlockWorkspace();}}catch{}
 })();

@@ -241,3 +241,158 @@ html[data-theme=dark] .ff-dev-page{--dev-paper:#111f25;--dev-card:#1a2c33;--dev-
 .ff-dev-page .dev-deploy-footnote{font:10px/1.6 'DM Sans',sans-serif;color:var(--dev-muted);margin:14px 0 0!important}
 @media(max-width:650px){.ff-dev-page .dev-deploy-panel{padding:16px 14px}.ff-dev-page .dev-deploy-stages{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:12px}.ff-dev-page .dev-deploy-stages>li{font-size:10px}}
 @media(prefers-reduced-motion:reduce){.ff-dev-page .dev-deploy-panel{animation:none}.ff-dev-page .dev-deploy-track>span,.ff-dev-page .dev-deploy-step-dot{transition:none}}
+
+/* v45 — consolidated, restrained portal motion and readable history. */
+@keyframes ff-dev-arrive{from{opacity:0;transform:translateY(13px) scale(.992)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes ff-dev-depart{from{opacity:1;transform:translateY(0) scale(1)}to{opacity:0;transform:translateY(8px) scale(.99)}}
+.ff-dev-page .dev-lock:not([hidden]) .dev-lock-card{animation:ff-dev-arrive .42s cubic-bezier(.19,.85,.25,1) both}
+.ff-dev-page .dev-lock.is-leaving .dev-lock-card,.ff-dev-page .dev-workspace.is-leaving{animation:ff-dev-depart .18s ease-in both}
+.ff-dev-page .dev-workspace:not([hidden]):not(.is-leaving){animation:ff-dev-arrive .38s cubic-bezier(.19,.85,.25,1) both}
+.ff-dev-page .dev-panel{animation:ff-dev-arrive .3s cubic-bezier(.19,.85,.25,1) both}
+.ff-dev-page .dev-version-list{gap:8px}
+.ff-dev-page .dev-version{border-radius:5px;transition:border-color .22s ease,box-shadow .25s ease,background .22s ease;gap:18px}
+.ff-dev-page .dev-version:hover{border-color:var(--dev-accent);box-shadow:0 9px 25px rgba(6,33,38,.055)}
+.ff-dev-page .dev-version-details{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:5px}
+.ff-dev-page .dev-version-details strong{font-size:13px;font-weight:700;line-height:1.5;overflow-wrap:anywhere}
+.ff-dev-page .dev-version-badge{font:700 9px/1.5 'DM Sans',sans-serif;letter-spacing:.09em;text-transform:uppercase;color:var(--dev-muted)}
+.ff-dev-page .dev-version-badge.is-verified{color:var(--dev-accent)}
+.ff-dev-page .dev-version-actions{display:flex;gap:8px;align-items:center;flex-shrink:0}
+.ff-dev-page .dev-version-actions .dev-button{min-height:37px;padding:7px 12px;font-size:11px}
+.ff-dev-page .dev-history-note{color:var(--dev-muted);font-size:11px;margin:0 0 12px;line-height:1.55}
+.ff-dev-page .dev-history-more{margin-top:12px;padding:9px 0}
+.ff-dev-page .dev-history-head{margin-top:24px;margin-bottom:10px}
+.ff-dev-page .dev-restore-help{margin-top:20px}
+.ff-dev-page .dev-restore-help p{font-size:12px;color:var(--dev-muted);max-width:680px}
+@media(max-width:550px){.ff-dev-page .dev-version{flex-direction:row;align-items:center;flex-wrap:wrap}.ff-dev-page .dev-version-actions{width:100%}.ff-dev-page .dev-version-actions .dev-button{flex:1}}
+@media(prefers-reduced-motion:reduce){.ff-dev-page .dev-lock:not([hidden]) .dev-lock-card,.ff-dev-page .dev-lock.is-leaving .dev-lock-card,.ff-dev-page .dev-workspace.is-leaving,.ff-dev-page .dev-workspace:not([hidden]):not(.is-leaving),.ff-dev-page .dev-panel{animation:none!important}.ff-dev-page .dev-version{transition:none}}
+
+/* v46: compact release dialog and coherent standards controls */
+.ff-dev-page .dev-deploy-dialog{position:fixed;inset:0;margin:auto;width:min(590px,calc(100vw - 28px));max-height:min(86dvh,760px);overflow-y:auto;padding:0;border:1px solid var(--dev-line);border-radius:10px;background:var(--dev-card);color:var(--dev-ink);box-shadow:0 25px 90px rgba(1,19,23,.35);animation:ff-dev-arrive .32s cubic-bezier(.2,.75,.25,1) both}
+.ff-dev-page .dev-deploy-dialog::backdrop{background:rgba(4,21,27,.62);animation:ff-dev-backdrop .3s ease both}
+.ff-dev-page .dev-deploy-dialog.is-closing{animation:ff-dev-depart .16s ease-in both}
+@keyframes ff-dev-backdrop{from{opacity:0}to{opacity:1}}
+.ff-dev-page .dev-deploy-dialog-top{display:flex;justify-content:space-between;align-items:center;padding:14px 19px;border-bottom:1px solid var(--dev-line)}
+.ff-dev-page .dev-deploy-dialog-top .dev-eyebrow{margin:0}
+.ff-dev-page .dev-deploy-dialog .dev-deploy-panel{margin:0;border:0;background:transparent;box-shadow:none;animation:none;padding:20px 22px 25px}
+.ff-dev-page .dev-deploy-actions{flex-wrap:wrap}
+.ff-dev-page .dev-release-label{display:block;margin:13px 0 7px;color:var(--dev-ink);font-size:12px;font-weight:700}
+.ff-dev-page .dev-release-label span{color:var(--dev-muted);font-weight:400}
+.ff-dev-page .dev-release-input{width:100%;min-height:43px;padding:9px 12px;border:1px solid var(--dev-line);border-radius:5px;background:var(--dev-card);color:var(--dev-ink);font:13px 'DM Sans',sans-serif}
+.ff-dev-page .dev-release-input:focus-visible{outline:2px solid var(--dev-accent);outline-offset:2px}
+.ff-dev-page .dev-release-hint{margin:6px 0 12px!important;font-size:11px!important;color:var(--dev-muted);line-height:1.5}
+.ff-dev-page .dev-standard-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:19px 0 11px;color:var(--dev-muted);font-size:11px;font-weight:700;letter-spacing:.04em}
+.ff-dev-page .dev-standard-views{display:flex;gap:5px}
+.ff-dev-page .dev-standard-views button{width:34px;height:34px;border:1px solid var(--dev-line);background:transparent;color:var(--dev-muted);border-radius:5px;display:grid;place-items:center;transition:background .22s ease,color .22s ease,border-color .22s ease}
+.ff-dev-page .dev-standard-views button:hover,.ff-dev-page .dev-standard-views button.is-selected{background:color-mix(in srgb,var(--dev-accent) 9%,var(--dev-card));border-color:var(--dev-accent);color:var(--dev-ink)}
+.ff-dev-page .dev-standard-views svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+.ff-dev-page .dev-download-icon{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none;vertical-align:middle}
+.ff-dev-page .dev-document-action{display:inline-flex;align-items:center;gap:9px;white-space:nowrap}
+.ff-dev-page .dev-document-action small{font-size:10px}
+.ff-dev-page .dev-guide-grid.is-list{grid-template-columns:1fr}
+.ff-dev-page .dev-guide-grid.is-list>a{min-height:66px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 14px;align-items:center}
+.ff-dev-page .dev-guide-grid.is-list>a strong,.ff-dev-page .dev-guide-grid.is-list>a small{grid-column:1}
+.ff-dev-page .dev-guide-grid.is-list>a span{grid-column:2;grid-row:1 / span 2}
+.ff-site-nav .ff-home-link{display:inline-flex;align-items:center;justify-content:center;min-width:32px}
+.ff-site-nav .ff-home-link svg{width:19px;height:19px;display:block;transition:transform .24s ease}
+.ff-site-nav .ff-home-link:hover svg{transform:translateY(-1px)}
+@media(max-width:550px){.ff-dev-page .dev-deploy-dialog .dev-deploy-panel{padding:16px 14px 22px}.ff-dev-page .dev-deploy-dialog-top{padding:12px 14px}.ff-dev-page .dev-guide-grid.is-list>a{grid-template-columns:minmax(0,1fr) auto}}
+@media(prefers-reduced-motion:reduce){.ff-dev-page .dev-deploy-dialog,.ff-dev-page .dev-deploy-dialog.is-closing,.ff-dev-page .dev-deploy-dialog::backdrop{animation:none!important}.ff-site-nav .ff-home-link svg{transition:none!important}}
+
+
+/* v47: consolidated publication resources, and a quiet lock control. */
+.ff-dev-page .dev-lock-action{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:9px 13px}
+.ff-dev-page .dev-lock-action svg{flex:none}
+.ff-dev-page .dev-resource-section{margin-top:clamp(28px,4vw,44px);padding-top:clamp(22px,3vw,30px);border-top:1px solid var(--dev-line)}
+.ff-dev-page .dev-resource-heading h3{font:400 clamp(20px,2.5vw,25px)/1.4 'Libre Baskerville',serif;letter-spacing:-.025em;margin:7px 0 17px;color:var(--dev-ink)}
+.ff-dev-page .dev-resource-master{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:19px 22px;border:1px solid var(--dev-line);background:var(--dev-card);border-radius:6px}
+.ff-dev-page .dev-resource-master strong{font-size:13px;color:var(--dev-ink)}
+.ff-dev-page .dev-resource-master p{font-size:11px;color:var(--dev-muted);margin:6px 0 0;max-width:480px;line-height:1.6}
+.ff-dev-page .dev-resource-master .dev-button{flex:none}
+.ff-dev-page .dev-standard-details{margin-top:10px;border:1px solid var(--dev-line);border-radius:6px;background:var(--dev-card);color:var(--dev-ink)}
+.ff-dev-page .dev-standard-details>summary{display:flex;align-items:center;gap:12px;list-style:none;cursor:pointer;padding:15px 20px;font:700 12px 'DM Sans',sans-serif;transition:color .22s ease,background-color .22s ease}
+.ff-dev-page .dev-standard-details>summary::-webkit-details-marker{display:none}
+.ff-dev-page .dev-standard-details>summary:hover{background:color-mix(in srgb,var(--dev-accent) 6%,var(--dev-card))}
+.ff-dev-page .dev-resource-count{margin-left:auto;color:var(--dev-muted);font-size:11px;font-weight:500}
+.ff-dev-page .dev-chevron{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s cubic-bezier(.22,.75,.2,1)}
+.ff-dev-page .dev-standard-details[open] .dev-chevron{transform:rotate(180deg)}
+.ff-dev-page .dev-standard-files{border-top:1px solid var(--dev-line);padding:5px 10px 10px}
+.ff-dev-page .dev-resource-row{display:flex;align-items:center;gap:11px;padding:11px 10px;min-width:0;border-radius:5px;text-decoration:none;color:var(--dev-ink);transition:background-color .2s ease}
+.ff-dev-page .dev-resource-row+.dev-resource-row{border-top:1px solid color-mix(in srgb,var(--dev-line) 65%,transparent)}
+.ff-dev-page .dev-resource-row:hover,.ff-dev-page .dev-resource-row:focus-visible{background:color-mix(in srgb,var(--dev-accent) 7%,var(--dev-card))}
+.ff-dev-page .dev-resource-text{display:flex;flex-direction:column;min-width:0;gap:3px;flex:1}
+.ff-dev-page .dev-resource-text strong{font-size:12px;line-height:1.45}
+.ff-dev-page .dev-resource-text small{font-size:11px;line-height:1.5;color:var(--dev-muted)}
+.ff-dev-page .dev-resource-type{font-size:10px;font-weight:700;color:var(--dev-muted)}
+.ff-dev-page .dev-resource-row>.dev-download-icon{margin-left:4px;color:var(--dev-accent)}
+.ff-dev-page .dev-lock-confirm{width:min(500px,calc(100% - 28px))}
+.ff-dev-page .dev-lock-confirm-actions{justify-content:flex-end;margin-top:24px}
+@media(max-width:680px){.ff-dev-page .dev-resource-master{align-items:flex-start;flex-direction:column;padding:17px}.ff-dev-page .dev-resource-master .dev-button{width:100%}.ff-dev-page .dev-resource-count{font-size:10px}}
+@media(max-width:420px){.ff-dev-page .dev-resource-row{gap:8px}.ff-dev-page .dev-resource-text small{font-size:10px}.ff-dev-page .dev-lock-confirm-actions{flex-direction:column-reverse}.ff-dev-page .dev-lock-confirm-actions .dev-button{width:100%}}
+@media(prefers-reduced-motion:reduce){.ff-dev-page .dev-standard-details>summary,.ff-dev-page .dev-resource-row,.ff-dev-page .dev-chevron{transition:none!important}}
+
+/* Avoid a transient access-code screen on refresh within an unlocked tab. */
+html.ff-dev-tab-resume .dev-lock{visibility:hidden}
+
+/* v48 — compact single-page publication workspace.
+   Shared teal, cream, sans/serif and consistent motion with the public archive. */
+.ff-dev-page .dev-main-grid{display:block;max-width:1030px;min-height:0;padding-top:22px;padding-bottom:64px}
+.ff-dev-page .dev-content.dev-accordion-stack{display:grid;gap:12px;min-width:0}
+.ff-dev-page .dev-main-accordion{display:block;min-width:0;border:1px solid var(--dev-line);border-radius:8px;background:var(--dev-card);overflow:visible;scroll-margin-top:90px;transition:border-color .26s ease,box-shadow .26s ease}
+.ff-dev-page .dev-main-accordion[open]{border-color:color-mix(in srgb,var(--dev-accent) 35%,var(--dev-line));box-shadow:0 12px 32px rgba(12,47,53,.055)}
+.ff-dev-page .dev-main-accordion>summary{list-style:none;display:flex;align-items:center;gap:17px;padding:19px 23px;cursor:pointer;user-select:none;color:var(--dev-ink);transition:background-color .24s ease}
+.ff-dev-page .dev-main-accordion>summary::-webkit-details-marker{display:none}
+.ff-dev-page .dev-main-accordion>summary:hover{background:color-mix(in srgb,var(--dev-accent) 4%,var(--dev-card))}
+.ff-dev-page .dev-section-icon{display:grid;place-items:center;flex:0 0 36px;width:36px;height:36px;border:1px solid var(--dev-line);border-radius:6px;color:var(--dev-accent);font:700 11px 'DM Sans',sans-serif;letter-spacing:.04em}
+.ff-dev-page .dev-section-copy{display:flex;flex:1;flex-direction:column;gap:3px;min-width:0}
+.ff-dev-page .dev-section-copy strong{font:700 15px 'DM Sans',sans-serif}
+.ff-dev-page .dev-section-copy small{font:400 11px/1.5 'DM Sans',sans-serif;color:var(--dev-muted)}
+.ff-dev-page .dev-section-chevron{width:18px;height:18px;flex:none;fill:none;stroke:var(--dev-accent);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;transition:transform .26s cubic-bezier(.2,.7,.2,1)}
+.ff-dev-page .dev-main-accordion[open]>.dev-section-heading .dev-section-chevron{transform:rotate(180deg)}
+.ff-dev-page .dev-accordion-body{padding:23px;border-top:1px solid var(--dev-line);min-width:0}
+.ff-dev-page .dev-panel{animation:none!important;min-width:0}
+.ff-dev-page .dev-panel>.dev-eyebrow,.ff-dev-page .dev-panel>h2,.ff-dev-page .dev-panel>.dev-lead{display:none}
+.ff-dev-page .dev-panel[data-panel="versions"] .dev-download-card{margin:0 0 18px}
+.ff-dev-page .dev-resource-section{padding:0;margin:0;border:0}
+.ff-dev-page .dev-resource-heading{display:none}
+.ff-dev-page .dev-version-more{margin-top:12px;border:1px solid var(--dev-line);border-radius:6px;background:transparent}
+.ff-dev-page .dev-version-more>summary{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 15px;list-style:none;cursor:pointer;color:var(--dev-accent);font:700 11px 'DM Sans',sans-serif}
+.ff-dev-page .dev-version-more>summary::-webkit-details-marker{display:none}
+.ff-dev-page .dev-version-more>summary:hover{background:color-mix(in srgb,var(--dev-accent) 5%,var(--dev-card))}
+.ff-dev-page .dev-version-more>summary svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;transition:transform .24s ease}
+.ff-dev-page .dev-version-more[open]>summary svg{transform:rotate(180deg)}
+.ff-dev-page .dev-version-more-content{max-height:425px;overflow:auto;padding:8px 10px 13px;border-top:1px solid var(--dev-line);display:grid;gap:8px;overscroll-behavior:contain}
+.ff-dev-page .dev-version{border-radius:6px;padding:13px 15px}
+.ff-dev-page .dev-history-head{margin-top:17px}
+.ff-dev-page .dev-resource-master{margin:0}
+.ff-dev-page .dev-lock-confirm-actions{display:flex;justify-content:flex-end;align-items:center;gap:10px;margin-top:23px}
+.ff-dev-page .dev-lock-confirm-actions .dev-button{min-width:116px;min-height:43px;padding:10px 16px}
+.ff-dev-page .dev-lock-confirm-actions .dev-button.primary{min-width:136px}
+/* Native dialogs are top-layer elements. Lock document scrolling while any
+   portal or shared settings dialog is open, with a stable scrollbar gutter. */
+html:has(body.ff-dev-page){scrollbar-gutter:stable}
+html:has(body.ff-dev-page dialog[open]),body.ff-dev-page:has(dialog[open]){overflow:hidden!important;overscroll-behavior:none!important}
+.ff-dev-page dialog[open]{overscroll-behavior:contain}
+.ff-dev-page .dev-deploy-dialog{max-height:min(82dvh,740px)}
+@media(max-width:680px){
+ .ff-dev-page .dev-main-accordion>summary{padding:15px 16px;gap:12px}
+ .ff-dev-page .dev-section-icon{width:32px;height:32px;flex-basis:32px}
+ .ff-dev-page .dev-section-copy strong{font-size:13px}
+ .ff-dev-page .dev-section-copy small{font-size:10px}
+ .ff-dev-page .dev-accordion-body{padding:16px 14px}
+ .ff-dev-page .dev-task-block{padding:16px 13px}
+ .ff-dev-page .dev-version-more-content{max-height:330px}
+}
+@media(max-width:420px){
+ .ff-dev-page .dev-lock-confirm-actions{flex-direction:row;flex-wrap:wrap;justify-content:flex-end}
+ .ff-dev-page .dev-lock-confirm-actions .dev-button{min-width:0!important;flex:1}
+}
+@media(prefers-reduced-motion:reduce){.ff-dev-page .dev-main-accordion,.ff-dev-page .dev-main-accordion>summary,.ff-dev-page .dev-section-chevron{transition:none!important}}
+.ff-dev-page .dev-deploy-track.is-checking::after{content:"";display:block;position:absolute;top:0;left:0;height:100%;width:24%;border-radius:inherit;background:color-mix(in srgb,var(--dev-accent) 75%,white);opacity:.55;animation:ff-deploy-checking 1.6s ease-in-out infinite alternate}
+.ff-dev-page .dev-deploy-track{position:relative}
+@keyframes ff-deploy-checking{from{transform:translateX(0)}to{transform:translateX(300%)}}
+@media(prefers-reduced-motion:reduce){.ff-dev-page .dev-deploy-track.is-checking::after{animation:none}}
+/* Prevent browser scroll anchoring from compensating during disclosure morphs. */
+.ff-dev-page .dev-accordion-body,.ff-dev-page .dev-version-more-content{overflow-anchor:none}
+
+/* ZIP inspection is automatic on selection, not an extra user step. */
+#dev-compare[hidden]{display:none!important}
