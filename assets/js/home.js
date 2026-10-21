@@ -47,7 +47,7 @@
     const activeCount=document.getElementById('active-filter-count');
     function refreshFilterCount(){
       const n=[genre,articleYear,filmYear].filter(el=>el?.value).length;
-      if(activeCount){activeCount.hidden=n===0;activeCount.textContent=String(n)}
+      if(activeCount){activeCount.hidden=n===0;activeCount.title=n?`${n} filter${n===1?'':'s'} active`:'';activeCount.parentElement?.classList.toggle('has-active-filters',n>0);activeCount.parentElement?.setAttribute('aria-label',n?`Show archive filters (${n} active)`:'Show archive filters')}
     }
     document.getElementById('reset-filters')?.addEventListener('click',()=>{
       [genre,articleYear,filmYear].forEach(el=>{if(el)el.value=''});

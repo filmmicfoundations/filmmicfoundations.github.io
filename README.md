@@ -127,8 +127,8 @@ release-status panel**:
    exact commit SHA, displaying runner/job status when the API provides it.
 4. **Live website:** after a successful workflow, the portal polls a modified public
    asset with cache-busting and compares its Git blob hash to the uploaded version.
-   If the package doesn't contain a directly comparable public asset, it verifies the
-   public portal responds but labels this as unverified at the individual-file level.
+   If the package does not contain a directly comparable public asset, workflow
+   success can be reported but the updated live file cannot be independently verified.
 
 If the new public file is confirmed, the portal automatically reloads itself to use
 new HTML/JS/CSS. It leaves other open website tabs untouched to avoid losing reading
@@ -169,5 +169,17 @@ The deployment tracker is a dismissible popup with an option to reopen it during
 - **Updates** handles repository connection and validated ZIP publishing.
 - **Backups & guides** combines repository history, source downloads, and publication standards. Download the complete guide, or expand **Individual files** for seven separate references.
 - The access code (`123`, a public client-side interface gate) is remembered in the current browser tab using session storage. **Lock** asks for confirmation before clearing the remembered access state and any stored GitHub token. Closing a tab normally clears session storage, but browser session restoration can retain it.
-- Disclosure menus, mobile tables of contents, and homepage filter choices use consistent open/close animation timing. Native operating-system select menus in Reading Preferences remain OS-controlled and cannot have reliable custom transitions without replacing the accessible native controls.
+- Disclosure menus, mobile tables of contents, and homepage filter choices use consistent open/close animation timing. Reading Preferences now uses accessible custom choice popovers that open without shifting the page.
 - The access code does not secure the publicly delivered frontend. GitHub authorization remains necessary for publishing, and repository-scoped short-lived tokens are recommended.
+
+
+## v48 — consistent settings and deployment workspace
+
+- **Archive filters:** a borderless, softly elevated cream panel and a narrow teal indicator rather than a numeric counter.
+- **Developer Portal:** one page with three smooth disclosures (Updates, Backups, Publication guides). Backups initially shows four releases and puts older versions behind a separately scrolling disclosure; no pagination button. The Lock dialog actions are aligned consistently.
+- **Reader Settings:** calmer header, desktop sidebar/mobile tab navigation, uniform control sizing, and animated floating select options using the underlying native select as the stored-value source. The same local storage keys and defaults are retained.
+- **Motion:** reversible in-flow disclosure animations set their collapsed height *before* layout expands, minimizing viewport jumps. Reduced-motion settings disable animations.
+- **Publishing status:** status remains tied to confirmed GitHub stages, with an animated checking state when build information is delayed. Refreshes do not restart stale status checks indefinitely: an unverified release clears its pending marker after seven minutes from its original submission and presents actionable GitHub Actions information. Status can be retried manually. Without a comparable public changed file, a reachable homepage alone is **never** presented as proof of deployment.
+- **Privacy:** access code remains a public presentation gate. GitHub authorization remains separate; no token is included in ZIPs.
+
+A browser check was run using locally assembled HTML and CSS because local URLs are restricted in the test environment. The final deployment still needs a live GitHub Pages test, particularly the Actions-status recovery path.

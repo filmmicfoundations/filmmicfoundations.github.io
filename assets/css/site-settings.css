@@ -147,3 +147,61 @@ html[data-ff-gallery-motion="off"] .ffv-dialog.ffv-sliding,html[data-ff-gallery-
 
 /* Optional unobtrusive reading view; reference list itself is never hidden. */
 html[data-ff-markers="off"] article.article a.cite{display:none!important}
+
+/* v48 — reader-first preferences; a single calm design language.
+   Sidebar on desktop, compact tabs on mobile, and floating animated choices. */
+.ff-settings-dialog{width:min(770px,calc(100vw - 24px));max-width:770px;max-height:min(810px,calc(100dvh - 24px));border-radius:11px}
+.ff-settings-shell{max-height:min(810px,calc(100dvh - 24px))}
+.ff-settings-top{padding:24px 27px 20px;align-items:flex-start}
+.ff-settings-top h2{font-size:29px;line-height:1.25;margin-top:6px}
+.ff-settings-intro{font:400 12px/1.6 'DM Sans',sans-serif;margin:7px 0 0!important;color:#59747a;max-width:450px}
+.ff-settings-main{min-height:0;flex:1;display:grid;grid-template-columns:170px minmax(0,1fr)}
+.ff-settings-tabs{display:flex;flex-direction:column;gap:4px;padding:19px 11px;border-bottom:0;border-right:1px solid #dce7e3;overflow:visible;background:#f7faf8}
+.ff-settings-tab{flex:0 0 auto;min-width:0;justify-content:flex-start;padding:12px 13px;border:0!important;border-radius:6px!important;background:transparent;gap:10px;text-align:left;font-size:12px;white-space:nowrap}
+.ff-settings-tab[aria-selected="true"]{background:#e5f0ec;color:#153f45;box-shadow:inset 3px 0 #347e81}
+.ff-settings-scroll{padding:17px 25px 19px;overflow:auto;min-height:0}
+.ff-settings-section{margin:0 0 19px}
+.ff-settings-section>h3{margin:0 0 8px;font-size:10px;letter-spacing:.13em}
+.ff-pref-row{gap:14px;min-height:68px;padding:12px 0;border-bottom:1px solid #e7efeb;align-items:center}
+.ff-pref-text label{font-size:12px;font-weight:700}
+.ff-pref-text p{margin:3px 0 0;font-size:10.5px;line-height:1.55;max-width:340px}
+.ff-pref-choice{position:relative;width:clamp(132px,37%,165px);flex:none;min-width:0}
+.ff-pref-row select.ff-pref-native-select{position:absolute!important;opacity:0!important;width:1px!important;height:1px!important;pointer-events:none!important;clip-path:inset(50%)!important}
+.ff-pref-choice-button{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;min-height:39px;padding:9px 10px 9px 12px;border:1px solid #c6d9d2;border-radius:6px;background:transparent;color:#1b4147;font:600 11px 'DM Sans',sans-serif;text-align:left;cursor:pointer;transition:background-color .22s,border-color .22s}
+.ff-pref-choice-button:after{content:"";width:7px;height:7px;flex:0 0 7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .22s}
+.ff-pref-choice-button[aria-expanded="true"]:after{transform:translateY(2px) rotate(225deg)}
+.ff-pref-choice-button:is(:hover,[aria-expanded="true"]){border-color:#86aaa4;background:#eef6f2}
+.ff-pref-choice-list{position:absolute;z-index:100;left:0;right:0;top:calc(100% + 5px);background:#fcfcfa;border:1px solid #c6d9d2;border-radius:7px;box-shadow:0 12px 30px #122f3325;padding:4px;max-height:214px;overflow:auto;overscroll-behavior:contain}
+.ff-pref-choice-list[hidden]{display:none!important}
+.ff-pref-choice-list button{display:block;border:0;border-radius:4px;background:transparent;padding:10px 9px;width:100%;text-align:left;color:#1b4147;font:600 11px 'DM Sans',sans-serif;cursor:pointer}
+.ff-pref-choice-list button:is(:hover,:focus-visible,[aria-selected="true"]){background:#e8f2ee;outline:0}
+.ff-pref-row input[type="checkbox"]{flex-basis:42px}
+.ff-settings-bottom{padding:13px 25px;gap:12px}
+html[data-theme="dark"] .ff-settings-intro{color:#b4c9c9}
+html[data-theme="dark"] .ff-settings-tabs{background:#18333b;border-right-color:#35535a}
+html[data-theme="dark"] .ff-settings-tab[aria-selected="true"]{background:#2b4b51;color:#f1faf7;box-shadow:inset 3px 0 #9bd1c9}
+html[data-theme="dark"] .ff-pref-choice-button{background:transparent;border-color:#52716f;color:#ecf6f3}
+html[data-theme="dark"] .ff-pref-choice-button:is(:hover,[aria-expanded="true"]){background:#2b4c53;border-color:#739d95}
+html[data-theme="dark"] .ff-pref-choice-list{background:#203a42;border-color:#52716f;box-shadow:0 13px 32px #0007}
+html[data-theme="dark"] .ff-pref-choice-list button{color:#ecf6f3}
+html[data-theme="dark"] .ff-pref-choice-list button:is(:hover,:focus-visible,[aria-selected="true"]){background:#32565c}
+@media(max-width:650px){
+ .ff-settings-dialog{width:calc(100vw - 16px);max-height:calc(100dvh - 16px)}
+ .ff-settings-shell{max-height:calc(100dvh - 16px)}
+ .ff-settings-top{padding:20px 17px 15px}
+ .ff-settings-top h2{font-size:24px}
+ .ff-settings-intro{font-size:11px}
+ .ff-settings-main{display:flex;flex-direction:column}
+ .ff-settings-tabs{flex-direction:row;overflow-x:auto;min-height:55px;flex:none;gap:4px;padding:8px 11px;border-right:0;border-bottom:1px solid #dce7e3;background:transparent;scrollbar-width:none}
+ .ff-settings-tabs::-webkit-scrollbar{display:none}
+ .ff-settings-tab{flex:1;justify-content:center;min-width:max-content;padding:10px 12px;font-size:11px}
+ .ff-settings-tab[aria-selected="true"]{box-shadow:inset 0 -2px #347e81}
+ .ff-settings-scroll{padding:14px 17px 18px;overflow-y:auto;overflow-x:visible}
+ .ff-pref-row{gap:9px;min-height:62px}
+ .ff-pref-choice{min-width:125px;max-width:150px;width:39%}
+ .ff-settings-bottom{padding:11px 16px}
+ html[data-theme="dark"] .ff-settings-tabs{border-bottom-color:#35535a}
+ html[data-theme="dark"] .ff-settings-tab[aria-selected="true"]{box-shadow:inset 0 -2px #9bd1c9}
+}
+@media(prefers-reduced-motion:reduce){.ff-pref-choice-button,.ff-pref-choice-button:after{transition:none!important}}
+.ff-pref-choice.ff-choice-above .ff-pref-choice-list{top:auto;bottom:calc(100% + 5px);transform-origin:bottom center}

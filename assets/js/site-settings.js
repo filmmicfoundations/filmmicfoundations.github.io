@@ -111,7 +111,7 @@
     publish();
   }
   let statusTimeout;
-  function notice(text){const el=document.getElementById('ff-settings-status');if(!el)return;el.textContent=text;clearTimeout(statusTimeout);statusTimeout=setTimeout(()=>{el.textContent='Saved on this device';},2000)}
+  function notice(text){const el=document.getElementById('ff-settings-status');if(!el)return;el.textContent=text;clearTimeout(statusTimeout);statusTimeout=setTimeout(()=>{el.textContent='Changes saved locally';},2000)}
   function save(next){
     const normalized=normalize(next);
     if(Object.keys(DEFAULT).every(k=>settings[k]===normalized[k]))return;
@@ -127,8 +127,54 @@
   dialog.className='ff-settings-dialog';dialog.id='ff-settings-dialog';
   dialog.setAttribute('aria-labelledby','ff-settings-heading');
   const panels=sections.map((section,index)=>`<section class="ff-settings-panel" id="ff-settings-${section.id}" role="tabpanel" aria-labelledby="ff-tab-${section.id}" ${index?'hidden':''}>${section.groups.map(group=>`<div class="ff-settings-section"><h3>${group.name}</h3>${group.fields.map(([key,title,desc,choices])=>`<div class="ff-pref-row"><div class="ff-pref-text"><label for="ff-pref-${key}">${title}</label><p id="ff-pref-help-${key}">${desc}</p></div>${choices?`<select id="ff-pref-${key}" name="${key}" aria-describedby="ff-pref-help-${key}">${choices.map(([v,label])=>`<option value="${v}">${label}</option>`).join('')}</select>`:`<input type="checkbox" id="ff-pref-${key}" name="${key}" aria-describedby="ff-pref-help-${key}">`}</div>`).join('')}</div>`).join('')}${section.id==='general'?`<div class="ff-pref-information"><strong>Privacy by design</strong>Preferences and optional reading positions are stored only in your browser. No account is required, and the settings panel does not transmit them to Filmmic Foundations. External video services may receive requests when you choose to load them.</div><div class="ff-pref-actions"><button type="button" class="ff-pref-action" id="ff-clear-positions">Clear saved reading positions</button><button type="button" class="ff-pref-action ff-danger" id="ff-reset-settings">Reset all preferences</button></div>`:''}</section>`).join('');
-  dialog.innerHTML=`<div class="ff-settings-shell"><div class="ff-settings-top"><div><span class="ff-settings-kicker">FILMMIC FOUNDATIONS · PERSONALIZATION</span><h2 id="ff-settings-heading">Reading preferences</h2></div><button type="button" class="ff-settings-dismiss" aria-label="Close settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">${srcIcons.close}</svg></button></div><div class="ff-settings-tabs" role="tablist" aria-label="Settings categories">${sections.map((section,index)=>`<button type="button" role="tab" id="ff-tab-${section.id}" class="ff-settings-tab" aria-controls="ff-settings-${section.id}" aria-selected="${index===0}" tabindex="${index===0?0:-1}"><span aria-hidden="true">${section.symbol}</span>${section.label}</button>`).join('')}</div><div class="ff-settings-scroll">${panels}</div><div class="ff-settings-bottom"><span class="ff-settings-saved" id="ff-settings-status" role="status" aria-live="polite">Saved on this device</span><button class="ff-settings-done" type="button">Done</button></div></div>`;
+  dialog.innerHTML=`<div class="ff-settings-shell"><div class="ff-settings-top"><div><span class="ff-settings-kicker">FILMMIC FOUNDATIONS / READER SETTINGS</span><h2 id="ff-settings-heading">Make it yours.</h2><p class="ff-settings-intro">A comfortable way to read and explore. Changes save automatically.</p></div><button type="button" class="ff-settings-dismiss" aria-label="Close settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">${srcIcons.close}</svg></button></div><div class="ff-settings-main"><div class="ff-settings-tabs" role="tablist" aria-label="Settings categories">${sections.map((section,index)=>`<button type="button" role="tab" id="ff-tab-${section.id}" class="ff-settings-tab" aria-controls="ff-settings-${section.id}" aria-selected="${index===0}" tabindex="${index===0?0:-1}"><span aria-hidden="true">${section.symbol}</span>${section.label}</button>`).join('')}</div><div class="ff-settings-scroll">${panels}</div></div><div class="ff-settings-bottom"><span class="ff-settings-saved" id="ff-settings-status" role="status" aria-live="polite">Changes saved locally</span><button class="ff-settings-done" type="button">Done</button></div></div>`;
   document.body.append(dialog);
+
+  // Uniform animated choice popovers; original selects remain the form's source of truth.
+  // Popovers float above the panel so changing an option never shifts page layout.
+  const choiceMenus=[];
+  for(const select of dialog.querySelectorAll('.ff-pref-row select')){
+    const wrap=document.createElement('div');wrap.className='ff-pref-choice';
+    const trigger=document.createElement('button');trigger.type='button';trigger.className='ff-pref-choice-button';
+    trigger.setAttribute('aria-haspopup','listbox');trigger.setAttribute('aria-expanded','false');
+    trigger.id=select.id+'-button';
+    const prefLabel=select.closest('.ff-pref-row')?.querySelector('label');
+    if(prefLabel)prefLabel.htmlFor=trigger.id;
+    trigger.setAttribute('aria-label',prefLabel?.textContent||'Choose preference');
+    const menu=document.createElement('div');menu.className='ff-pref-choice-list';menu.setAttribute('role','listbox');menu.hidden=true;
+    for(const option of select.options){
+      const item=document.createElement('button');item.type='button';item.dataset.value=option.value;
+      item.setAttribute('role','option');item.textContent=option.textContent;
+      item.addEventListener('click',()=>{select.value=option.value;select.dispatchEvent(new Event('change',{bubbles:true}));close();trigger.focus({preventScroll:true})});
+      menu.appendChild(item);
+    }
+    let opened=false,anim=null;const DURATION=210;
+    const frames=[{opacity:0,transform:'translateY(-5px) scale(.985)'},{opacity:1,transform:'translateY(0) scale(1)'}];
+    function sync(){trigger.textContent=select.selectedOptions[0]?.textContent||'Choose';menu.querySelectorAll('[role=option]').forEach(item=>item.setAttribute('aria-selected',String(item.dataset.value===select.value)))}
+    function setOpen(next){
+      if(next===opened)return;opened=next;trigger.setAttribute('aria-expanded',String(next));
+      if(next)menu.hidden=false;menu.style.pointerEvents=next?'auto':'none';
+      if(isReduced()){anim?.cancel();anim=null;menu.hidden=!next;return}
+      if(!anim){anim=menu.animate(frames,{duration:DURATION,easing:'cubic-bezier(.22,.8,.22,1)',fill:'both'});if(!next){anim.pause();anim.currentTime=DURATION}}
+      const current=anim;current.playbackRate=next?1:-(DURATION/125);current.play();
+      current.onfinish=()=>{if(anim!==current)return;menu.hidden=!opened;current.cancel();anim=null};
+    }
+    function close(){setOpen(false)}
+    choiceMenus.push({close,trigger,menu});
+    trigger.addEventListener('click',()=>{if(opened)close();else{choiceMenus.forEach(other=>other.close());wrap.classList.toggle('ff-choice-above',trigger.getBoundingClientRect().bottom>dialog.getBoundingClientRect().bottom-240);setOpen(true);menu.querySelector('[aria-selected=true]')?.focus({preventScroll:true})}});
+    wrap.addEventListener('keydown',event=>{
+      if(event.key==='Escape'){event.preventDefault();close();trigger.focus({preventScroll:true})}
+      if(!opened)return;
+      const items=[...menu.querySelectorAll('[role=option]')],index=items.indexOf(document.activeElement);
+      if(event.key==='ArrowDown'||event.key==='ArrowUp'){event.preventDefault();items[(index+(event.key==='ArrowDown'?1:-1)+items.length)%items.length]?.focus({preventScroll:true})}
+    });
+    select.classList.add('ff-pref-native-select');select.insertAdjacentElement('afterend',wrap);wrap.append(trigger,menu);
+    select.addEventListener('change',sync);sync();
+
+  }
+  dialog.addEventListener('click',event=>{if(!event.target.closest('.ff-pref-choice'))choiceMenus.forEach(item=>item.close())});
+  dialog.querySelectorAll('.ff-settings-tab').forEach(tab=>tab.addEventListener('click',()=>choiceMenus.forEach(item=>item.close())));
+
   let lastTrigger=null,closing=false,closeTimer=0;
   function open(){
     if(dialog.open)return;
@@ -139,6 +185,7 @@
   }
   function close(){
     if(!dialog.open||closing)return;
+    choiceMenus.forEach(item=>item.close());
     closing=true;
     const finish=()=>{
       clearTimeout(closeTimer);dialog.close();dialog.classList.remove('ff-pref-closing');closing=false;
@@ -174,7 +221,7 @@
     for(const key of Object.keys(DEFAULT)){
       const input=dialog.querySelector('#ff-pref-'+key);if(!input)continue;
       if(input.type==='checkbox')input.checked=settings[key]==='on';
-      else input.value=settings[key];
+      else {input.value=settings[key];input.dispatchEvent(new Event('change'));}
     }
   }
   dialog.addEventListener('change',e=>{
@@ -185,7 +232,7 @@
   });
   dialog.querySelector('#ff-reset-settings').addEventListener('click',()=>{
     settings={...DEFAULT};safeSet(STORE,JSON.stringify(settings));safeSet(LEGACY_THEME,'light');
-    apply();reflect();notice('Defaults restored');
+    apply();reflect();dialog.querySelectorAll('.ff-pref-native-select').forEach(input=>input.dispatchEvent(new Event('change')));notice('Defaults restored');
   });
   dialog.querySelector('#ff-clear-positions').addEventListener('click',()=>{
     safeRemove(POSITIONS);document.querySelector('.ff-resume-prompt')?.remove();notice('Reading positions cleared');

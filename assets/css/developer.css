@@ -332,3 +332,64 @@ html[data-theme=dark] .ff-dev-page{--dev-paper:#111f25;--dev-card:#1a2c33;--dev-
 
 /* Avoid a transient access-code screen on refresh within an unlocked tab. */
 html.ff-dev-tab-resume .dev-lock{visibility:hidden}
+
+/* v48 — compact single-page publication workspace.
+   Shared teal, cream, sans/serif and consistent motion with the public archive. */
+.ff-dev-page .dev-main-grid{display:block;max-width:1030px;min-height:0;padding-top:22px;padding-bottom:64px}
+.ff-dev-page .dev-content.dev-accordion-stack{display:grid;gap:12px;min-width:0}
+.ff-dev-page .dev-main-accordion{display:block;min-width:0;border:1px solid var(--dev-line);border-radius:8px;background:var(--dev-card);overflow:visible;scroll-margin-top:90px;transition:border-color .26s ease,box-shadow .26s ease}
+.ff-dev-page .dev-main-accordion[open]{border-color:color-mix(in srgb,var(--dev-accent) 35%,var(--dev-line));box-shadow:0 12px 32px rgba(12,47,53,.055)}
+.ff-dev-page .dev-main-accordion>summary{list-style:none;display:flex;align-items:center;gap:17px;padding:19px 23px;cursor:pointer;user-select:none;color:var(--dev-ink);transition:background-color .24s ease}
+.ff-dev-page .dev-main-accordion>summary::-webkit-details-marker{display:none}
+.ff-dev-page .dev-main-accordion>summary:hover{background:color-mix(in srgb,var(--dev-accent) 4%,var(--dev-card))}
+.ff-dev-page .dev-section-icon{display:grid;place-items:center;flex:0 0 36px;width:36px;height:36px;border:1px solid var(--dev-line);border-radius:6px;color:var(--dev-accent);font:700 11px 'DM Sans',sans-serif;letter-spacing:.04em}
+.ff-dev-page .dev-section-copy{display:flex;flex:1;flex-direction:column;gap:3px;min-width:0}
+.ff-dev-page .dev-section-copy strong{font:700 15px 'DM Sans',sans-serif}
+.ff-dev-page .dev-section-copy small{font:400 11px/1.5 'DM Sans',sans-serif;color:var(--dev-muted)}
+.ff-dev-page .dev-section-chevron{width:18px;height:18px;flex:none;fill:none;stroke:var(--dev-accent);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;transition:transform .26s cubic-bezier(.2,.7,.2,1)}
+.ff-dev-page .dev-main-accordion[open]>.dev-section-heading .dev-section-chevron{transform:rotate(180deg)}
+.ff-dev-page .dev-accordion-body{padding:23px;border-top:1px solid var(--dev-line);min-width:0}
+.ff-dev-page .dev-panel{animation:none!important;min-width:0}
+.ff-dev-page .dev-panel>.dev-eyebrow,.ff-dev-page .dev-panel>h2,.ff-dev-page .dev-panel>.dev-lead{display:none}
+.ff-dev-page .dev-panel[data-panel="versions"] .dev-download-card{margin:0 0 18px}
+.ff-dev-page .dev-resource-section{padding:0;margin:0;border:0}
+.ff-dev-page .dev-resource-heading{display:none}
+.ff-dev-page .dev-version-more{margin-top:12px;border:1px solid var(--dev-line);border-radius:6px;background:transparent}
+.ff-dev-page .dev-version-more>summary{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 15px;list-style:none;cursor:pointer;color:var(--dev-accent);font:700 11px 'DM Sans',sans-serif}
+.ff-dev-page .dev-version-more>summary::-webkit-details-marker{display:none}
+.ff-dev-page .dev-version-more>summary:hover{background:color-mix(in srgb,var(--dev-accent) 5%,var(--dev-card))}
+.ff-dev-page .dev-version-more>summary svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;transition:transform .24s ease}
+.ff-dev-page .dev-version-more[open]>summary svg{transform:rotate(180deg)}
+.ff-dev-page .dev-version-more-content{max-height:425px;overflow:auto;padding:8px 10px 13px;border-top:1px solid var(--dev-line);display:grid;gap:8px;overscroll-behavior:contain}
+.ff-dev-page .dev-version{border-radius:6px;padding:13px 15px}
+.ff-dev-page .dev-history-head{margin-top:17px}
+.ff-dev-page .dev-resource-master{margin:0}
+.ff-dev-page .dev-lock-confirm-actions{display:flex;justify-content:flex-end;align-items:center;gap:10px;margin-top:23px}
+.ff-dev-page .dev-lock-confirm-actions .dev-button{min-width:116px;min-height:43px;padding:10px 16px}
+.ff-dev-page .dev-lock-confirm-actions .dev-button.primary{min-width:136px}
+/* Native dialogs are top-layer elements. Lock document scrolling while any
+   portal or shared settings dialog is open, with a stable scrollbar gutter. */
+html:has(body.ff-dev-page){scrollbar-gutter:stable}
+html:has(body.ff-dev-page dialog[open]),body.ff-dev-page:has(dialog[open]){overflow:hidden!important;overscroll-behavior:none!important}
+.ff-dev-page dialog[open]{overscroll-behavior:contain}
+.ff-dev-page .dev-deploy-dialog{max-height:min(82dvh,740px)}
+@media(max-width:680px){
+ .ff-dev-page .dev-main-accordion>summary{padding:15px 16px;gap:12px}
+ .ff-dev-page .dev-section-icon{width:32px;height:32px;flex-basis:32px}
+ .ff-dev-page .dev-section-copy strong{font-size:13px}
+ .ff-dev-page .dev-section-copy small{font-size:10px}
+ .ff-dev-page .dev-accordion-body{padding:16px 14px}
+ .ff-dev-page .dev-task-block{padding:16px 13px}
+ .ff-dev-page .dev-version-more-content{max-height:330px}
+}
+@media(max-width:420px){
+ .ff-dev-page .dev-lock-confirm-actions{flex-direction:row;flex-wrap:wrap;justify-content:flex-end}
+ .ff-dev-page .dev-lock-confirm-actions .dev-button{min-width:0!important;flex:1}
+}
+@media(prefers-reduced-motion:reduce){.ff-dev-page .dev-main-accordion,.ff-dev-page .dev-main-accordion>summary,.ff-dev-page .dev-section-chevron{transition:none!important}}
+.ff-dev-page .dev-deploy-track.is-checking::after{content:"";display:block;position:absolute;top:0;left:0;height:100%;width:24%;border-radius:inherit;background:color-mix(in srgb,var(--dev-accent) 75%,white);opacity:.55;animation:ff-deploy-checking 1.6s ease-in-out infinite alternate}
+.ff-dev-page .dev-deploy-track{position:relative}
+@keyframes ff-deploy-checking{from{transform:translateX(0)}to{transform:translateX(300%)}}
+@media(prefers-reduced-motion:reduce){.ff-dev-page .dev-deploy-track.is-checking::after{animation:none}}
+/* Prevent browser scroll anchoring from compensating during disclosure morphs. */
+.ff-dev-page .dev-accordion-body,.ff-dev-page .dev-version-more-content{overflow-anchor:none}
