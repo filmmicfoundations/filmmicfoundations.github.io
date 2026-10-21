@@ -359,18 +359,16 @@
     scheduled=false;
     const cutoff=Math.max(550,Math.floor(window.innerHeight*.82));
     const visible=window.scrollY>cutoff;
-    const footer=document.querySelector('body > footer, main + footer, .site-footer');
-    const safeBottom=window.innerWidth<=600?16:20;
+    // The article footer is nested inside <main>; About uses a site footer.
+    // Track its viewport edge directly. This keeps the button above the footer
+    // without changing document height or switching positioning contexts.
+    const footer=document.querySelector('main > footer:not(.ffv-foot), main footer:not(.ffv-foot), body > footer:not(.ffv-foot), .site-footer');
+    const base=window.innerWidth<=600?16:20;
     const gap=18;
-    // Dock at the article boundary in document coordinates, not over the footer.
-    const footerTop=footer ? footer.getBoundingClientRect().top+window.scrollY : Infinity;
     const buttonHeight=button.offsetHeight||49;
-    const shouldDock=Number.isFinite(footerTop) && window.scrollY+window.innerHeight-safeBottom-buttonHeight>=footerTop-gap;
-    button.classList.toggle('ff-back-to-top--docked',shouldDock);
-    if(shouldDock){
-      const bodyTop=document.body.getBoundingClientRect().top+window.scrollY;
-      button.style.top=Math.max(0,footerTop-bodyTop-gap-buttonHeight)+'px';
-    }else button.style.removeProperty('top');
+    const footerEdge=footer?.getBoundingClientRect().top ?? Infinity;
+    const lift=Number.isFinite(footerEdge)?Math.max(0,window.innerHeight-base-buttonHeight+gap-footerEdge):0;
+    button.style.setProperty('--ff-footer-lift',Math.round(lift)+'px');
     button.classList.toggle('ff-back-to-top--visible',visible);
     button.tabIndex=visible?0:-1;
     button.setAttribute('aria-hidden',visible?'false':'true');

@@ -80,3 +80,22 @@ html[data-theme=dark] .archive-filter-panel .ff-choice-menu button:is(:hover,:fo
 .archive-control-line>.archive-view-options{margin-left:auto}
 @media(max-width:600px){.archive-control-line>.ff-active-filter-chips{flex-basis:auto}.archive-control-line .ff-filter-chip{font-size:10px;padding:7px 9px}}
 @media(prefers-reduced-motion:reduce){.archive-control-line .ff-filter-chip{transition:none!important}}
+
+/* One icon language for filter and sort; sort has an independent disclosure. */
+.archive-control-line .archive-sort-dropdown{position:relative;z-index:39;flex:none}
+.archive-control-line .archive-sort-dropdown>summary{display:flex;align-items:center;justify-content:center;width:48px;height:48px;list-style:none;cursor:pointer;color:var(--ff-blue);background:var(--ff-cream);border:1px solid color-mix(in srgb,var(--ff-blue) 18%,transparent);border-radius:8px;transition:background-color .2s,border-color .2s}
+.archive-sort-dropdown>summary::-webkit-details-marker{display:none}
+.archive-sort-dropdown>summary:is(:hover,:focus-visible),.archive-sort-dropdown[open]>summary{background:var(--ff-soft);border-color:color-mix(in srgb,var(--ff-blue) 35%,transparent)}
+.archive-sort-panel{position:absolute;z-index:80;top:calc(100% + 10px);left:0;width:210px;padding:13px;border-radius:10px;background:var(--ff-cream);border:1px solid color-mix(in srgb,var(--ff-blue) 11%,transparent);box-shadow:0 16px 38px #102b3020}
+.archive-sort-panel label{display:block;color:var(--ff-blue);font:700 11px/1.5 'DM Sans',sans-serif;letter-spacing:.04em}
+.archive-sort-panel select{width:100%;margin-top:8px;min-height:41px;color:var(--ff-blue);background:var(--ff-cream)}
+.archive-sort-panel .ff-choice{position:relative}
+.archive-sort-panel .ff-choice-trigger{width:100%;min-height:42px;display:flex;align-items:center;justify-content:space-between;gap:9px;padding:10px 12px;border:1px solid color-mix(in srgb,var(--ff-blue) 13%,transparent);background:var(--ff-soft);color:var(--ff-blue);border-radius:7px;font:600 12px 'DM Sans',sans-serif;cursor:pointer}
+.archive-sort-panel .ff-native-select{display:none}
+.archive-sort-panel .ff-choice-arrow{font-size:18px;line-height:1}
+.archive-sort-panel .ff-choice-menu{position:absolute;top:calc(100% + 5px);left:0;right:0;z-index:100;display:grid;gap:2px;padding:5px;border:1px solid color-mix(in srgb,var(--ff-blue) 13%,transparent);border-radius:8px;background:var(--ff-cream);box-shadow:0 12px 30px #102b3025}
+.archive-sort-panel .ff-choice-menu[hidden]{display:none}
+.archive-sort-panel .ff-choice-menu button{border:0;background:transparent;color:var(--ff-blue);border-radius:5px;text-align:left;padding:9px;font:600 12px 'DM Sans',sans-serif;cursor:pointer}
+.archive-sort-panel .ff-choice-menu button:is(:hover,:focus-visible){background:var(--ff-soft)}
+.archive-control-line:has(.archive-sort-dropdown)>.archive-view-options{margin-left:auto}
+@media(max-width:640px){.archive-sort-panel{left:auto;right:0}}

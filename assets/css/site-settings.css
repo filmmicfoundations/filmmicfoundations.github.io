@@ -218,3 +218,6 @@ html[data-theme="dark"] .ff-pref-choice-list button:is(:hover,:focus-visible,[ar
 /* Site-wide background scroll lock while any modal is visible. */
 html.ff-global-dialog-open,html.ff-global-dialog-open body{overflow-y:hidden!important;overscroll-behavior:none!important}
 html.ff-global-dialog-open{scrollbar-gutter:stable}
+
+/* Stable modal dimmer: animate content, not native backdrop alpha, to avoid flash. */
+.ff-settings-dialog[open]::backdrop,.ff-settings-dialog.ff-pref-closing[open]::backdrop{animation:none!important;background:rgba(6,19,24,.62)!important;backdrop-filter:blur(1px)}

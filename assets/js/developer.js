@@ -536,14 +536,24 @@
     container.textContent='Loading saved versions…';
     $('dev-history-more').hidden=true;
     $('dev-version-extra').replaceChildren();
-    // Fetch the two independent histories concurrently. A restricted/slow Actions
-    // endpoint must never keep repository revisions hidden indefinitely.
+    // Commit history is the primary source; Actions may be inaccessible under
+    // some token scopes. Fetch independently and fall back to unauthenticated
+    // public repository history when GitHub rejects the token-scoped request.
     const fetchWithLimit=async(path)=>{
-      const pending=api(path);
-      return Promise.race([pending,new Promise((_,reject)=>setTimeout(()=>reject(Error('GitHub request timed out; retry later.')),8500))]);
+      const timeout=12000;
+      const fetchOnce=()=>Promise.race([api(path),new Promise((_,reject)=>setTimeout(()=>reject(Error('GitHub request timed out.')),timeout))]);
+      try{return await fetchOnce()}catch(primary){
+        if(path.startsWith('/commits')){
+          try{
+            const response=await fetch(API+path,{headers:{Accept:'application/vnd.github+json'},cache:'no-store'});
+            if(response.ok)return await response.json();
+          }catch(_){/* retain detailed original error */}
+        }
+        throw primary;
+      }
     };
     const [commitsResult,deploymentsResult]=await Promise.allSettled([
-      fetchWithLimit(`/commits?sha=${encodeURIComponent(BRANCH)}&per_page=50`),
+      fetchWithLimit('/commits?per_page=50'),
       fetchWithLimit('/actions/workflows/deploy.yml/runs?status=success&per_page=50')
     ]);
     let commits=[],successful=[];
@@ -563,8 +573,8 @@
     if(!successful.length&&!commits.length){
       allHistory=[];
       const reason=[commitsResult,deploymentsResult].filter(r=>r.status==='rejected').map(r=>r.reason?.message||'GitHub unavailable');
-      container.textContent=reason.length?'Could not load revisions. Check GitHub access and select Refresh.':'No saved repository revisions found.';
-      $('dev-history-note').textContent=reason.join(' · ');
+      container.textContent=reason.length?'History unavailable — retry or check GitHub permissions.':'No saved repository revisions found.';
+      $('dev-history-note').textContent=(reason.join(' · ')||'GitHub returned no revisions')+' · Repository: '+OWNER+'/'+REPO+' · If the repository is private, connect a token with Contents: Read permission.';
       return;
     }
     const merged=new Map();

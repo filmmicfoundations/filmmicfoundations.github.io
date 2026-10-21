@@ -15,6 +15,11 @@
     const articleYear = document.getElementById('filter-article-year');
     const filmYear = document.getElementById('filter-film-year');
     const sort = document.getElementById('sort-articles');
+    const sortDetails=document.getElementById('archive-sort-dropdown');
+    const filterDetails=document.getElementById('archive-filter-dropdown');
+    sortDetails?.addEventListener('toggle',()=>{if(sortDetails.open&&filterDetails?.open)filterDetails.open=false});
+    filterDetails?.addEventListener('toggle',()=>{if(filterDetails.open&&sortDetails?.open)sortDetails.open=false});
+
     const defaultSort = document.documentElement.dataset.ffSort;
     if(sort && ['newest','oldest','az','za'].includes(defaultSort)) sort.value=defaultSort;
     const unique = (key) => [...new Set(cards.flatMap(c => (c.dataset[key] || '').split(',').map(v=>v.trim()).filter(Boolean)))];
@@ -118,6 +123,7 @@
         item.setAttribute('role','option');item.textContent=opt.textContent;
         item.addEventListener('click',()=>{
           select.value=opt.value;select.dispatchEvent(new Event('change',{bubbles:true}));sync();close();trigger.focus({preventScroll:true});
+          if(select===sort)sortDetails?.removeAttribute('open');
         });menu.append(item);
       }
       sync();trigger.addEventListener('click',()=>{if(opened)close();else{choiceControllers.forEach(x=>x.close());setOpen(true)}});

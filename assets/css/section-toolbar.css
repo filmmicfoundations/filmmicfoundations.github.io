@@ -105,6 +105,6 @@ html[data-ff-motion="off"] .ff-back-to-top {transition:none!important;transform:
 /* Avoid sudden jumps when the footer approaches the floating reading utility. */
 .ff-back-to-top{transition-property:bottom,opacity,transform,visibility,background-color,box-shadow;transition-duration:.12s,.27s,.36s,0s,.24s,.24s;transition-timing-function:ease,ease,cubic-bezier(.22,1,.36,1),linear,ease,ease}
 
-/* A footer boundary is an absolute docking point, not a floating footer overlay. */
-body{position:relative}
-.ff-back-to-top--docked{position:absolute!important;bottom:auto!important}
+/* The floating utility follows the footer edge without changing layout. */
+.ff-back-to-top{bottom:calc(max(var(--ff-floating-bottom,20px),env(safe-area-inset-bottom,0px) + 16px) + var(--ff-footer-lift,0px));}
+@media(max-width:600px){.ff-back-to-top{bottom:calc(max(var(--ff-floating-bottom,16px),env(safe-area-inset-bottom,0px) + 12px) + var(--ff-footer-lift,0px));}}
