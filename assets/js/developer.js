@@ -17,6 +17,7 @@
   let monitorGeneration=0, monitorActive=false, reloadTimer=0;
   let currentDeploySha='', currentDeployProbe=null;
   let progressDismissed=false;
+  let inspectionGeneration=0;
 
   const setStatus=(id,msg)=>{$(id).textContent=msg;};
   const trimSha=sha=>String(sha||'').slice(0,10);
@@ -113,6 +114,19 @@
     return sha1Fallback(data);
   }
 
+  // ZIP inspection is separate from deployment progress: one is local decompression,
+  // the other is remote publication. Never claim the latter is complete prematurely.
+  function zipProgress(done,total,label='Inspecting archive'){
+    const panel=$('dev-zip-inspection');if(!panel)return;
+    panel.hidden=false;
+    const fraction=total>0?Math.min(1,Math.max(0,done/total)):0;
+    $('dev-zip-fill').style.width=`${Math.round(fraction*100)}%`;
+    $('dev-zip-track').setAttribute('aria-valuenow',String(Math.round(fraction*100)));
+    $('dev-zip-progress-label').textContent=`${label} · ${done}/${total}`;
+  }
+  function zipProgressEnd(){
+    const panel=$('dev-zip-inspection');if(panel)panel.hidden=true;
+  }
   const DEPLOY_STEPS=['files','commit','build','live'];
   const PUBLIC_ORIGIN='https://filmmicfoundations.github.io/';
   const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
@@ -129,7 +143,7 @@
     dialog.classList.add('is-closing');
     setTimeout(()=>{dialog.close();dialog.classList.remove('is-closing');},matchMedia('(prefers-reduced-motion: reduce)').matches?0:160);
   }
-  function deploymentStage(step,title,detail,{done=false,failed=false}={}){
+  function deploymentStage(step,title,detail,{done=false,failed=false,fraction=0}={}){
     showDeploymentDialog();
     const panel=$('dev-deploy-panel');panel.hidden=false;
     panel.classList.toggle('is-complete',done);panel.classList.toggle('is-failed',failed);
@@ -138,8 +152,9 @@
     $('dev-deploy-detail').textContent=detail;
     const index=Math.max(0,DEPLOY_STEPS.indexOf(step));
     $('dev-deploy-track').classList.toggle('is-checking',!done&&!failed && step==='build');
-    $('dev-deploy-track').setAttribute('aria-valuenow',String(done?4:index));
-    $('dev-deploy-fill').style.width=`${done?100:index*25}%`;
+    const progress=done?4:index+Math.min(1,Math.max(0,fraction));
+    $('dev-deploy-track').setAttribute('aria-valuenow',String(progress));
+    $('dev-deploy-fill').style.width=`${progress*25}%`;
     $('dev-deploy-track').setAttribute('aria-valuetext',done?'Published':failed?'Needs attention':title);
     document.querySelectorAll('[data-deploy-step]').forEach(el=>{
       const i=DEPLOY_STEPS.indexOf(el.dataset.deployStep);
@@ -281,7 +296,7 @@
     let s='';for(let i=0;i<bytes.length;i+=16384)s+=String.fromCharCode(...bytes.subarray(i,i+16384));
     return btoa(s);
   }
-  async function readZip(file){
+  async function readZip(file,generation){
     if(!window.JSZip)throw Error('ZIP support did not load. Reload the page and try again.');
     if(file.size>MAX_ZIP)throw Error('ZIP exceeds 90 MB. Split or optimize the update package.');
     // Avoid JSZip's checkCRC32 option, which can stall while streaming Blobs in some browsers.
@@ -307,9 +322,12 @@
     }else list=list.map(x=>({file:x,path:x.name}));
     const included=$('dev-include-workflows').checked;
     const files=[];const seen=new Set();let total=0;
+    zipProgress(0,list.length,'Checking entries');
+    let processed=0;
     for(const entry of list){
+      if(generation!==inspectionGeneration)throw Error('A different ZIP was selected; older inspection canceled.');
       const path=cleanPath(entry.path);
-      if(path.startsWith('.github/workflows/')&&!included){files.push({path,status:'excluded',bytes:null});continue;}
+      if(path.startsWith('.github/workflows/')&&!included){files.push({path,status:'excluded',bytes:null});processed++;zipProgress(processed,list.length,'Checking entries');continue;}
       if(path.startsWith('.github/')&&!path.startsWith('.github/workflows/'))throw Error(`Unexpected private .github path: ${path}`);
       if(seen.has(path))throw Error(`Duplicate filename in ZIP: ${path}`);
       seen.add(path);
@@ -320,8 +338,14 @@
       if(entry.file._data && typeof entry.file._data.crc32==='number' && crc32(bytes)!==(entry.file._data.crc32>>>0))
         throw Error(`ZIP integrity check failed: ${path}`);
       files.push({path,bytes,sha:await blobSha(bytes),status:'included'});
+      processed++;
+      if(processed===list.length||processed%4===0){
+        zipProgress(processed,list.length,'Verifying files');
+        await new Promise(resolve=>requestAnimationFrame(resolve));
+      }
     }
     if(!files.some(f=>f.bytes))throw Error('No publishable files were found in this ZIP.');
+    if(generation!==inspectionGeneration)throw Error('Inspection superseded by a newer ZIP.');
     return files;
   }
   async function headAndTree(){
@@ -404,23 +428,30 @@
   }
   async function compare(){
     if(!archive)return;
+    const generation=++inspectionGeneration;
+    const selectedArchive=archive;
     lastInspectionError='';justPublished=false;setBusy(true);setStatus('dev-update-status','Inspecting ZIP contents and comparing files…');
     try{
-      manifest=await readZip(archive);baselineSha='';baselineTree='';
+      const inspected=await readZip(selectedArchive,generation);
+      if(generation!==inspectionGeneration)return;
+      manifest=inspected;baselineSha='';baselineTree='';
       if(token){
         setStatus('dev-update-status','Comparing files with GitHub main…');
-        const head=await headAndTree();baselineSha=head.sha;baselineTree=head.treeSha;
+        const head=await headAndTree();
+        if(generation!==inspectionGeneration)return;
+        baselineSha=head.sha;baselineTree=head.treeSha;
         manifest.forEach(f=>{if(f.bytes) f.status=!head.files.has(f.path)?'new':head.files.get(f.path)===f.sha?'unchanged':'changed';});
         setStatus('dev-update-status',`Comparison complete against ${trimSha(baselineSha)}. Review the changes before publishing.`);
       }else{
         manifest.forEach(f=>{if(f.bytes)f.status='included';});
         setStatus('dev-update-status','ZIP structure and CRC validated locally. Connect to GitHub above to compare files and enable publishing.');
       }
+      if(generation!==inspectionGeneration)return;
       renderFiles();
       updateReleaseSuggestion();
       if(token&&changes.length===0)setStatus('dev-update-status','This ZIP is valid, but all its files are already up to date. Choose another ZIP to publish a new change.');
-    }catch(e){$('dev-review').hidden=true;changes=[];baselineSha='';lastInspectionError=e.message;setStatus('dev-update-status',`Could not inspect the ZIP: ${e.message}`);}
-    finally{setBusy(false);}
+    }catch(e){if(generation===inspectionGeneration){$('dev-review').hidden=true;changes=[];baselineSha='';lastInspectionError=e.message;setStatus('dev-update-status',`Could not inspect the ZIP: ${e.message}`);}}
+    finally{if(generation===inspectionGeneration){zipProgressEnd();setBusy(false);}}
   }
 
   function suggestedReleaseTitle(files){
@@ -461,9 +492,10 @@
       for(let i=0;i<changes.length;i++){
         const file=changes[i];
         setStatus('dev-update-status',`Uploading ${i+1}/${changes.length}: ${file.path}`);
-        deploymentStage('files','Transferring files',`Uploading ${i+1} of ${changes.length} files: ${file.path}`);
+        deploymentStage('files','Transferring files',`Uploading ${i+1} of ${changes.length} files: ${file.path}`,{fraction:i/changes.length});
         const blob=await api('/git/blobs',{method:'POST',body:{content:base64(file.bytes),encoding:'base64'}});
         treeChanges.push({path:file.path,mode:'100644',type:'blob',sha:blob.sha});
+        deploymentStage('files','Transferring files',`${i+1} of ${changes.length} files transferred`,{fraction:(i+1)/changes.length});
       }
       setStatus('dev-update-status','Creating versioned publication commit…');
       deploymentStage('commit','Creating release','The changed files have been transferred. Committing the update to GitHub.');
@@ -646,6 +678,7 @@
     refreshVersions().catch(()=>{});updatePublishButton();
   }
   function chooseZip(file){
+    ++inspectionGeneration;zipProgressEnd();
     archive=file||null;resetInspection();
     $('dev-publish-section').hidden=false;
     $('dev-upload-info').hidden=!archive;

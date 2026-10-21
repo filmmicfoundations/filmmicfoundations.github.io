@@ -256,7 +256,7 @@ def patch_articles(articles,full_text):
         page=re.sub(r'<script id="ff-article-schema" type="application/ld\+json">.*?</script>', '', page,flags=re.S)
         page=page.replace('</head>',jsonld+'</head>',1)
         # Update OG publication dates without duplicating tags.
-        page=re.sub(r'<meta property="article:(?:published_time|modified_time)"[^>]*>', '',page)
+        page=re.sub(r'<meta\b(?=[^>]*\bproperty\s*=\s*[\"\']article:(?:published_time|modified_time)[\"\'])[^>]*>', '', page, flags=re.I)
         page=page.replace('</head>',f'<meta property="article:published_time" content="{escape(str(published or ""),quote=True)}"><meta property="article:modified_time" content="{escape(str(updated or ""),quote=True)}"></head>',1)
         # Shared developer portal link follows each future article automatically.
         if 'ff-dev-footer-link' not in page:

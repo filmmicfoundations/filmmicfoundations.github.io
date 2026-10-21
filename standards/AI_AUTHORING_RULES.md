@@ -1,3 +1,5 @@
+**Edition 2.0 — October 21, 2026. Read `ARTICLE_RELEASE_WORKFLOW.md` and `UI_TEST_MATRIX.md` first.**
+
 # AI instructions for Filmmic Foundations
 
 When asked to create, revise, format, or code a Filmmic Foundations article or website feature:
@@ -14,3 +16,7 @@ When asked to create, revise, format, or code a Filmmic Foundations article or w
 10. For code changes check baseline screenshots, conflicts, build output, automated validator and browser interactions, and clearly report tests not performed. Minimize diff; include only source/site assets needed for publishing.
 11. Related articles match overlapping themes/techniques, not merely common genre. Don't fabricate recommendations or publication statistics.
 12. Publish never without explicit administrator action; admin ZIP gate (`123` demo) is not security. Do not store secrets in static JavaScript or commit them in ZIPs. GitHub authorization must be separate.
+
+13. Publish future articles using `python3 scripts/package_article.py film-slug`: never change the homepage manually to add a card. Keep locally archived unique film stills and full-length PDF synchronized; test every clickable still and nonclickable diagram.
+14. Preserve the Mindglass established typography and diagram layout; no novel research-guide callouts, hotlinked viewer images, nested buttons, or separate visual language. Suggested Articles must be last, after Watch Film.
+15. Report browser tests honestly: local Chromium checks cannot certify GitHub deploy, native mobile Safari, third-party video services or authenticated publishing.

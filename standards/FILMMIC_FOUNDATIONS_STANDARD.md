@@ -1,8 +1,10 @@
 # Filmmic Foundations — Publication & Design Standard
 
-**Edition 1.0 | Applies to the website, future short-film articles, film-analysis PDFs, and machine-generated content.**
+**Edition 2.0 (October 21, 2026) | Applies to the website, future short-film articles, film-analysis PDFs, and machine-generated content.**
 
 > **Mission.** Filmmic Foundations is an anonymous, educational, evidence-led archive of critical analysis of short films. It is not an auteur portfolio, review/rating service, advertiser, fan site, or promotional press kit. Readers should be able to distinguish on-screen evidence, contextual research, critical inference, and unresolved ambiguity. No interpretation is perfectly neutral; the publication aims for transparent, fair, qualified reasoning.
+
+**Implementation references:** See `ARTICLE_RELEASE_WORKFLOW.md` for one-ZIP releases, `UI_TEST_MATRIX.md` for test coverage, `ARTICLE_AUTHORING_PROMPT.md` for a reusable handoff, and `PDF_DESIGN_SPEC.md` for visual document consistency. The original v1 examples remain informational, but v2 behavior rules take precedence when they conflict.
 
 ## 1. Nonnegotiable principles
 
@@ -65,8 +67,8 @@ Site name: **FILMMIC FOUNDATIONS**. Calm, editorial, cinematic, restrained; crea
 - **Interactions:** smooth, subtle, reversible entrance/exit animations for dialogs and filters; avoid competing `transform`/animation declarations on same element. No jumps when switching views; preserve scroll position when opening/closing dialogs.
 - **Accessibility:** semantic HTML, descriptive labels for images/buttons, keyboard/focus management, high contrast and reduced-motion preferences, responsive breakpoints including ~320/390/1365 widths. Native and custom interactive components must remain keyboard accessible.
 - **Settings:** a shared gear popup supporting theme, font size, line spacing, reading width, motion, citation/PDF preferences, gallery defaults, local reading position, privacy. Store only in local browser storage. Avoid accounts/tracking.
-- **Modals:** centered image viewer with Single/Gallery modes, smooth photo transitions and zoom, native download/Share link, background scroll lock; same popup motion language on previews and share dialogs. Controls should stay visible, not stretch imagery or cover navigation unexpectedly.
-- **Images:** authentic film stills only, not AI-simulated film frames passed off as originals; meaningful alt text/captions; descriptive lowercase filenames; WebP responsive variants where practical, lazy loading for below-fold assets. Protect photo aspect ratio with `object-fit` and image transforms rather than stretching.
+- **Modals:** the entire underlying page (including sticky menu bars) is dimmed using a shared backdrop; dialogs appear below the sticky chrome. Centered image viewer with Single/Gallery modes, smooth photo transitions and zoom, native download/Share link, background scroll lock; same popup motion language on previews and share dialogs. Controls should stay visible, not stretch imagery or cover navigation unexpectedly.
+- **Images:** every image used by the article viewer must have a locally bundled unique still and intrinsic dimensions; never hotlink third-party hosts in viewer controls or use duplicate close-up variants. Original diagrams must not be clickable. Authentic film stills only, not AI-simulated film frames passed off as originals; meaningful alt text/captions; descriptive lowercase filenames; WebP responsive variants where practical, lazy loading for below-fold assets. Protect photo aspect ratio with `object-fit` and image transforms rather than stretching.
 - **SEO:** unique page descriptions, canonical URLs, OG/Twitter previews, structured schema, RSS, sitemap, full-text search, automatic related-article generation; developer tooling and internal admin URL are excluded from search indexing (not a security boundary).
 
 ## 6. Article PDF design standard
@@ -90,6 +92,8 @@ PDF requirements:
 
 `<slug>/index.html` and `<slug>/article.json` are mandatory. `<slug>/preview.json` and a film PDF/images are optional. Slug: lowercase letters/numbers/hyphens, stable once published.
 
+Package an article with `python3 scripts/package_article.py film-slug`; GitHub Actions regenerate homepage, search, RSS, sitemap, citations and suggested links. See `ARTICLE_RELEASE_WORKFLOW.md`.
+
 `article.json`: see `ARTICLE_SCHEMA.json` for a machine-readable description. Core fields: `title`, `citation_title`, `description`, `article_date` (YYYY-MM-DD), `film_year` (4 digits), `genre`, `themes`, `techniques`, `tags`, `image`, `image_alt`, `abstract`, `updated_date`, `language`; include only true supported values.
 
 `preview.json` can define abstract/gallery images with genuine available local image paths; preview modal must retain correct metadata and layout on mobile and dark mode.
@@ -112,3 +116,7 @@ For every release:
 ## 9. AI writing and development instructions
 
 Use `AI_AUTHORING_RULES.md` and `ARTICLE_TEMPLATE.md` along with this document. All examples are templates, not verified sources. The AI may suggest a thesis, scene-by-scene framework, and sources to verify, but must not pretend to have seen a film or read a paper it hasn't accessed. Where resources aren't available, produce a *research plan* or qualified draft with explicit evidence gaps rather than fabricate completion. All publisher-facing author identity remains organizational, not personal.
+
+## 10. Alike implementation lessons (v2)
+
+The previous publication needed many corrections because externally hosted and duplicated stills, overdesigned raster diagrams, duplicated callout blocks, style-guide drift, and incomplete PDF regeneration did not follow *Mindglass* conventions. Future articles must avoid these patterns. Viewer stills are local and unique; diagrams are responsive semantic HTML/CSS with plain captions and not part of the gallery; related links sit after Watch Film; PDFs embed the same figures **without discarding body text**. ZIPs should contain only the new article and pass a full staged site build before upload. Keep users informed about what was tested locally versus what requires live browser and GitHub confirmation.

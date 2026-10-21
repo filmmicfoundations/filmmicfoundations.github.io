@@ -1,3 +1,5 @@
+**Edition 2.0 — October 21, 2026.**
+
 # Publication checklist
 
 - [ ] Original short-film title, year, credits, runtime and media availability verified.
@@ -17,3 +19,11 @@
 - [ ] No unnecessary dependency, script, CSS override, secret, personal data, temporary image or cache.
 - [ ] `python3 scripts/build_archive.py` and `python3 scripts/quality_gate.py` succeed.
 - [ ] Every uploaded ZIP diff inspected, backup identified, GitHub deployment status checked.
+
+- [ ] New article contains a genuine 20–30-minute body and neither a redundant research guide nor extra introductory note blocks absent from established style.
+- [ ] Local full-frame stills are unique, named consistently, have responsive variants, intrinsic dimensions and one viewer button each; diagrams are static HTML/CSS and exclude viewer triggers.
+- [ ] Suggested Articles is in the reading menu and is the last section after Watch Film.
+- [ ] PDF includes the whole text and exact figure set; visually matches Mindglass page hierarchy with running headers, source list and metadata.
+- [ ] Overlay backdrops dim the **entire** page including visible menus; viewer/settings/preview close correctly and preserve focus.
+- [ ] Archive ZIP inspected locally, ready via `scripts/package_article.py`; invalid paths and progress races checked.
+- [ ] Browser smoke JSON recorded; note GitHub/Safari/third-party features not tested offline.

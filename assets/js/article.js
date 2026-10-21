@@ -192,19 +192,27 @@ const closeMenu = menu => { if (!menu) return; if(window.FFDropdowns) window.FFD
   const status = el('ffv-status');
   const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)');
   const canonicalBase = new URL(document.querySelector('link[rel="canonical"]')?.href || 'https://filmmicfoundations.github.io/mindglassprocedure/');
-  const items = triggers.map(button => {
+  const triggerItems = triggers.map(button => {
     const still = button.querySelector('img');
     const relative = still.getAttribute('src');
     return {
       src: new URL(relative, location.href).href,
       shareUrl: new URL(relative, canonicalBase).href,
-      // Unlike Mindglass, Alike uses externally hosted authentic film stills.
-      // Honor their no-referrer policy in every image context, including preloads.
+      // Local film images are the publication standard; external handling is a fallback.
       external: new URL(relative, location.href).origin !== location.origin,
       alt: still.alt || 'Film still',
       caption: button.closest('figure')?.querySelector('figcaption')?.textContent?.trim() || still.alt || 'Film still',
       filename: decodeURIComponent(relative.split('/').pop()?.split('?')[0] || 'filmmic-foundations-image.webp')
     };
+  });
+  // A still can be discussed twice within the prose without appearing twice in
+  // the gallery. Preserve all inline viewer buttons but give each unique file
+  // exactly one gallery tile and one arrow-navigation stop.
+  const items = [];
+  const triggerIndices = triggerItems.map(item => {
+    let n=items.findIndex(existing=>existing.src===item.src);
+    if(n<0){n=items.length;items.push(item);}
+    return n;
   });
   let index = 0, zoom = 1, panX = 0, panY = 0, drag = null;
   let transitionId = 0, transitionTimer = 0, messageTimer = 0;
@@ -399,7 +407,7 @@ const closeMenu = menu => { if (!menu) return; if(window.FFDropdowns) window.FFD
     focusReturn = button;
     ++transitionId;
     resetSlide();
-    setItem(i);
+    setItem(triggerIndices[i]);
     setMode(document.documentElement.dataset.ffViewer === 'gallery' ? 'gallery' : 'single');
     dialog.showModal();
     syncSlideshow();

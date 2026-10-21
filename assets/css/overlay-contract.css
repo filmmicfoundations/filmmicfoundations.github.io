@@ -1,0 +1,29 @@
+/* Shared modal backdrop contract: the navigation remains visible but is deliberately dimmed.
+   Every native dialog stays below the sticky site chrome; it must not leave a bright header strip. */
+:root { --ff-modal-dim: rgba(5, 18, 23, .66); }
+html[data-theme="dark"] { --ff-modal-dim: rgba(0, 9, 13, .73); }
+dialog::backdrop,
+.ff-settings-dialog::backdrop,
+.ff-external-dialog::backdrop,
+.ffv-dialog::backdrop,
+.ffs-dialog::backdrop,
+.archive-preview::backdrop,
+.ff-dev-page .dev-token-guide::backdrop,
+.ff-dev-page .dev-deploy-dialog::backdrop,
+.ff-dev-page .dev-lock-confirm::backdrop {
+  background: var(--ff-modal-dim) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  animation: none !important;
+}
+/* Respect the browser's top layer: no attempt to raise the sticky menus over a modal. */
+@media (prefers-reduced-motion: reduce) {
+  dialog[open], dialog[open]::backdrop { transition:none!important; animation:none!important; }
+}
+/* ID specificity intentionally defeats legacy [open]/closing gradient rules. */
+dialog:is(#ff-settings-dialog,#ff-external-dialog,#ffv-dialog,#ffs-dialog,#archive-preview,#dev-token-guide,#dev-deploy-dialog,#dev-lock-confirm)::backdrop {
+  background: var(--ff-modal-dim) !important;
+  background-color:var(--ff-modal-dim) !important;
+  background-image:none !important;
+  animation:none !important;
+}

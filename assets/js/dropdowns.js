@@ -49,7 +49,12 @@
     active.set(details,{open:details.open,animation:null});
     const summary=details.querySelector(':scope > summary'),body=panel(details);if(!summary)return;
     summary.addEventListener('click',e=>{e.preventDefault();toggle(details,!active.get(details)?.open)});
-    if(details.id){body.id=details.id+'-content';summary.setAttribute('aria-controls',body.id)}
+    if(details.id && body){
+      // Respect stable IDs used by other controllers (e.g. version history).
+      // Overwriting an existing ID broke developer history and caused a runtime error.
+      if(!body.id)body.id=details.id+'-content';
+      summary.setAttribute('aria-controls',body.id);
+    }
   }
   document.querySelectorAll(selector).forEach(init);
   window.FFDropdowns={

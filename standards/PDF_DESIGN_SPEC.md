@@ -1,3 +1,5 @@
+**Edition 2.0 — October 21, 2026.**
+
 # PDF specification — Filmmic Foundations
 
 Reference example: 16-page *Mindglass Procedure: Memory, Grief, and the Repetition of Avoidance*. See Publication Standard §6 for measured values.
@@ -26,3 +28,11 @@ Reference example: 16-page *Mindglass Procedure: Memory, Grief, and the Repetiti
 4. Embed fonts, links and neutral document metadata; remove accidental creator identity.
 5. Render to images, inspect and revise all pages.
 6. Test links, selectable text and accessibility properties.
+
+
+## Figure and format parity — new requirement
+- Match the established Mindglass cover sequence: **title/subtitle above a credited film still**, then a restrained scope summary; avoid replacing it with a full-bleed poster page.
+- A new article PDF must contain the **entire long-form article**, not an abridged subset. Compare heading-by-heading with the HTML after image insertion and verify references were retained.
+- Figure numbers, still identities, sequence relevance and diagrams should agree between the page and PDF; the same local full-frame stills, no duplicates or thumbnail enlargements. Original web HTML diagrams can be exported to print-resolution images for PDF only.
+- Keep table of contents, consistent main text size, section heads, running heads, page numbering, margins and source links; avoid a new template per article. Use *Mindglass* as an editorial reference and *Alike* as a reminder that adding images must not reset formatting.
+- Test PDF URL in article action menu and hero; render **all pages** and check clipping, stray blank pages and line-break handling in captions. Make metadata organization-only.

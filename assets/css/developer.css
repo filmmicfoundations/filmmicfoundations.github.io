@@ -410,3 +410,18 @@ html:has(body.ff-dev-page dialog[open]),body.ff-dev-page:has(dialog[open]){overf
   background:linear-gradient(to bottom, transparent 0, transparent var(--ff-modal-chrome-height,70px), rgba(4,21,27,.62) var(--ff-modal-chrome-height,70px), rgba(4,21,27,.62) 100%) !important;
   backdrop-filter:none !important;
 }
+
+/* Determinate progress for ZIP integrity inspection, independent of GitHub deployment. */
+.ff-dev-page .dev-zip-inspection[hidden]{display:none!important}
+.ff-dev-page .dev-zip-inspection{margin:12px 0 15px;min-width:0}
+.ff-dev-page .dev-zip-inspection-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:9px;font:600 11px/1.4 "DM Sans",sans-serif;color:var(--dev-ink)}
+.ff-dev-page #dev-zip-progress-label{font-weight:400;color:var(--dev-muted);font-variant-numeric:tabular-nums;text-align:right}
+.ff-dev-page .dev-zip-track{height:7px;position:relative;overflow:hidden;border-radius:99px;background:color-mix(in srgb,var(--dev-accent) 12%,var(--dev-line));border:1px solid var(--dev-line)}
+.ff-dev-page .dev-zip-track > span{display:block;height:100%;width:0%;border-radius:inherit;background:var(--dev-accent);transition:width .15s ease}
+@media(prefers-reduced-motion:reduce){.ff-dev-page .dev-zip-track > span{transition:none}}
+/* Narrow phone widths: grid item must shrink below its intrinsic heading width. */
+@media(max-width:380px){
+  .ff-dev-page .dev-lock{grid-template-columns:minmax(0,1fr);padding-inline:14px}
+  .ff-dev-page .dev-lock-card{width:100%;max-width:100%;min-width:0;padding:20px 17px;overflow-wrap:anywhere}
+  .ff-dev-page .dev-lock-card h1{font-size:clamp(27px,9vw,34px)}
+}

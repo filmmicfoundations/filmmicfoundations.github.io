@@ -34,6 +34,7 @@ class Document(HTMLParser):
         self.ids=[];self.links=[];self.images=[];self.buttons=[];self.inputs=[]
         self.tags=Counter();self.lang='';self.titles=0;self.h1=0;self.outbound=[];self.meta=[]
         self.in_title=False;self.title_text=[];self.dialogs=[]
+        self.button_depth=0;self.nested_buttons=0
     def handle_starttag(self,tag,attrs):
         attrs=dict(attrs)
         self.tags[tag]+=1
@@ -50,7 +51,10 @@ class Document(HTMLParser):
         if tag=='link' and attrs.get('href'):
             self.links.append(('href',attrs['href'],attrs))
         if tag=='img':self.images.append(attrs)
-        if tag=='button':self.buttons.append(attrs)
+        if tag=='button':
+            if self.button_depth:self.nested_buttons+=1
+            self.button_depth+=1
+            self.buttons.append(attrs)
         if tag=='input':self.inputs.append(attrs)
         if tag in ('img','source') and attrs.get('srcset'):
             for entry in attrs['srcset'].split(','):
@@ -58,6 +62,7 @@ class Document(HTMLParser):
                 if uri:self.links.append(('srcset',uri,attrs))
     def handle_endtag(self,tag):
         if tag=='title':self.in_title=False
+        if tag=='button' and self.button_depth:self.button_depth-=1
     def handle_data(self,data):
         if self.in_title:self.title_text.append(data)
 
@@ -102,8 +107,16 @@ def check_local_assets():
         if doc.titles!=1 or not ''.join(doc.title_text).strip():error(f'{label}: must have one nonempty <title>')
         if doc.h1!=1:warn(f'{label}: expected one top-level h1 (found {doc.h1})')
         if doc.tags['main']==0:error(f'{label}: missing main landmark')
+        if doc.nested_buttons:error(f'{label}: nested buttons found ({doc.nested_buttons}); image viewers need one trigger per figure')
         duplicates=[k for k,v in Counter(doc.ids).items() if v>1]
         if duplicates:error(f'{label}: duplicate ids: {", ".join(duplicates[:8])}')
+        # Same property with attribute order swapped silently duplicated article dates in prior releases.
+        if '/article.json' not in str(label):
+            raw=path.read_text(encoding='utf-8')
+            for property_name in ('article:published_time','article:modified_time'):
+                tags=re.findall(r'<meta\b[^>]*>',raw,flags=re.I)
+                count=sum(bool(re.search(r'\bproperty\s*=\s*["\']'+re.escape(property_name)+r'["\']',tag,flags=re.I)) for tag in tags)
+                if count>1:error(f'{label}: duplicate {property_name} metadata ({count})')
         for image in doc.images:
             if 'alt' not in image:error(f'{label}: img lacks alt text: {image.get("src","")}')
         for button in doc.buttons:
@@ -215,6 +228,26 @@ def editorial_consistency():
             error(f'{name}: Suggested Articles must follow Watch the Film and precede the footer')
         if any('article-image-open' in figure.group(0) for figure in re.finditer(r'<figure\b[^>]*class="[^"]*diagram[^"]*"[^>]*>.*?</figure>',page,re.S)):
             error(f'{name}: diagrams must not register as lightbox items')
+        # A mistake in Alike used duplicate crops and remote-hosted gallery assets.
+        viewer_paths=[]
+        for fig in re.finditer(r'<figure\b[^>]*>.*?</figure>',page,re.S):
+            raw=fig.group(0)
+            if 'article-image-open' not in raw:continue
+            tags=re.findall(r'<img\b[^>]*>',raw,re.I)
+            if len(tags)!=1:error(f'{name}: each viewer figure must contain exactly one image')
+            for tag in tags:
+                match=re.search(r'\bsrc\s*=\s*["\']([^"\']+)',tag,re.I)
+                if not match:continue
+                img=match.group(1)
+                if img.startswith(('https:','http:','//')):error(f'{name}: viewer must use locally archived film stills: {img}')
+                if not all(re.search(r'\b'+attr+r'\s*=',tag,re.I) for attr in ('width','height')):
+                    error(f'{name}: viewer image missing intrinsic width/height: {img}')
+                viewer_paths.append(img)
+        if len(set(viewer_paths))!=len(viewer_paths) and name!='mindglassprocedure':
+            error(f'{name}: repeated stills used as separate gallery images')
+        # Mindglass repeats two narrative stills in later analysis; shared JS
+        # deduplicates their viewer tiles without changing the article's prose.
+
 
 def privacy_assets():
     # Publication pages may contain factual filmmaker credits; do not confuse

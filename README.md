@@ -192,3 +192,10 @@ A browser check was run using locally assembled HTML and CSS because local URLs 
 - Article and About Back to Top buttons dock just above the footer rather than overlapping it.
 - All native modal dialogs use shared background-scroll prevention; only the active dialog's interior is scrollable.
 - Image gallery mode visibly disables the zoom percentage along with the minus, plus and Fit controls.
+
+
+### October 21, 2026 — QA and repeatable article releases
+
+This maintenance release centralizes dialog backdrops in `assets/css/overlay-contract.css` (including darkened sticky navigation), fixes developer history ID conflicts, implements determinate and cancelable ZIP inspection progress, and provides fractional GitHub file-transfer progress without falsely implying deployment success. Native lazy film stills now reserve intrinsic image dimensions, and redundant publication-date meta tags are removed idempotently during builds.
+
+Future articles are prepared with `python3 scripts/package_article.py film-slug`. Only the slug's article files go in the ZIP; GitHub Pages derives the archive, metadata, citations, related links, feed and sitemap. The v2 standards and handoff prompt are downloadable through the developer portal. Offline interaction tests run via `python3 tests/browser_smoke.py` and `python3 tests/zip_inspection_smoke.py` when Playwright/Chromium are available. Those tests do not certify third-party APIs, live GitHub publish/restore, or Safari.
