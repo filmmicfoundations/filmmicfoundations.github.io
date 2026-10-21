@@ -526,3 +526,30 @@ html[data-theme="dark"] .ff-cite-section{background:#172b30;border-color:#426164
 .ffv-tile.ffv-tile-unavailable img {opacity:.24}
 .alike-diagram img {height:auto!important;max-height:none!important;object-fit:contain!important;
   background:transparent!important}
+
+
+/* v2026.10.21 — Keep both sticky navigation bars visible behind article popups.
+   Older v30 viewport-centered overrides could cover the section toolbar.
+   Dialogs are placed in the remaining viewport area, not over site chrome. */
+.ffv-dialog {
+  inset:calc(var(--ff-modal-chrome-height, var(--ff-chrome-height, 134px)) + 12px) 0 12px !important;
+  margin:auto !important;
+  height:min(720px, calc(100dvh - var(--ff-modal-chrome-height, var(--ff-chrome-height, 134px)) - 24px)) !important;
+  max-height:calc(100dvh - var(--ff-modal-chrome-height, var(--ff-chrome-height, 134px)) - 24px) !important;
+}
+.ffs-dialog {
+  inset:calc(var(--ff-modal-chrome-height, var(--ff-chrome-height, 134px)) + 12px) 0 12px !important;
+  margin:auto !important;
+  max-height:calc(100dvh - var(--ff-modal-chrome-height, var(--ff-chrome-height, 134px)) - 24px) !important;
+}
+.ffv-dialog::backdrop,.ffs-dialog::backdrop {
+  background:linear-gradient(to bottom, transparent 0, transparent var(--ff-modal-chrome-height, 134px), rgba(4,15,19,.61) var(--ff-modal-chrome-height, 134px), rgba(4,15,19,.61) 100%) !important;
+  backdrop-filter:none !important;
+}
+@media(max-height:520px) {
+  .ffv-dialog {
+    inset:calc(var(--ff-modal-chrome-height, 134px) + 4px) 0 4px !important;
+    height:calc(100dvh - var(--ff-modal-chrome-height,134px) - 8px) !important;
+    max-height:calc(100dvh - var(--ff-modal-chrome-height,134px) - 8px) !important;
+  }
+}

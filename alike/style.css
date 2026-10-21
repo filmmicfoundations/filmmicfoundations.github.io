@@ -21,3 +21,22 @@
 @media (max-width: 820px){.alike-color-stages{grid-template-columns:1fr 1fr}.alike-stage-label{font-size:20px!important}.alike-dot{width:82px;height:82px}}
 @media (max-width: 540px){.alike-color-stages{grid-template-columns:1fr}.alike-stage-label{font-size:22px!important}}
 html[data-theme="dark"] .film-still-local img{background:#223238}
+
+
+/* v2026.10.21 typography correction — prevent the final character of DISCONNECTION
+   from wrapping while retaining the four-stage diagram's editorial layout. */
+.alike-color-stages .alike-stage-label {
+  font-size:13.5px !important;
+  line-height:1.2 !important;
+  letter-spacing:-.045em !important;
+  white-space:nowrap !important;
+  overflow-wrap:normal !important;
+  word-break:normal !important;
+  hyphens:none !important;
+}
+@media (max-width:820px) {
+  .alike-color-stages .alike-stage-label {font-size:19px !important; letter-spacing:-.015em !important;}
+}
+@media (max-width:560px) {
+  .alike-color-stages .alike-stage-label {font-size:22px !important; letter-spacing:normal !important;}
+}

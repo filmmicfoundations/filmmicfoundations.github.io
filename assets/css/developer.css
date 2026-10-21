@@ -396,3 +396,17 @@ html:has(body.ff-dev-page dialog[open]),body.ff-dev-page:has(dialog[open]){overf
 
 /* ZIP inspection is automatic on selection, not an extra user step. */
 #dev-compare[hidden]{display:none!important}
+
+
+/* v2026.10.21 — Keep developer portal navigation in view during dialogs. */
+.ff-dev-page .dev-deploy-dialog,.ff-dev-page .dev-token-guide {
+  position:fixed !important;
+  inset:calc(var(--ff-modal-chrome-height,70px) + 10px) 0 10px !important;
+  margin:auto !important;
+  max-height:calc(100dvh - var(--ff-modal-chrome-height,70px) - 20px) !important;
+  overflow-y:auto;
+}
+.ff-dev-page .dev-deploy-dialog::backdrop,.ff-dev-page .dev-token-guide::backdrop {
+  background:linear-gradient(to bottom, transparent 0, transparent var(--ff-modal-chrome-height,70px), rgba(4,21,27,.62) var(--ff-modal-chrome-height,70px), rgba(4,21,27,.62) 100%) !important;
+  backdrop-filter:none !important;
+}

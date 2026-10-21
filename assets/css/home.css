@@ -694,3 +694,16 @@ html { overflow-anchor: none; }
 .ff-discover .ff-filter-chip:hover{background:var(--ff-soft)}
 .ff-discover .ff-filter-chip-x{font:500 17px/1 'DM Sans',sans-serif;opacity:.75}
 html[data-theme=dark] .ff-discover .ff-filter-chip{color:var(--ff-ink);background:var(--ff-panel);border-color:var(--ff-border)}
+
+
+/* v2026.10.21 — Archive previews stay below the global menu. */
+.archive-preview {
+  position:fixed !important;
+  inset:calc(var(--ff-modal-chrome-height, 70px) + 10px) 0 10px !important;
+  margin:auto !important;
+  max-height:calc(100dvh - var(--ff-modal-chrome-height, 70px) - 20px) !important;
+}
+.archive-preview::backdrop {
+  background:linear-gradient(to bottom, transparent 0, transparent var(--ff-modal-chrome-height, 70px), rgba(4,15,19,.61) var(--ff-modal-chrome-height, 70px), rgba(4,15,19,.61) 100%) !important;
+  backdrop-filter:none !important;
+}

@@ -221,3 +221,30 @@ html.ff-global-dialog-open{scrollbar-gutter:stable}
 
 /* Stable modal dimmer: animate content, not native backdrop alpha, to avoid flash. */
 .ff-settings-dialog[open]::backdrop,.ff-settings-dialog.ff-pref-closing[open]::backdrop{animation:none!important;background:rgba(6,19,24,.62)!important;backdrop-filter:blur(1px)}
+
+
+/* v2026.10.21 — shared overlay safe area measured from actual sticky menus.
+   Article pages have two nav bars; other pages have one. */
+:root {--ff-modal-chrome-height:var(--ff-header-height, 70px)}
+:root:has(.ff-section-toolbar) {--ff-modal-chrome-height:var(--ff-chrome-height, 134px)}
+.ff-settings-dialog {
+  inset:calc(var(--ff-modal-chrome-height,70px) + 10px) 0 10px !important;
+  margin:auto !important;
+  height:min(730px, calc(100dvh - var(--ff-modal-chrome-height,70px) - 20px)) !important;
+  max-height:calc(100dvh - var(--ff-modal-chrome-height,70px) - 20px) !important;
+}
+.ff-settings-dialog::backdrop,.ff-settings-dialog[open]::backdrop,.ff-settings-dialog.ff-pref-closing[open]::backdrop,
+.ff-external-dialog::backdrop {
+  background:linear-gradient(to bottom, transparent 0, transparent var(--ff-modal-chrome-height,70px), rgba(6,19,24,.62) var(--ff-modal-chrome-height,70px), rgba(6,19,24,.62) 100%) !important;
+  backdrop-filter:none !important;
+}
+.ff-external-dialog {
+  position:fixed !important;
+  inset:calc(var(--ff-modal-chrome-height,70px) + 10px) 0 10px !important;
+  margin:auto !important;
+  max-height:calc(100dvh - var(--ff-modal-chrome-height,70px) - 20px) !important;
+  overflow-y:auto;
+}
+/* Retain the root scroll lock, but do not turn the sticky header's body
+   containing block into a second scroll container when a modal opens. */
+html.ff-global-dialog-open body{overflow-y:visible!important}
