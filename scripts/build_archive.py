@@ -16,7 +16,6 @@ import math
 import re
 import xml.etree.ElementTree as ET
 from citations import make_citations, make_citation_html
-from build_release_history import create_history
 
 ROOT = Path(__file__).resolve().parents[1]
 HOME = ROOT / 'index.html'
@@ -189,11 +188,6 @@ def ensure_shared_settings(page):
     Existing pages are left alone unless the shared stylesheet or script is missing.
     """
     home=HOME.read_text(encoding='utf-8')
-    # Keep the shared icon-only Home link consistent in newly generated articles.
-    icon=re.search(r'<a class="nav-link ff-home-link".*?</a>',home,re.S)
-    if icon and 'ff-home-link' not in page:
-        page=re.sub(r'<a class="nav-link"(\s+href="[^"]+"[^>]*)>Home</a>',
-                    lambda m: '<a class="nav-link ff-home-link"'+m.group(1)+' aria-label="Home" title="Home">'+re.search(r'<svg.*?</svg>',icon.group(0),re.S).group(0)+'</a>',page,count=1)
     gear=re.search(r'<button class="ff-settings-toggle".*?</button>', home, flags=re.S)
     if not gear:raise ValueError('Homepage shared settings control is missing')
     if 'class="ff-settings-toggle"' not in page:
@@ -203,10 +197,6 @@ def ensure_shared_settings(page):
     page=re.sub(r'<script[^>]+src="\.\./assets/js/site-header\.js"[^>]*></script>', '',page)
     if 'assets/css/site-settings.css' not in page:
         page=page.replace('</head>','<link rel="stylesheet" href="../assets/css/site-settings.css"></head>',1)
-    if 'assets/css/dropdowns.css' not in page:
-        page=page.replace('</head>','<link rel="stylesheet" href="../assets/css/dropdowns.css"></head>',1)
-    if 'assets/js/dropdowns.js' not in page:
-        page=page.replace('</body>','<script defer src="../assets/js/dropdowns.js"></script></body>',1)
     if 'assets/js/site-settings.js' not in page:
         page=page.replace('</body>','<script defer src="../assets/js/site-settings.js"></script></body>',1)
     return page
@@ -279,43 +269,27 @@ def sitemap(articles):
 
 
 def feed(articles):
-    """RSS 2.0 for feed readers, with an optional human-readable XSL view.
-
-    XSL is ignored by feed readers but makes opening feed.xml in a normal
-    desktop browser useful rather than showing an unstyled XML tree.
-    """
     ET.register_namespace('atom','http://www.w3.org/2005/Atom')
     rss=ET.Element('rss',{'version':'2.0'})
     channel=ET.SubElement(rss,'channel')
-    def node(name,value): ET.SubElement(channel,name).text=value
+    def node(name,value):ET.SubElement(channel,name).text=value
     node('title','Filmmic Foundations — Short-Film Research')
     node('link',BASE_URL)
-    node('description','Evidence-led research and critical analysis of short films.')
+    node('description','New educational and critical research on short cinema, without individual author bylines.')
     node('language','en-US')
-    node('docs','https://www.rssboard.org/rss-specification')
     ET.SubElement(channel,'{http://www.w3.org/2005/Atom}link',{'href':BASE_URL+'feed.xml','rel':'self','type':'application/rss+xml'})
-    ordered=sorted(articles,key=lambda a:(a.get('article_date') or a.get('date') or ''),reverse=True)
-    if ordered:
-        latest=ordered[0].get('article_date') or ordered[0].get('date')
-        if latest:
-            node('lastBuildDate',format_datetime(datetime.strptime(latest,'%Y-%m-%d').replace(tzinfo=timezone.utc)))
-    for article in ordered[:50]:
+    ordered=sorted(articles,key=lambda a:(a.get('updated_date') or a.get('article_date') or a.get('date') or ''),reverse=True)
+    for article in ordered[:30]:
         item=ET.SubElement(channel,'item')
-        link=BASE_URL+article['slug']+'/'
-        for name,value in [('title',article['title']),('link',link),('description',article['description'])]:
-            ET.SubElement(item,name).text=value
-        ET.SubElement(item,'guid',{'isPermaLink':'true'}).text=link
-        pub=article.get('article_date') or article.get('date')
+        for name,value in [('title',article['title']),('link',BASE_URL+article['slug']+'/'),('description',article['description']),('guid',BASE_URL+article['slug']+'/')]:ET.SubElement(item,name).text=value
+        pub=article.get('updated_date') or article.get('article_date') or article.get('date')
         if pub:
             date=datetime.strptime(pub,'%Y-%m-%d').replace(tzinfo=timezone.utc)
             ET.SubElement(item,'pubDate').text=format_datetime(date)
         for tag in sorted(terms(article.get('themes'))|terms(article.get('tags'))):
             ET.SubElement(item,'category').text=tag
     ET.indent(rss,space='  ')
-    data=ET.tostring(rss,encoding='unicode')
-    output=('<?xml version="1.0" encoding="UTF-8"?>\n'
-            '<?xml-stylesheet type="text/xsl" href="/assets/rss.xsl"?>\n'+data+'\n')
-    (ROOT/'feed.xml').write_text(output,encoding='utf-8')
+    ET.ElementTree(rss).write(ROOT/'feed.xml',encoding='unicode',xml_declaration=True)
 
 
 def main():
@@ -343,7 +317,6 @@ def main():
     patch_articles(articles,fulltext)
     sitemap(articles)
     feed(articles)
-    create_history()
     print(f'Built {len(articles)} short-film article(s), full-text search, related articles, RSS, sitemap and schema.')
 
 if __name__=='__main__':main()

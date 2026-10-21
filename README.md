@@ -89,7 +89,7 @@ If all selected files already match GitHub, the portal explains that nothing nee
 
 ## Developer Portal v43
 
-The `/dev/` interface has two compact sections: Updates, and Backups & Guides (with a combined publication standards download).
+The `/dev/` interface has three compact sections: Updates, Backups, and Standards.
 The temporary code `123` is only a visual gate on public GitHub Pages, not authentication.
 Actual publishing and restoring require a repository-scoped, fine-grained GitHub token.
 
@@ -127,8 +127,8 @@ release-status panel**:
    exact commit SHA, displaying runner/job status when the API provides it.
 4. **Live website:** after a successful workflow, the portal polls a modified public
    asset with cache-busting and compares its Git blob hash to the uploaded version.
-   If the package does not contain a directly comparable public asset, workflow
-   success can be reported but the updated live file cannot be independently verified.
+   If the package doesn't contain a directly comparable public asset, it verifies the
+   public portal responds but labels this as unverified at the individual-file level.
 
 If the new public file is confirmed, the portal automatically reloads itself to use
 new HTML/JS/CSS. It leaves other open website tabs untouched to avoid losing reading
@@ -149,55 +149,3 @@ publication.
 
 This release has been tested against simulated GitHub API and deployment responses;
 real deployments must still be verified on the live GitHub Pages site.
-
-
-### v45: Social previews and developer history
-
-The homepage title and description are unchanged. A broadly compatible 1200×630 JPEG is now used for the site-wide social card, with explicit Open Graph dimensions, site name, Twitter image/title/description, PNG favicons (32 and 192 px), an SVG icon and an Apple touch icon. Third-party apps may still show their own source label such as GitHub rather than the website title.
-
-The Developer Portal history now merges successful GitHub Pages runs with main-branch Git commits. Only confirmed workflow runs are labeled **Published**; other entries say **Repository revision**, and restoring those is not proof they deployed successfully. GitHub only provides revisions still present in the repository history, not arbitrary ZIP files created outside the repository. Restore operations remain destructive to later site content; download a backup first.
-
-### Developer Portal — release tracking (v46)
-
-The deployment tracker is a dismissible popup with an option to reopen it during an active release. It checks GitHub Actions and verifies a changed public asset when available; if status is temporarily inaccessible, monitoring can be retried rather than getting stuck on a permanent error. An optional release description controls the Git commit title, while a filename-based suggestion is used by default. Older generic commit titles can be summarized from their changed filenames when GitHub allows access. Publication Standards supports grid and list layouts. The shared navigation uses an accessible Home icon.
-
-*The completion indicator describes verified stages, not an estimated transfer percentage. A token with insufficient GitHub Actions read permission may limit workflow detail. Source ZIPs and rollback commits remain available independently of this visual status.*
-
-
-## Developer Portal v47 navigation
-
-- **Updates** handles repository connection and validated ZIP publishing.
-- **Backups & guides** combines repository history, source downloads, and publication standards. Download the complete guide, or expand **Individual files** for seven separate references.
-- The access code (`123`, a public client-side interface gate) is remembered in the current browser tab using session storage. **Lock** asks for confirmation before clearing the remembered access state and any stored GitHub token. Closing a tab normally clears session storage, but browser session restoration can retain it.
-- Disclosure menus, mobile tables of contents, and homepage filter choices use consistent open/close animation timing. Reading Preferences now uses accessible custom choice popovers that open without shifting the page.
-- The access code does not secure the publicly delivered frontend. GitHub authorization remains necessary for publishing, and repository-scoped short-lived tokens are recommended.
-
-
-## v48 — consistent settings and deployment workspace
-
-- **Archive filters:** a borderless, softly elevated cream panel and a narrow teal indicator rather than a numeric counter.
-- **Developer Portal:** one page with three smooth disclosures (Updates, Backups, Publication guides). Backups initially shows four releases and puts older versions behind a separately scrolling disclosure; no pagination button. The Lock dialog actions are aligned consistently.
-- **Reader Settings:** calmer header, desktop sidebar/mobile tab navigation, uniform control sizing, and animated floating select options using the underlying native select as the stored-value source. The same local storage keys and defaults are retained.
-- **Motion:** reversible in-flow disclosure animations set their collapsed height *before* layout expands, minimizing viewport jumps. Reduced-motion settings disable animations.
-- **Publishing status:** status remains tied to confirmed GitHub stages, with an animated checking state when build information is delayed. Refreshes do not restart stale status checks indefinitely: an unverified release clears its pending marker after seven minutes from its original submission and presents actionable GitHub Actions information. Status can be retried manually. Without a comparable public changed file, a reachable homepage alone is **never** presented as proof of deployment.
-- **Privacy:** access code remains a public presentation gate. GitHub authorization remains separate; no token is included in ZIPs.
-
-A browser check was run using locally assembled HTML and CSS because local URLs are restricted in the test environment. The final deployment still needs a live GitHub Pages test, particularly the Actions-status recovery path.
-
-### v51 interface maintenance
-
-- ZIP inspection runs automatically when a file is selected; no additional Inspect ZIP button is shown.
-- Version history loads repository commits and successful deployment records concurrently with a bounded request time, so an unavailable Actions endpoint cannot indefinitely block commit history. The portal displays at most 50 recent revisions. Old Git commits are **not deleted** (doing so would require unsafe history rewriting).
-- Applied archive filter chips appear beside the filter trigger and animate away on removal.
-- Article and About Back to Top buttons dock just above the footer rather than overlapping it.
-- All native modal dialogs use shared background-scroll prevention; only the active dialog's interior is scrollable.
-- Image gallery mode visibly disables the zoom percentage along with the minus, plus and Fit controls.
-
-## v53 maintenance notes: archive controls, release history, RSS
-
-- The archive uses two independent, compact icon controls: **Filter** (a three-row vertical list for genre, article date, and film date) and **Sort** (one direct list of newest, oldest, A–Z, and Z–A). Selection state remains in the original select elements, so search, preference settings, and clear-filter actions stay synchronized. No additional UI library is needed.
-- The floating **Top** control on About and article pages is fixed during reading, then anchored in **document coordinates** immediately above each page's actual footer. It does not increase the footer height or cover footer links.
-- At each GitHub Actions deployment, `scripts/build_archive.py` also runs `scripts/build_release_history.py`. This creates `assets/release-history.json` (a public, read-only list of up to 50 saved Git revisions). The script deepens the Git checkout when necessary, using the existing checkout credentials. **No new workflow permissions or workflow-file edits are required.** The Developer Portal reads this same-origin index before using the GitHub API as an optional enrichment. Older Git commits are not erased. The first deployed version with this change populates the index.
-- The RSS subscription address is **https://filmmicfoundations.github.io/feed.xml**. It remains standards-compliant RSS 2.0 for feed readers; `assets/rss.xsl` makes it readable in browsers that support XML stylesheets. RSS is generated from article metadata, and `scripts/quality_gate.py` checks the channel and all expected feed entries, not just XML syntax.
-- The release-history snapshot contains only commit hashes, dates, and commit descriptions—no contributor names or emails. Keep any personal identities out of commit messages if publisher anonymity is important.
-- The publication workflow must be deployed through **GitHub Actions** for the static revision index and RSS generator to run. If the site's Pages source is configured as a branch instead, select GitHub Actions in the repository's Pages settings.

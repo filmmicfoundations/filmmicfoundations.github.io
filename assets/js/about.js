@@ -1,7 +1,6 @@
 /* About page — tiny section navigation controller; no dependencies. */
 (() => {
   'use strict';
-  const closeMenu = menu => { if (!menu) return; if(window.FFDropdowns) window.FFDropdowns.close(menu); else menu.open=false; };
   const nav = document.querySelector('#about-toolbar');
   const main = document.querySelector('.ff-about');
   if (!nav || !main) return;
@@ -22,13 +21,13 @@
     const target = document.getElementById(id);
     if (!target) return;
     event.preventDefault();
-    if(menu) closeMenu(menu);
+    menu?.removeAttribute('open');
     const top = target.getBoundingClientRect().top + window.scrollY - offset();
     window.scrollTo({top:Math.max(0,top),behavior:reduced.matches?'instant':'smooth'});
     history.replaceState(null,'','#'+id);
   });
-  document.addEventListener('click', e => { if (menu?.open && !menu.contains(e.target)) closeMenu(menu); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape' && menu?.open) closeMenu(menu); });
+  document.addEventListener('click', e => { if (menu?.open && !menu.contains(e.target)) menu.open=false; });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && menu?.open) menu.open=false; });
   let requested = false;
   function update() {
     requested=false;

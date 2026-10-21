@@ -26,7 +26,7 @@
     galleryMotion:'on', slideshow:'off', markers:'on', media:'auto', shortcuts:'on', external:'direct'
   });
   const sections = [
-    {id:'appearance',label:'Appearance',symbol:'appearance',groups:[
+    {id:'appearance',label:'Appearance',symbol:'◐',groups:[
       {name:'Color & typography',fields:[
         ['theme','Color theme','Light is the default; System follows your device.',[['light','Light'],['dark','Dark'],['system','System']]],
         ['text','Text size','Adjust article and editorial text.',[['small','Small'],['default','Standard'],['large','Large'],['extra','Extra large']]],
@@ -38,7 +38,7 @@
         ['motion','Animation intensity','Off follows accessibility needs; Subtle retains the site design.',[['off','Off'],['subtle','Subtle'],['full','Full']]]
       ]}
     ]},
-    {id:'reading',label:'Reading',symbol:'book',groups:[
+    {id:'reading',label:'Reading',symbol:'▤',groups:[
       {name:'Distraction-free reading',fields:[
         ['focus','Focus mode','Hide the research sidebar and related-reading cards.'],
         ['progress','Reading progress','Show the thin progress indicator on papers and About.'],
@@ -50,7 +50,7 @@
         ['related','Related research','Show automatic recommendations when similar papers exist.']
       ]}
     ]},
-    {id:'research',label:'Research',symbol:'research',groups:[
+    {id:'research',label:'Research',symbol:'⌁',groups:[
       {name:'Academic tools',fields:[
         ['citation','Preferred citation style','Default style shown in article citation tools.',[['mla','MLA 9'],['apa','APA 7'],['chicago','Chicago'],['ieee','IEEE']]],
         ['pdf','PDF behavior','Open in a new tab or save the PDF to your device.',[['new-tab','Open new tab'],['download','Download file']]],
@@ -61,7 +61,7 @@
         ['sort','Archive sorting','Default order for the research archive.',[['newest','Newest first'],['oldest','Oldest first'],['az','Title A–Z'],['za','Title Z–A']]]
       ]}
     ]},
-    {id:'general',label:'General',symbol:'controls',groups:[
+    {id:'general',label:'General',symbol:'☷',groups:[
       {name:'Images & media',fields:[
         ['viewer','Image viewer opens in','Start with a single image or the full thumbnail gallery.',[['single','Single image'],['gallery','Gallery']]],
         ['galleryMotion','Photo transitions','Animate movement between stills in the image viewer.'],
@@ -111,7 +111,7 @@
     publish();
   }
   let statusTimeout;
-  function notice(text){const el=document.getElementById('ff-settings-status');if(!el)return;el.textContent=text;clearTimeout(statusTimeout);statusTimeout=setTimeout(()=>{el.textContent='Changes saved locally';},2000)}
+  function notice(text){const el=document.getElementById('ff-settings-status');if(!el)return;el.textContent=text;clearTimeout(statusTimeout);statusTimeout=setTimeout(()=>{el.textContent='Saved on this device';},2000)}
   function save(next){
     const normalized=normalize(next);
     if(Object.keys(DEFAULT).every(k=>settings[k]===normalized[k]))return;
@@ -127,55 +127,8 @@
   dialog.className='ff-settings-dialog';dialog.id='ff-settings-dialog';
   dialog.setAttribute('aria-labelledby','ff-settings-heading');
   const panels=sections.map((section,index)=>`<section class="ff-settings-panel" id="ff-settings-${section.id}" role="tabpanel" aria-labelledby="ff-tab-${section.id}" ${index?'hidden':''}>${section.groups.map(group=>`<div class="ff-settings-section"><h3>${group.name}</h3>${group.fields.map(([key,title,desc,choices])=>`<div class="ff-pref-row"><div class="ff-pref-text"><label for="ff-pref-${key}">${title}</label><p id="ff-pref-help-${key}">${desc}</p></div>${choices?`<select id="ff-pref-${key}" name="${key}" aria-describedby="ff-pref-help-${key}">${choices.map(([v,label])=>`<option value="${v}">${label}</option>`).join('')}</select>`:`<input type="checkbox" id="ff-pref-${key}" name="${key}" aria-describedby="ff-pref-help-${key}">`}</div>`).join('')}</div>`).join('')}${section.id==='general'?`<div class="ff-pref-information"><strong>Privacy by design</strong>Preferences and optional reading positions are stored only in your browser. No account is required, and the settings panel does not transmit them to Filmmic Foundations. External video services may receive requests when you choose to load them.</div><div class="ff-pref-actions"><button type="button" class="ff-pref-action" id="ff-clear-positions">Clear saved reading positions</button><button type="button" class="ff-pref-action ff-danger" id="ff-reset-settings">Reset all preferences</button></div>`:''}</section>`).join('');
-  const tabIcons={appearance:'<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18Z"/>',book:'<path d="M12 6c-3.5-2-7-2-10-1v14c3-1 6.5-1 10 1 3.5-2 7-2 10-1V5c-3-1-6.5-1-10 1Zm0 0v14"/>',research:'<path d="M5 3h14v18H5zM8 7h8M8 11h8M8 15h5"/>',controls:'<path d="M4 7h16M4 12h16M4 17h16"/><circle cx="9" cy="7" r="2" fill="var(--ff-cream,#fcfcfa)"/><circle cx="16" cy="12" r="2" fill="var(--ff-cream,#fcfcfa)"/><circle cx="10" cy="17" r="2" fill="var(--ff-cream,#fcfcfa)"/>'};
-  dialog.innerHTML=`<div class="ff-settings-shell"><div class="ff-settings-top"><div><span class="ff-settings-kicker">FILMMIC FOUNDATIONS / READER SETTINGS</span><h2 id="ff-settings-heading">Settings</h2><p class="ff-settings-intro">Adjust the reading and research experience. Preferences save automatically.</p></div><button type="button" class="ff-settings-dismiss" aria-label="Close settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">${srcIcons.close}</svg></button></div><div class="ff-settings-main"><div class="ff-settings-tabs" role="tablist" aria-label="Settings categories">${sections.map((section,index)=>`<button type="button" role="tab" id="ff-tab-${section.id}" class="ff-settings-tab" aria-controls="ff-settings-${section.id}" aria-selected="${index===0}" tabindex="${index===0?0:-1}"><svg class="ff-settings-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${tabIcons[section.symbol]}</svg>${section.label}</button>`).join('')}</div><div class="ff-settings-scroll">${panels}</div></div><div class="ff-settings-bottom"><span class="ff-settings-saved" id="ff-settings-status" role="status" aria-live="polite">Changes saved locally</span><button class="ff-settings-done" type="button">Done</button></div></div>`;
+  dialog.innerHTML=`<div class="ff-settings-shell"><div class="ff-settings-top"><div><span class="ff-settings-kicker">FILMMIC FOUNDATIONS · PERSONALIZATION</span><h2 id="ff-settings-heading">Reading preferences</h2></div><button type="button" class="ff-settings-dismiss" aria-label="Close settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">${srcIcons.close}</svg></button></div><div class="ff-settings-tabs" role="tablist" aria-label="Settings categories">${sections.map((section,index)=>`<button type="button" role="tab" id="ff-tab-${section.id}" class="ff-settings-tab" aria-controls="ff-settings-${section.id}" aria-selected="${index===0}" tabindex="${index===0?0:-1}"><span aria-hidden="true">${section.symbol}</span>${section.label}</button>`).join('')}</div><div class="ff-settings-scroll">${panels}</div><div class="ff-settings-bottom"><span class="ff-settings-saved" id="ff-settings-status" role="status" aria-live="polite">Saved on this device</span><button class="ff-settings-done" type="button">Done</button></div></div>`;
   document.body.append(dialog);
-
-  // Uniform animated choice popovers; original selects remain the form's source of truth.
-  // Popovers float above the panel so changing an option never shifts page layout.
-  const choiceMenus=[];
-  for(const select of dialog.querySelectorAll('.ff-pref-row select')){
-    const wrap=document.createElement('div');wrap.className='ff-pref-choice';
-    const trigger=document.createElement('button');trigger.type='button';trigger.className='ff-pref-choice-button';
-    trigger.setAttribute('aria-haspopup','listbox');trigger.setAttribute('aria-expanded','false');
-    trigger.id=select.id+'-button';
-    const prefLabel=select.closest('.ff-pref-row')?.querySelector('label');
-    if(prefLabel)prefLabel.htmlFor=trigger.id;
-    trigger.setAttribute('aria-label',prefLabel?.textContent||'Choose preference');
-    const menu=document.createElement('div');menu.className='ff-pref-choice-list';menu.setAttribute('role','listbox');menu.hidden=true;
-    for(const option of select.options){
-      const item=document.createElement('button');item.type='button';item.dataset.value=option.value;
-      item.setAttribute('role','option');item.textContent=option.textContent;
-      item.addEventListener('click',()=>{select.value=option.value;select.dispatchEvent(new Event('change',{bubbles:true}));close();trigger.focus({preventScroll:true})});
-      menu.appendChild(item);
-    }
-    let opened=false,anim=null;const DURATION=210;
-    const frames=[{opacity:0,transform:'translateY(-5px) scale(.985)'},{opacity:1,transform:'translateY(0) scale(1)'}];
-    function sync(){trigger.textContent=select.selectedOptions[0]?.textContent||'Choose';menu.querySelectorAll('[role=option]').forEach(item=>item.setAttribute('aria-selected',String(item.dataset.value===select.value)))}
-    function setOpen(next){
-      if(next===opened)return;opened=next;trigger.setAttribute('aria-expanded',String(next));
-      if(next)menu.hidden=false;menu.style.pointerEvents=next?'auto':'none';
-      if(isReduced()){anim?.cancel();anim=null;menu.hidden=!next;return}
-      if(!anim){anim=menu.animate(frames,{duration:DURATION,easing:'cubic-bezier(.22,.8,.22,1)',fill:'both'});if(!next){anim.pause();anim.currentTime=DURATION}}
-      const current=anim;current.playbackRate=next?1:-(DURATION/125);current.play();
-      current.onfinish=()=>{if(anim!==current)return;menu.hidden=!opened;current.cancel();anim=null};
-    }
-    function close(){setOpen(false)}
-    choiceMenus.push({close,trigger,menu});
-    trigger.addEventListener('click',()=>{if(opened)close();else{choiceMenus.forEach(other=>other.close());wrap.classList.toggle('ff-choice-above',trigger.getBoundingClientRect().bottom>dialog.getBoundingClientRect().bottom-240);setOpen(true);menu.querySelector('[aria-selected=true]')?.focus({preventScroll:true})}});
-    wrap.addEventListener('keydown',event=>{
-      if(event.key==='Escape'){event.preventDefault();close();trigger.focus({preventScroll:true})}
-      if(!opened)return;
-      const items=[...menu.querySelectorAll('[role=option]')],index=items.indexOf(document.activeElement);
-      if(event.key==='ArrowDown'||event.key==='ArrowUp'){event.preventDefault();items[(index+(event.key==='ArrowDown'?1:-1)+items.length)%items.length]?.focus({preventScroll:true})}
-    });
-    select.classList.add('ff-pref-native-select');select.insertAdjacentElement('afterend',wrap);wrap.append(trigger,menu);
-    select.addEventListener('change',sync);sync();
-
-  }
-  dialog.addEventListener('click',event=>{if(!event.target.closest('.ff-pref-choice'))choiceMenus.forEach(item=>item.close())});
-  dialog.querySelectorAll('.ff-settings-tab').forEach(tab=>tab.addEventListener('click',()=>choiceMenus.forEach(item=>item.close())));
-
   let lastTrigger=null,closing=false,closeTimer=0;
   function open(){
     if(dialog.open)return;
@@ -186,7 +139,6 @@
   }
   function close(){
     if(!dialog.open||closing)return;
-    choiceMenus.forEach(item=>item.close());
     closing=true;
     const finish=()=>{
       clearTimeout(closeTimer);dialog.close();dialog.classList.remove('ff-pref-closing');closing=false;
@@ -203,16 +155,8 @@
   const tabs=[...dialog.querySelectorAll('[role="tab"]')];
   function setTab(id,focus=false){
     tabs.forEach(tab=>{const selected=tab.id==='ff-tab-'+id;tab.setAttribute('aria-selected',String(selected));tab.tabIndex=selected?0:-1;if(selected&&focus)tab.focus()});
-    const scroller=dialog.querySelector('.ff-settings-scroll');
-    const panels=[...dialog.querySelectorAll('[role="tabpanel"]')];
-    const outgoing=panels.find(el=>!el.hidden);
-    const incoming=panels.find(el=>el.id==='ff-settings-'+id);
-    if(outgoing===incoming)return;
-    // Dialog dimensions remain stable. Only inner content crossfades; no page reflow.
-    scroller.getAnimations().forEach(a=>a.cancel());
-    panels.forEach(el=>el.hidden=el!==incoming);
-    scroller.scrollTop=0;
-    if(!isReduced())scroller.animate([{opacity:.65,transform:'translateY(5px)'},{opacity:1,transform:'translateY(0)'}],{duration:215,easing:'cubic-bezier(.2,.75,.2,1)'});
+    dialog.querySelectorAll('[role="tabpanel"]').forEach(el=>el.hidden=el.id!=='ff-settings-'+id);
+    dialog.querySelector('.ff-settings-scroll').scrollTop=0;
   }
   tabs.forEach((tab,i)=>{
     tab.addEventListener('click',()=>setTab(tab.id.substring(7)));
@@ -230,7 +174,7 @@
     for(const key of Object.keys(DEFAULT)){
       const input=dialog.querySelector('#ff-pref-'+key);if(!input)continue;
       if(input.type==='checkbox')input.checked=settings[key]==='on';
-      else {input.value=settings[key];input.dispatchEvent(new Event('change'));}
+      else input.value=settings[key];
     }
   }
   dialog.addEventListener('change',e=>{
@@ -241,7 +185,7 @@
   });
   dialog.querySelector('#ff-reset-settings').addEventListener('click',()=>{
     settings={...DEFAULT};safeSet(STORE,JSON.stringify(settings));safeSet(LEGACY_THEME,'light');
-    apply();reflect();dialog.querySelectorAll('.ff-pref-native-select').forEach(input=>input.dispatchEvent(new Event('change')));notice('Defaults restored');
+    apply();reflect();notice('Defaults restored');
   });
   dialog.querySelector('#ff-clear-positions').addEventListener('click',()=>{
     safeRemove(POSITIONS);document.querySelector('.ff-resume-prompt')?.remove();notice('Reading positions cleared');
@@ -342,10 +286,9 @@
 (() => {
   'use strict';
   const toolbar=document.querySelector('.ff-section-toolbar');
-  const developer=document.body.classList.contains('ff-dev-page');
-  if(!toolbar || developer)return;
+  if(!toolbar)return;
   // Future articles that copied an earlier menu should also get the clean layout.
-  toolbar?.querySelectorAll('.reading-tool[href="#top"],.ff-about-to-top').forEach(link=>link.remove());
+  toolbar.querySelectorAll('.reading-tool[href="#top"],.ff-about-to-top').forEach(link=>link.remove());
   const button=document.createElement('button');
   button.type='button';
   button.className='ff-back-to-top';
@@ -359,30 +302,6 @@
     scheduled=false;
     const cutoff=Math.max(550,Math.floor(window.innerHeight*.82));
     const visible=window.scrollY>cutoff;
-    // Clamp the floating utility at the footer in DOCUMENT coordinates.
-    // The footer may be a direct child of body (About) or nested in main
-    // (article). Switching fixed→absolute at the exact same pixel prevents
-    // the control from covering either footer and does not change layout.
-    const footers=[...document.querySelectorAll('footer:not(.ffv-foot)')].filter(node=>
-      !node.closest('dialog') && getComputedStyle(node).display!=='none');
-    const footer=footers.find(node=>node.closest('main')) || footers[0];
-    const base=window.innerWidth<=600?16:20;
-    const gap=18;
-    const buttonHeight=button.offsetHeight||49;
-    const viewportBottom=window.scrollY+window.innerHeight-base-buttonHeight;
-    const footerTop=footer ? footer.getBoundingClientRect().top+window.scrollY : Infinity;
-    const stopTop=footerTop-gap-buttonHeight;
-    const parked=Number.isFinite(stopTop) && viewportBottom>=stopTop;
-    if(parked){
-      button.style.position='absolute';
-      button.style.top=Math.max(0,Math.round(stopTop))+'px';
-      button.style.bottom='auto';
-    }else{
-      button.style.position='fixed';
-      button.style.top='';
-      button.style.bottom='';
-    }
-    button.style.removeProperty('--ff-footer-lift');
     button.classList.toggle('ff-back-to-top--visible',visible);
     button.tabIndex=visible?0:-1;
     button.setAttribute('aria-hidden',visible?'false':'true');
@@ -395,29 +314,4 @@
     window.scrollTo({top:0,behavior:noMotion?'instant':'smooth'});
   });
   update();
-})();
-
-
-/* Shared modal policy: whenever any modal dialog is open, the document behind
-   it cannot scroll; the active dialog retains its internal scrolling. */
-(()=>{
-  const sync=()=>{
-    const open=!!document.querySelector('dialog[open]');
-    document.documentElement.classList.toggle('ff-global-dialog-open',open);
-    document.body.classList.toggle('ff-global-dialog-open',open);
-  };
-  const observer=new MutationObserver(sync);
-  observer.observe(document.documentElement,{subtree:true,attributes:true,attributeFilter:['open'],childList:true});
-  const inDialog=node=>node instanceof Element&&!!node.closest('dialog[open]');
-  document.addEventListener('wheel',event=>{
-    if(document.querySelector('dialog[open]')&&!inDialog(event.target))event.preventDefault();
-  },{passive:false,capture:true});
-  document.addEventListener('touchmove',event=>{
-    if(document.querySelector('dialog[open]')&&!inDialog(event.target))event.preventDefault();
-  },{passive:false,capture:true});
-  document.addEventListener('keydown',event=>{
-    if(!document.querySelector('dialog[open]')||inDialog(event.target))return;
-    if(['PageDown','PageUp','ArrowDown','ArrowUp',' ','Home','End'].includes(event.key))event.preventDefault();
-  },true);
-  sync();
 })();
