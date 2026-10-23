@@ -18,3 +18,9 @@ html[data-theme=dark] .ff-film-still-fallback{background:#182d32!important;color
 .hero h1{font-size:clamp(49px,7.2vw,105px)!important;line-height:1.07!important;letter-spacing:-.055em!important;max-width:1100px}
 .hero h1 em{font-family:"Libre Baskerville",Georgia,serif!important;font-size:.78em!important;letter-spacing:-.052em!important;line-height:1.16!important;font-weight:400!important}
 @media(max-width:520px){.hero h1{font-size:clamp(42px,10vw,58px)!important}.hero h1 em{font-size:.76em!important}}
+
+
+/* black-hole film-still cover override */
+.hero-image{background-image:url('assets/black-hole-office-worker-portrait.jpg')!important;background-position:center 32%!important;background-size:cover!important;opacity:.78!important;}
+.ff-film-still img{display:block;width:100%;height:auto;max-height:560px;object-fit:contain;background:#dfe6e8;}
+html[data-theme="dark"] .ff-film-still img{background:#1f2e33;}
