@@ -40,3 +40,9 @@ Reference example: 16-page *Mindglass Procedure: Memory, Grief, and the Repetiti
 ### Cover and preview consistency (October 2026 revision)
 
 The Mindglass Procedure PDF is the visual baseline. Use a sans-serif, title-first cover with a horizontal rule; an authentic still captioned as such; a compact article summary and 2-column film facts; a separate contents page; consistent section type, figure numbering, running headers and linked references. Place real stills near the paragraphs they support. Never substitute analytical artwork and label it "film still." If local film frames are unavailable, retain honest interpretive labels and mark the PDF as media-incomplete.
+
+### Contents and cover asset rules (October 23, 2026)
+- The *Mindglass Procedure* PDF is authoritative for the first-page sequence: left-aligned title, subtitle, teal rule, authentic captioned film still, concise "An in-depth critical analysis" blurb, and compact film-information table. Compare every new cover to the source, not just another article.
+- The contents page is **plain text**, not a table of clickable in-PDF links. Preserve clickable external references later in the paper; never remove all PDF annotations indiscriminately.
+- Use a lossless film frame as the master when available. Derive visually identical, high-quality JPEG assets and responsive variants; do not replace existing shots with unrelated frames simply to increase resolution. Verify exact shot match before substitution.
+- If direct access to a hosting service's video stream is unavailable, report that limitation. Do not invent "high-resolution" film stills, substitute generated frames, or upscale a small screenshot and call it additional detail.

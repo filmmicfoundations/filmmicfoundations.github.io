@@ -116,16 +116,29 @@
 
   // ZIP inspection is separate from deployment progress: one is local decompression,
   // the other is remote publication. Never claim the latter is complete prematurely.
-  function zipProgress(done,total,label='Inspecting archive'){
+  // Upload review: a genuine per-file count while processing, plus a small
+  // reserved segment for comparison. Nothing reaches 100% until review is ready.
+  let zipProgressHideTimer=0;
+  function updateZipVisual(percent,label,complete=false){
     const panel=$('dev-zip-inspection');if(!panel)return;
+    clearTimeout(zipProgressHideTimer);
     panel.hidden=false;
-    const fraction=total>0?Math.min(1,Math.max(0,done/total)):0;
-    $('dev-zip-fill').style.width=`${Math.round(fraction*100)}%`;
-    $('dev-zip-track').setAttribute('aria-valuenow',String(Math.round(fraction*100)));
-    $('dev-zip-progress-label').textContent=`${label} · ${done}/${total}`;
+    panel.classList.toggle('is-complete',complete);
+    const value=Math.max(0,Math.min(100,Math.round(percent)));
+    $('dev-zip-fill').style.width=`${value}%`;
+    $('dev-zip-track').setAttribute('aria-valuenow',String(value));
+    $('dev-zip-percent').textContent=`${value}%`;
+    $('dev-zip-progress-label').textContent=label;
   }
-  function zipProgressEnd(){
-    const panel=$('dev-zip-inspection');if(panel)panel.hidden=true;
+  function zipProgress(done,total,label='Checking files'){
+    const fraction=total>0?Math.min(1,Math.max(0,done/total)):0;
+    updateZipVisual(8+fraction*82,`${label} · ${done} of ${total} files`);
+  }
+  function zipProgressEnd(immediate=false){
+    clearTimeout(zipProgressHideTimer);
+    const panel=$('dev-zip-inspection');if(!panel)return;
+    if(immediate){panel.hidden=true;panel.classList.remove('is-complete');return;}
+    zipProgressHideTimer=setTimeout(()=>{panel.hidden=true;panel.classList.remove('is-complete');},1050);
   }
   const DEPLOY_STEPS=['files','commit','build','live'];
   const PUBLIC_ORIGIN='https://filmmicfoundations.github.io/';
@@ -151,11 +164,21 @@
     $('dev-deploy-badge').textContent=failed?'Needs attention':done?'Published':'In progress';
     $('dev-deploy-detail').textContent=detail;
     const index=Math.max(0,DEPLOY_STEPS.indexOf(step));
-    $('dev-deploy-track').classList.toggle('is-checking',!done&&!failed && step==='build');
-    const progress=done?4:index+Math.min(1,Math.max(0,fraction));
-    $('dev-deploy-track').setAttribute('aria-valuenow',String(progress));
-    $('dev-deploy-fill').style.width=`${progress*25}%`;
-    $('dev-deploy-track').setAttribute('aria-valuetext',done?'Published':failed?'Needs attention':title);
+    const track=$('dev-deploy-track');
+    track.classList.toggle('is-checking',!done&&!failed && step==='build');
+    track.classList.toggle('is-complete',done);
+    track.classList.toggle('is-failed',failed);
+    // File transfer is measured; remote GitHub workflow stages are marked
+    // "estimated" because they do not expose a meaningful byte percentage.
+    const fileFraction=Math.min(1,Math.max(0,fraction));
+    let pct=done?100:step==='files'?Math.round(6+fileFraction*39):step==='commit'?49:
+      step==='build'?(/waiting|queued|reconnect/i.test(title)?63:76):92;
+    if(failed)pct=Math.min(99,Number(track.getAttribute('aria-valuenow'))||pct);
+    if(!failed&&!done)pct=Math.max(Number(track.getAttribute('aria-valuenow'))||0,pct);
+    track.setAttribute('aria-valuenow',String(pct));
+    track.setAttribute('aria-valuetext',done?'Published and verified':failed?'Needs attention':`${pct}% ${step==='files'?'transferred':'estimated'} · ${title}`);
+    $('dev-deploy-fill').style.width=`${pct}%`;
+    $('dev-deploy-percent').textContent=done?'100%':`${pct}%${step==='files'?'':' est.'}`;
     document.querySelectorAll('[data-deploy-step]').forEach(el=>{
       const i=DEPLOY_STEPS.indexOf(el.dataset.deployStep);
       el.classList.toggle('is-done',done||i<index);
@@ -299,6 +322,7 @@
   async function readZip(file,generation){
     if(!window.JSZip)throw Error('ZIP support did not load. Reload the page and try again.');
     if(file.size>MAX_ZIP)throw Error('ZIP exceeds 90 MB. Split or optimize the update package.');
+    updateZipVisual(4,'Opening ZIP archive…');
     // Avoid JSZip's checkCRC32 option, which can stall while streaming Blobs in some browsers.
     // Each decompressed entry is checked explicitly below instead.
     const zip=await JSZip.loadAsync(file,{checkCRC32:false});
@@ -368,8 +392,13 @@
     const added=active.filter(x=>x.status==='new').length;
     const unchanged=active.filter(x=>x.status==='unchanged').length;
     const excluded=manifest.filter(x=>x.status==='excluded').length;
-    $('dev-change-summary').textContent=`${modified} changed · ${added} new · ${unchanged} unchanged`;
-    $('dev-review-hint').textContent=excluded ? `${excluded} workflow file(s) excluded. No missing repository files will be deleted.` : 'No repository files missing from the ZIP will be deleted.';
+    const locallyChecked=manifest.filter(x=>x.status==='included').length;
+    $('dev-change-summary').textContent=locallyChecked && !token
+      ? `${locallyChecked} files verified locally · connect GitHub to compare`
+      : `${modified} changed · ${added} new · ${unchanged} unchanged`;
+    $('dev-review-hint').textContent=excluded ? `${excluded} workflow file(s) excluded. No missing repository files will be deleted.` :
+      locallyChecked && !token ? 'ZIP integrity confirmed. Connect GitHub to see the actual repository differences before publishing.' :
+      'No repository files missing from the ZIP will be deleted.';
     const list=$('dev-file-list');list.replaceChildren();
     manifest.slice(0,250).forEach(f=>{
       const row=document.createElement('div');row.className='dev-file-row';
@@ -442,7 +471,9 @@
       const inspected=await readZip(selectedArchive,generation);
       if(generation!==inspectionGeneration)return;
       manifest=inspected;baselineSha='';baselineTree='';
+      updateZipVisual(92,'Files verified · preparing comparison…');
       if(token){
+        updateZipVisual(94,'Comparing with GitHub repository…');
         setStatus('dev-update-status','Comparing files with GitHub main…');
         const head=await headAndTree();
         if(generation!==inspectionGeneration)return;
@@ -454,10 +485,11 @@
         setStatus('dev-update-status','ZIP structure and CRC validated locally. Connect to GitHub above to compare files and enable publishing.');
       }
       if(generation!==inspectionGeneration)return;
+      updateZipVisual(100,token?'Review ready · changes compared with GitHub':'Archive checked · connect GitHub to compare',true);
       renderFiles();
       updateReleaseSuggestion();
       if(token&&changes.length===0)setStatus('dev-update-status','This ZIP is valid, but all its files are already up to date. Choose another ZIP to publish a new change.');
-    }catch(e){if(generation===inspectionGeneration){$('dev-review').hidden=true;changes=[];baselineSha='';lastInspectionError=e.message;setStatus('dev-update-status',`Could not inspect the ZIP: ${e.message}`);}}
+    }catch(e){if(generation===inspectionGeneration){$('dev-review').hidden=true;changes=[];baselineSha='';lastInspectionError=e.message;updateZipVisual(0,`Could not inspect: ${e.message}`);setStatus('dev-update-status',`Could not inspect the ZIP: ${e.message}`);}}
     finally{if(generation===inspectionGeneration){zipProgressEnd();setBusy(false);}}
   }
 
@@ -685,7 +717,7 @@
     refreshVersions().catch(()=>{});updatePublishButton();
   }
   function chooseZip(file){
-    ++inspectionGeneration;zipProgressEnd();
+    ++inspectionGeneration;zipProgressEnd(true);
     archive=file||null;resetInspection();
     $('dev-publish-section').hidden=false;
     $('dev-upload-info').hidden=!archive;

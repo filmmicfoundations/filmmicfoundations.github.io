@@ -27,3 +27,6 @@
 - [ ] Overlay backdrops dim the **entire** page including visible menus; viewer/settings/preview close correctly and preserve focus.
 - [ ] Archive ZIP inspected locally, ready via `scripts/package_article.py`; invalid paths and progress races checked.
 - [ ] Browser smoke JSON recorded; note GitHub/Safari/third-party features not tested offline.
+- [ ] PDF contents page matches the reference and has **no clickable section annotations**; later bibliography and source links still work.
+- [ ] ZIP review bar has a readable percentage and an activity label, never claims 100% before file validation/comparison completes, and resets on a new ZIP.
+- [ ] Deployment bar explicitly distinguishes measured transfers from estimated GitHub processing; 100% means remote publication confirmed, not merely commit accepted.
