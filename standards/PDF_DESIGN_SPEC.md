@@ -46,3 +46,7 @@ The Mindglass Procedure PDF is the visual baseline. Use a sans-serif, title-firs
 - The contents page is **plain text**, not a table of clickable in-PDF links. Preserve clickable external references later in the paper; never remove all PDF annotations indiscriminately.
 - Use a lossless film frame as the master when available. Derive visually identical, high-quality JPEG assets and responsive variants; do not replace existing shots with unrelated frames simply to increase resolution. Verify exact shot match before substitution.
 - If direct access to a hosting service's video stream is unavailable, report that limitation. Do not invent "high-resolution" film stills, substitute generated frames, or upscale a small screenshot and call it additional detail.
+
+### Research citation interaction
+- Plain text contents and research-method page; no accidental in-PDF TOC hyperlinks.
+- Retain in-body numbered citations as clickable links to exact reference entries and clickable source URLs in the bibliography. Only TOC links are removed, not evidence links.

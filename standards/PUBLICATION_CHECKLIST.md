@@ -8,7 +8,7 @@
 - [ ] Sources exist, support claims, are attributed and cited correctly; film is cited as primary text.
 - [ ] Editorial tone is clear, restrained, nonpromotional; significant alternative readings addressed when relevant.
 - [ ] No personal research author or owner identity; embedded PDF/image metadata and git attribution reviewed.
-- [ ] All stills are authentic, permission/use considered, descriptive, proportional, labeled and accessible.
+- [ ] Between 7 and 15 distinct local stills are authentic, permission/use considered, descriptive, proportional, labeled and accessible; previews contain only stills.
 - [ ] Article HTML includes title, abstract, references, proper figure numbering, no duplicate controls.
 - [ ] Structured metadata valid; article publication date distinct from film release year.
 - [ ] PDF generated (if provided), fonts/selectable text/figure captions/page numbers checked visually and metadata stripped.
@@ -30,3 +30,6 @@
 - [ ] PDF contents page matches the reference and has **no clickable section annotations**; later bibliography and source links still work.
 - [ ] ZIP review bar has a readable percentage and an activity label, never claims 100% before file validation/comparison completes, and resets on a new ZIP.
 - [ ] Deployment bar explicitly distinguishes measured transfers from estimated GitHub processing; 100% means remote publication confirmed, not merely commit accepted.
+
+- [ ] The film-image viewer is centered on the viewport at desktop, portrait/mobile and landscape widths; it does not sit below center due to stacked navbar-height offsets.
+- [ ] PDF contents/method page is non-clickable; numbered in-body source citations link to matching references, and bibliography URLs remain usable.

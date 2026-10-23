@@ -27,3 +27,23 @@ dialog:is(#ff-settings-dialog,#ff-external-dialog,#ffv-dialog,#ffs-dialog,#archi
   background-image:none !important;
   animation:none !important;
 }
+
+
+/* 2026-10-23: viewer centered in the actual viewport. Earlier styles shifted
+   the modal down by the sticky menu height, making it look off-center.
+   Instead reserve equal safe space above and below the image viewer. */
+html body dialog.ffv-dialog {
+  position:fixed!important;
+  inset:0!important;
+  top:0!important;right:0!important;bottom:0!important;left:0!important;
+  margin:auto!important;
+  transform-origin:center center;
+  height:min(720px, calc(100dvh - 2 * var(--ff-modal-chrome-height, 134px) - 20px))!important;
+  max-height:calc(100dvh - 2 * var(--ff-modal-chrome-height, 134px) - 20px)!important;
+  width:min(1050px, calc(100vw - 24px))!important;
+}
+@media (max-height:540px) {
+  html body dialog.ffv-dialog {
+    height:calc(100dvh - 16px)!important; max-height:calc(100dvh - 16px)!important;
+  }
+}
