@@ -338,6 +338,11 @@ def main():
     patch_articles(articles,fulltext)
     sitemap(articles)
     feed(articles)
+    # Keep the centralized media manifest synchronized whenever a new article is
+    # dropped in and the archive is regenerated, even on older deployments that
+    # have not yet upgraded their GitHub Actions workflow.
+    import subprocess,sys
+    subprocess.run([sys.executable,str(ROOT/'scripts/media_manifest.py')],cwd=ROOT,check=True)
     print(f'Built {len(articles)} short-film article(s), full-text search, related articles, RSS, sitemap and schema.')
 
 if __name__=='__main__':main()

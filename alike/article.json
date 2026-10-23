@@ -3,8 +3,8 @@
   "year": "2026",
   "type": "FILM ANALYSIS",
   "description": "An extended critical reading of Alike (2015): color and animation, urban routine, parenting, music, schooling, creative attention, and reception.",
-  "image": "assets/alike-ending-embrace-beneath-red-tree.jpg",
-  "image_alt": "Film still from Alike (2015): Copi and Paste embrace beneath the red tree",
+  "image": "assets/alike-paste-reacts-to-monochrome-city-cover.jpg",
+  "image_alt": "Film still from Alike: Paste reacting with curiosity in the pale, conformist city",
   "genre": [
     "Animation",
     "Drama"
@@ -41,7 +41,7 @@
     "sound design",
     "animation"
   ],
-  "updated_date": "2026-10-21",
+  "updated_date": "2026-10-23",
   "language": "en",
   "citation_title": "Alike: Color, Conformity, and the Practice of Attention",
   "citation_apa_title": "Alike: Color, conformity, and the practice of attention"

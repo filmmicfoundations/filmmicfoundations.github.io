@@ -47,3 +47,33 @@ html body dialog.ffv-dialog {
     height:calc(100dvh - 16px)!important; max-height:calc(100dvh - 16px)!important;
   }
 }
+
+
+/* Final canonical image viewer geometry. dialog.showModal() uses the top layer;
+   both offsets must be zero, with equal top/bottom margins. Keep popup itself
+   centered, while menu bars are shaded uniformly by ::backdrop. */
+html body dialog#ffv-dialog.ffv-dialog,
+html body dialog.ffv-dialog[open] {
+  position:fixed!important;
+  inset:0!important;
+  top:0!important;right:0!important;bottom:0!important;left:0!important;
+  margin:auto!important;
+  width:min(1050px, calc(100vw - 32px))!important;
+  max-width:calc(100vw - 32px)!important;
+  height:min(720px, calc(100dvh - 32px))!important;
+  max-height:calc(100dvh - 32px)!important;
+  translate:none!important;
+  transform-origin:50% 50%!important;
+}
+@media(max-width:600px){
+  html body dialog#ffv-dialog.ffv-dialog {width:calc(100vw - 16px)!important;max-width:calc(100vw - 16px)!important;height:calc(100dvh - 16px)!important;max-height:calc(100dvh - 16px)!important;}
+}
+@media(max-height:540px){
+  html body dialog#ffv-dialog.ffv-dialog {height:calc(100dvh - 12px)!important;max-height:calc(100dvh - 12px)!important;}
+}
+/* Stable scrollbar gutter is reserved on the article shell. Native dialog
+   auto-margins center in its reduced layout width; extend the left inset by
+   the reserved gutter to center the viewer in the actual visual viewport. */
+html body dialog#ffv-dialog.ffv-dialog,
+html body dialog.ffv-dialog[open]{left:calc(100vw - 100%)!important}
+@media(max-width:600px){html body dialog#ffv-dialog.ffv-dialog{left:calc((100vw - 100%)/2)!important}}

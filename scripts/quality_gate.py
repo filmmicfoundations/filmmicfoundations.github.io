@@ -321,6 +321,10 @@ def generated_assets():
 
 
 def main():
+    import subprocess
+    test=subprocess.run([sys.executable,str(ROOT/'scripts/media_manifest.py'),'--check'],cwd=ROOT,capture_output=True,text=True)
+    if test.returncode:
+        error('Media manifest validation failed: '+test.stdout.strip()[:400])
     collect_pages()
     check_local_assets()
     articles=list(ROOT.glob('*/article.json'))

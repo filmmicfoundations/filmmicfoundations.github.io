@@ -1,0 +1,608 @@
+{
+  "archive": "Filmmic Foundations",
+  "articles": {
+    "alike": {
+      "cover": "assets/alike-paste-reacts-to-monochrome-city-cover.jpg",
+      "figures": {
+        "original_image_diagrams": 0,
+        "total_image_figures": 7,
+        "viewable_film_stills": 7
+      },
+      "media": [
+        {
+          "bytes": 409299,
+          "path": "assets/alike-copi-corrects-paste-close-up.jpg",
+          "roles": [
+            "article",
+            "viewer"
+          ],
+          "sha256": "d872027e5dbdd066d332af3b1aeec73639c956ca67e07ca48a598186ea75e421",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 638523,
+          "path": "assets/alike-ending-embrace-beneath-red-tree.jpg",
+          "roles": [
+            "article",
+            "preview",
+            "viewer"
+          ],
+          "sha256": "e0e74eac279bf157dee5e7a3c5e66419fc8d64765eb65f678db62a17bd1829bd",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 245091,
+          "path": "assets/alike-office-routine-repetition.jpg",
+          "roles": [
+            "article",
+            "preview",
+            "viewer"
+          ],
+          "sha256": "cc61e7baa2a04a4125b82dbc891a49bdaa38d703839567f5c4bee0b61533317a",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 282649,
+          "path": "assets/alike-paste-and-copi-between-stacks.jpg",
+          "roles": [
+            "article",
+            "preview",
+            "viewer"
+          ],
+          "sha256": "7cd75f857615f8bc30197db6240ed4c2068d435c69292a4bebbb2b37a6d9e887",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 617679,
+          "path": "assets/alike-paste-and-violinist-under-tree.jpg",
+          "roles": [
+            "article",
+            "preview",
+            "viewer"
+          ],
+          "sha256": "452f27a221d04372958953601fe003b943ba089dfd24af7fa7efc84d2ef507ca",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 280565,
+          "path": "assets/alike-paste-reacts-to-monochrome-city-cover.jpg",
+          "roles": [
+            "cover",
+            "preview"
+          ],
+          "sha256": "f6a9ad8c6679b89d8f0ae8b69b6fd3e2af2dd1912345764b47a11184233bc8ab",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 410829,
+          "path": "assets/alike-paste-reacts-to-monochrome-city.jpg",
+          "roles": [
+            "article",
+            "viewer"
+          ],
+          "sha256": "c4d0ba5b717d06708421d6ef9ae05dacb89037cd50d2ebd415b8d5d821d7f376",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 525533,
+          "path": "assets/alike-red-tree-in-monochrome-city.jpg",
+          "roles": [
+            "article",
+            "preview",
+            "viewer"
+          ],
+          "sha256": "1316e5f54263b95178fbe4103dce70273666e05f64d566bafa57c6e9d46365b5",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        }
+      ],
+      "pdf": [
+        {
+          "bytes": 5370705,
+          "path": "Alike_Color_Conformity_and_Attention_Film_Analysis.pdf",
+          "sha256": "b1e4eefa6a8e99854b791fab5f0ad71f9f9f67a79fd045c4e22dac0ed7dbd2d3"
+        }
+      ],
+      "preview": [
+        {
+          "caption": "Paste responds to the gray city while commuters walk past him",
+          "path": "assets/alike-paste-reacts-to-monochrome-city-cover.jpg"
+        },
+        {
+          "caption": "The colored tree interrupts the uniform city",
+          "path": "assets/alike-red-tree-in-monochrome-city.jpg"
+        },
+        {
+          "caption": "Paste discovers the street violinist",
+          "path": "assets/alike-paste-and-violinist-under-tree.jpg"
+        },
+        {
+          "caption": "The father and son are framed by school and work materials",
+          "path": "assets/alike-paste-and-copi-between-stacks.jpg"
+        },
+        {
+          "caption": "Rows of identical desks make repetition visible",
+          "path": "assets/alike-office-routine-repetition.jpg"
+        },
+        {
+          "caption": "Copi and Paste reconnect beneath the red tree",
+          "path": "assets/alike-ending-embrace-beneath-red-tree.jpg"
+        }
+      ],
+      "thumbnails": [
+        {
+          "derivative_of": "assets/alike-copi-corrects-paste-close-up.jpg",
+          "path": "assets/alike-copi-corrects-paste-close-up-640.jpg",
+          "sha256": "068cdbda39a803dbfa1b16f0ef696a4fcbddfb0dd16a285cd7df47da52a1e333"
+        },
+        {
+          "derivative_of": "assets/alike-ending-embrace-beneath-red-tree.jpg",
+          "path": "assets/alike-ending-embrace-beneath-red-tree-640.jpg",
+          "sha256": "4c585537b2394fd022637f1a76dc69be7b2499d5ca63a9bb0c2c3ab2d44d90f6"
+        },
+        {
+          "derivative_of": "assets/alike-office-routine-repetition.jpg",
+          "path": "assets/alike-office-routine-repetition-640.jpg",
+          "sha256": "50918fd22af5cf0549c063089cb3401b4fef358d362170666967343d7438e45c"
+        },
+        {
+          "derivative_of": "assets/alike-paste-and-copi-between-stacks.jpg",
+          "path": "assets/alike-paste-and-copi-between-stacks-640.jpg",
+          "sha256": "2413a6b6c21518081c936958929320462b33e046aa53cf0f0876a84ccd04975c"
+        },
+        {
+          "derivative_of": "assets/alike-paste-and-violinist-under-tree.jpg",
+          "path": "assets/alike-paste-and-violinist-under-tree-640.jpg",
+          "sha256": "af824db868ef5718315748c97586499bda88f09848b0c8e31abeb1994157189c"
+        },
+        {
+          "derivative_of": "assets/alike-paste-reacts-to-monochrome-city-cover.jpg",
+          "path": "assets/alike-paste-reacts-to-monochrome-city-cover-640.jpg",
+          "sha256": "34dbfd72da749804c76f8d2dd7e69ec1d4fae174a0093ad7c17dd6c2503512e9"
+        },
+        {
+          "derivative_of": "assets/alike-paste-reacts-to-monochrome-city.jpg",
+          "path": "assets/alike-paste-reacts-to-monochrome-city-640.jpg",
+          "sha256": "7996023e3c8ac9d8d26ab14fb6afe9a7c073e994b2307d714079bb67f7b45600"
+        },
+        {
+          "derivative_of": "assets/alike-red-tree-in-monochrome-city.jpg",
+          "path": "assets/alike-red-tree-in-monochrome-city-640.jpg",
+          "sha256": "3a6ad81876cfa6c3ebb3efcde33bcf8c459e5e3a4f9c869001469fa37122567a"
+        }
+      ]
+    },
+    "mindglassprocedure": {
+      "cover": "assets/mindglass-procedure-laboratory-reveal.webp",
+      "figures": {
+        "original_image_diagrams": 0,
+        "total_image_figures": 11,
+        "viewable_film_stills": 11
+      },
+      "media": [
+        {
+          "bytes": 162440,
+          "path": "assets/mindglass-procedure-artificial-suburban-neighborhood.webp",
+          "roles": [
+            "article",
+            "preview",
+            "viewer"
+          ],
+          "sha256": "e7a0edeaeece1dde1738d79412051cfbe7227ea012404d5164d8298a9a1fdd8f",
+          "source": "filmmaker-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 51006,
+          "path": "assets/mindglass-procedure-laboratory-reveal.webp",
+          "roles": [
+            "article",
+            "cover",
+            "preview",
+            "viewer"
+          ],
+          "sha256": "fa620d0346b37a43d2fd2c26cb7861c8b0488589501e938eef89b581d3030b2a",
+          "source": "filmmaker-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 31294,
+          "path": "assets/mindglass-procedure-miles-consent-recording.webp",
+          "roles": [
+            "article",
+            "viewer"
+          ],
+          "sha256": "fa8d6464ccc51936ffb2db41a7f460bddaf039a247dc68ec92dc38607f1ee434",
+          "source": "filmmaker-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 76984,
+          "path": "assets/mindglass-procedure-miles-remembers-noah.webp",
+          "roles": [
+            "article",
+            "viewer"
+          ],
+          "sha256": "4a60df76a2b692136ef6d4c90c491c9a9e30895796e47b28a069783f65915a5f",
+          "source": "filmmaker-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 112262,
+          "path": "assets/mindglass-procedure-miles-with-louis-and-greta.webp",
+          "roles": [
+            "article",
+            "preview",
+            "viewer"
+          ],
+          "sha256": "5a78907282b1af7054420409c395f5c1b7a96a9d5e3f78568bc5949f6153b21b",
+          "source": "filmmaker-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 18374,
+          "path": "assets/mindglass-procedure-opening-hourglass.webp",
+          "roles": [
+            "article",
+            "preview",
+            "viewer"
+          ],
+          "sha256": "c87b91c069f7a440b019a1848b65ae6461efbd41e90b1ed6633bea82dfed96c5",
+          "source": "filmmaker-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 82056,
+          "path": "assets/mindglass-procedure-opening-water-montage.webp",
+          "roles": [
+            "article",
+            "preview",
+            "viewer"
+          ],
+          "sha256": "0794c454bddbd476f287651236d8244d60a0e20118c61c1116ba6987cea24518",
+          "source": "filmmaker-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 48874,
+          "path": "assets/mindglass-procedure-remember-or-forget-ending.webp",
+          "roles": [
+            "article",
+            "viewer"
+          ],
+          "sha256": "29eb5d1221eb7a9339af990f88352735066a3fcb3f2f2cfdf5ac03a90eaf2e25",
+          "source": "filmmaker-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 25950,
+          "path": "assets/mindglass-procedure-torn-family-photograph.webp",
+          "roles": [
+            "article",
+            "preview",
+            "viewer"
+          ],
+          "sha256": "265cd94a657f860cf738f3f32769be667ef7464f34698b354a885eb51fccc96f",
+          "source": "filmmaker-supplied film frame",
+          "type": "film_still"
+        }
+      ],
+      "pdf": [
+        {
+          "bytes": 25535350,
+          "path": "Mindglass_Procedure_Critical_Film_Analysis.pdf",
+          "sha256": "782539190dd5042c17369a3c72d29c0415e09140610205159b1a3d1b3c640427"
+        }
+      ],
+      "preview": [
+        {
+          "caption": "The laboratory revelation",
+          "path": "assets/mindglass-procedure-laboratory-reveal.webp"
+        },
+        {
+          "caption": "The opening hourglass",
+          "path": "assets/mindglass-procedure-opening-hourglass.webp"
+        },
+        {
+          "caption": "The artificial neighborhood",
+          "path": "assets/mindglass-procedure-artificial-suburban-neighborhood.webp"
+        },
+        {
+          "caption": "The torn family photograph",
+          "path": "assets/mindglass-procedure-torn-family-photograph.webp"
+        },
+        {
+          "caption": "Miles with Louis and Greta",
+          "path": "assets/mindglass-procedure-miles-with-louis-and-greta.webp"
+        },
+        {
+          "caption": "Water in the opening montage",
+          "path": "assets/mindglass-procedure-opening-water-montage.webp"
+        }
+      ],
+      "thumbnails": [
+        {
+          "derivative_of": "assets/mindglass-procedure-artificial-suburban-neighborhood.webp",
+          "path": "assets/mindglass-procedure-artificial-suburban-neighborhood-640.webp",
+          "sha256": "be10f375a3b4c50309e8d3d019212c280869faefb050586f0ca8de8907acdce0"
+        },
+        {
+          "derivative_of": "assets/mindglass-procedure-laboratory-reveal.webp",
+          "path": "assets/mindglass-procedure-laboratory-reveal-640.webp",
+          "sha256": "71dd4f8306f5352157cf30a13f7a9f75bb224fd43da258810b2f61e1eb1b3b58"
+        },
+        {
+          "derivative_of": "assets/mindglass-procedure-miles-consent-recording.webp",
+          "path": "assets/mindglass-procedure-miles-consent-recording-640.webp",
+          "sha256": "d7d8597077c56695bf96851fb3e0e06f4a31dd3282d39b9067405c0339010211"
+        },
+        {
+          "derivative_of": "assets/mindglass-procedure-miles-remembers-noah.webp",
+          "path": "assets/mindglass-procedure-miles-remembers-noah-640.webp",
+          "sha256": "213b3bb1e520d2a184f79b9112298e15f19b975fd13ebda74f29bd1004d6ecf7"
+        },
+        {
+          "derivative_of": "assets/mindglass-procedure-miles-with-louis-and-greta.webp",
+          "path": "assets/mindglass-procedure-miles-with-louis-and-greta-640.webp",
+          "sha256": "aedf85585bc6c385614e6662909fefb7fc0d73f75652f4e654519f74f2b78e0f"
+        },
+        {
+          "derivative_of": "assets/mindglass-procedure-opening-hourglass.webp",
+          "path": "assets/mindglass-procedure-opening-hourglass-640.webp",
+          "sha256": "638e90dcca066e35f47bd94be33a84822774e9f3c0804d88fe6a40e071793b2e"
+        },
+        {
+          "derivative_of": "assets/mindglass-procedure-opening-water-montage.webp",
+          "path": "assets/mindglass-procedure-opening-water-montage-640.webp",
+          "sha256": "756dc07a39586830558a2715d85218720334436ac028f5390eabf4aa03eb79c9"
+        },
+        {
+          "derivative_of": "assets/mindglass-procedure-remember-or-forget-ending.webp",
+          "path": "assets/mindglass-procedure-remember-or-forget-ending-640.webp",
+          "sha256": "05228e5bd50af4806aa2992a269a3fdfc2cad8e37b6205c03b553966dafa6de7"
+        },
+        {
+          "derivative_of": "assets/mindglass-procedure-torn-family-photograph.webp",
+          "path": "assets/mindglass-procedure-torn-family-photograph-640.webp",
+          "sha256": "8a5b15e9ea5987adb5556156687bee244a62a80f7b63b3c1a57f2c332967305e"
+        }
+      ]
+    },
+    "the-black-hole": {
+      "cover": "assets/black-hole-office-worker-portrait.jpg",
+      "figures": {
+        "original_image_diagrams": 0,
+        "total_image_figures": 11,
+        "viewable_film_stills": 11
+      },
+      "media": [
+        {
+          "bytes": 308130,
+          "path": "assets/black-hole-final-empty-hallway.jpg",
+          "roles": [
+            "article",
+            "viewer"
+          ],
+          "sha256": "26742f697dd9fcebb9eec6b50425620c45e624eac5cd9dc8bd38a4014bfc3a22",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 413992,
+          "path": "assets/black-hole-hand-through-copier.jpg",
+          "roles": [
+            "article",
+            "preview",
+            "viewer"
+          ],
+          "sha256": "0ef696828c736e7ca023fa87bde81b46e576042c47b736ad24ce227755527df3",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 377376,
+          "path": "assets/black-hole-office-worker-portrait.jpg",
+          "roles": [
+            "article",
+            "cover",
+            "preview",
+            "viewer"
+          ],
+          "sha256": "45fe887b3e2f61b0d0af4639ce7c3ac66b83ca91eb06532939342196f4bba951",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 264783,
+          "path": "assets/black-hole-printed-circle-on-paper.jpg",
+          "roles": [
+            "article",
+            "preview",
+            "viewer"
+          ],
+          "sha256": "5ec0a7397671a62b7d1591dcaed6d24c4e6b08d360007cd9fe4289c700bf8548",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 400824,
+          "path": "assets/black-hole-vending-machine-theft.jpg",
+          "roles": [
+            "article",
+            "preview",
+            "viewer"
+          ],
+          "sha256": "fdf94e1811a5f4560e3fc611e817f22b962746de442b874e5a6af1565a248995",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 476242,
+          "path": "assets/black-hole-worker-at-photocopier.jpg",
+          "roles": [
+            "article",
+            "preview",
+            "viewer"
+          ],
+          "sha256": "a0a565a4ecfd8f0ff8cde38f77d95c5de5bd38815099486e71316943e177556d",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 371006,
+          "path": "assets/black-hole-worker-holding-hole-sheet.jpg",
+          "roles": [
+            "article",
+            "viewer"
+          ],
+          "sha256": "8691ff51ef417eaf321fb37a2a7a87b575c3cfb48a121cc26ad34b0c9c60f84f",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 408307,
+          "path": "assets/black-hole-worker-opening-photocopier.jpg",
+          "roles": [
+            "article",
+            "viewer"
+          ],
+          "sha256": "c722562dbfef2a3eab60b8d60e67309e36cf42789bfc96930519f01f898e18e3",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 303276,
+          "path": "assets/black-hole-worker-tests-portal-overhead.jpg",
+          "roles": [
+            "article",
+            "viewer"
+          ],
+          "sha256": "0834995cb42f554828f9f27984d189dae09ee19a8f01e2666e9d3c7355232f0c",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 349615,
+          "path": "assets/black-hole-worker-trapped-in-safe.jpg",
+          "roles": [
+            "article",
+            "preview",
+            "viewer"
+          ],
+          "sha256": "e9e83592525ca84c50a23f4357684c5d50b9a734c99eb52195df9260fdc923c6",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 261264,
+          "path": "assets/black-hole-worker-under-ceiling-closeup.jpg",
+          "roles": [
+            "article",
+            "viewer"
+          ],
+          "sha256": "f54dea35168b4a443f03b15644d66e53ad09fb66295f9d8af2f041913b80f2dd",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        }
+      ],
+      "pdf": [
+        {
+          "bytes": 5228217,
+          "path": "The_Black_Hole_Critical_Film_Analysis.pdf",
+          "sha256": "6b9fe8f0a5522980b9d328511f0ad575b20cef021e39eb91350060c5b5588e7f"
+        }
+      ],
+      "preview": [
+        {
+          "caption": "An exhausted office worker establishes the film’s blue-gray baseline",
+          "path": "assets/black-hole-office-worker-portrait.jpg"
+        },
+        {
+          "caption": "The impossible black circle first appears as a physical object on paper",
+          "path": "assets/black-hole-printed-circle-on-paper.jpg"
+        },
+        {
+          "caption": "The photocopier frames discovery as an ordinary workplace interruption",
+          "path": "assets/black-hole-worker-at-photocopier.jpg"
+        },
+        {
+          "caption": "The film’s central visual rule becomes clear through tactile experimentation",
+          "path": "assets/black-hole-hand-through-copier.jpg"
+        },
+        {
+          "caption": "Small temptation escalates into deliberate theft at the vending machine",
+          "path": "assets/black-hole-vending-machine-theft.jpg"
+        },
+        {
+          "caption": "The final safe image turns shortcut-seeking into entrapment",
+          "path": "assets/black-hole-worker-trapped-in-safe.jpg"
+        }
+      ],
+      "thumbnails": [
+        {
+          "derivative_of": "assets/black-hole-final-empty-hallway.jpg",
+          "path": "assets/black-hole-final-empty-hallway-640.jpg",
+          "sha256": "7bbb10b5f3af25909d8f3abfdb66fddc80b05f4da64f71018bcbab2ec449e501"
+        },
+        {
+          "derivative_of": "assets/black-hole-hand-through-copier.jpg",
+          "path": "assets/black-hole-hand-through-copier-640.jpg",
+          "sha256": "9ae11b73d4285c38a7d4df29c2a54916348e334a3f81d40cc29248fef71a83aa"
+        },
+        {
+          "derivative_of": "assets/black-hole-office-worker-portrait.jpg",
+          "path": "assets/black-hole-office-worker-portrait-640.jpg",
+          "sha256": "19f778d09c9f5b28b655a5a62006873967285273ec9f7b9049362546cfd215a8"
+        },
+        {
+          "derivative_of": "assets/black-hole-printed-circle-on-paper.jpg",
+          "path": "assets/black-hole-printed-circle-on-paper-640.jpg",
+          "sha256": "bea8d159fc63dd78666aa7d4ce4673d33eaea133e28fefe3a61356b1befd1bfa"
+        },
+        {
+          "derivative_of": "assets/black-hole-vending-machine-theft.jpg",
+          "path": "assets/black-hole-vending-machine-theft-640.jpg",
+          "sha256": "c58a6fdcbe90fcd6150cc57a091bc19b3b1b41eb6d5dada95e6c171c85c257bd"
+        },
+        {
+          "derivative_of": "assets/black-hole-worker-at-photocopier.jpg",
+          "path": "assets/black-hole-worker-at-photocopier-640.jpg",
+          "sha256": "5cff7185d8d5b611251fff0c116039645ccd1149114a913fffd17bd99efd290c"
+        },
+        {
+          "derivative_of": "assets/black-hole-worker-holding-hole-sheet.jpg",
+          "path": "assets/black-hole-worker-holding-hole-sheet-640.jpg",
+          "sha256": "45c9cdfa7d5f7f479522d009586a7d78d0250cd7df57d71cf3c20209b48bfb06"
+        },
+        {
+          "derivative_of": "assets/black-hole-worker-opening-photocopier.jpg",
+          "path": "assets/black-hole-worker-opening-photocopier-640.jpg",
+          "sha256": "3008901177e80fe9c94e1332a56a0962e1979237804bac80abb8214cbeebf91b"
+        },
+        {
+          "derivative_of": "assets/black-hole-worker-tests-portal-overhead.jpg",
+          "path": "assets/black-hole-worker-tests-portal-overhead-640.jpg",
+          "sha256": "48b18d3ad3696ceafab1bf0e6461e0f50f110b746c04db0a5561f146cec2be97"
+        },
+        {
+          "derivative_of": "assets/black-hole-worker-trapped-in-safe.jpg",
+          "path": "assets/black-hole-worker-trapped-in-safe-640.jpg",
+          "sha256": "8dd6614c37657653203dac3e1619481b184e7ea50c248486dc9b202891acdff0"
+        },
+        {
+          "derivative_of": "assets/black-hole-worker-under-ceiling-closeup.jpg",
+          "path": "assets/black-hole-worker-under-ceiling-closeup-640.jpg",
+          "sha256": "e5cb20196aaef5ef74b776e8e9eaeccee768fc242be1a997b1493ebd10753636"
+        }
+      ]
+    }
+  },
+  "schema_version": 1
+}
