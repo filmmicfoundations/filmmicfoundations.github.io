@@ -1,0 +1,186 @@
+{
+  "standard": "Film stills must demonstrate a claim in their own or immediately adjacent section, with a specific accurate caption. Preview images exclude diagrams.",
+  "note": "Visual placement analysis uses the finished film frames in the current local archive. No new images or invented scenes were added.",
+  "articles": {
+    "mindglassprocedure": [
+      {
+        "path": "assets/mindglass-procedure-opening-water-montage.webp",
+        "section": "2. The Opening Montage: Fragmented Memory and Time",
+        "caption": "Figure 1. Water appears as an incomplete memory fragment.",
+        "source": "film still"
+      },
+      {
+        "path": "assets/mindglass-procedure-opening-hourglass.webp",
+        "section": "2. The Opening Montage: Fragmented Memory and Time",
+        "caption": "Figure 2. The hourglass visualizes passing time.",
+        "source": "film still"
+      },
+      {
+        "path": "assets/mindglass-procedure-torn-family-photograph.webp",
+        "section": "3. The Photograph: Evidence Outside Conscious Recall",
+        "caption": "Figure 3. The damaged family photograph preserves evidence of a relationship while obscuring identity.",
+        "source": "film still"
+      },
+      {
+        "path": "assets/mindglass-procedure-artificial-suburban-neighborhood.webp",
+        "section": "4. The Neighborhood: Artificial Normality and Surveillance",
+        "caption": "Figure 4. Repeated suburban architecture makes the apparently ordinary environment feel staged.",
+        "source": "film still"
+      },
+      {
+        "path": "assets/mindglass-procedure-miles-with-louis-and-greta.webp",
+        "section": "5. Louis, Greta, and the Performance of Care",
+        "caption": "Figure 6. Louis and Greta’s neighborly interaction doubles as an assessment of Miles’s memory.",
+        "source": "film still"
+      },
+      {
+        "path": "assets/mindglass-procedure-miles-remembers-noah.webp",
+        "section": "6. Noah's Name and the Return of Context",
+        "caption": "Figure 7. Noah’s name reconnects Miles with information the procedure has obscured.",
+        "source": "film still"
+      },
+      {
+        "path": "assets/mindglass-procedure-laboratory-reveal.webp",
+        "section": "8. The Laboratory, the Recording, and Informed Consent",
+        "caption": "Figure 8. The laboratory makes the medical context visible.",
+        "source": "film still"
+      },
+      {
+        "path": "assets/mindglass-procedure-miles-consent-recording.webp",
+        "section": "8. The Laboratory, the Recording, and Informed Consent",
+        "caption": "Figure 9. The recording preserves Miles’s prior account and",
+        "source": "film still"
+      },
+      {
+        "path": "assets/mindglass-procedure-remember-or-forget-ending.webp",
+        "section": "11. The Nine-Procedure Loop and the Unresolved Ending",
+        "caption": "Figure 11. The final question withholds Miles’s decision and refuses easy closure.",
+        "source": "film still"
+      },
+      {
+        "path": "assets/mindglass-procedure-artificial-suburban-neighborhood.webp",
+        "section": "12. Cinematography, Editing, Production Design, and Sound",
+        "caption": "Figure 12. Familiar space is rendered unsettling through",
+        "source": "film still"
+      },
+      {
+        "path": "assets/mindglass-procedure-laboratory-reveal.webp",
+        "section": "12. Cinematography, Editing, Production Design, and Sound",
+        "caption": "Figure 13. The contrasting laboratory image reframes earlier",
+        "source": "film still"
+      }
+    ],
+    "alike": [
+      {
+        "path": "assets/alike-paste-and-copi-between-stacks.jpg",
+        "section": "3. The city as a system of repetition",
+        "caption": "Figure 2. Stacks of paperwork around Copi and Paste provide a visual bridge between adult work, childhood learning, and repeated obligations.",
+        "source": "film still"
+      },
+      {
+        "path": "assets/alike-red-tree-in-monochrome-city.jpg",
+        "section": "5. The violinist and the colored tree",
+        "caption": "Figure 5. The red tree interrupts the monochrome city and creates the film’s most vivid visual counterpoint.",
+        "source": "film still"
+      },
+      {
+        "path": "assets/alike-paste-and-violinist-under-tree.jpg",
+        "section": "5. The violinist and the colored tree",
+        "caption": "Figure 6. Paste pauses before the violinist beneath the tree, where music becomes a focal point for attention.",
+        "source": "film still"
+      },
+      {
+        "path": "assets/alike-copi-corrects-paste-close-up.jpg",
+        "section": "6. Copi, Paste, and a change in care",
+        "caption": "Figure 7. A low-angle close-up turns Copi’s guidance into visible correction and pressure.",
+        "source": "film still"
+      },
+      {
+        "path": "assets/alike-paste-reacts-to-monochrome-city.jpg",
+        "section": "12. Animation performance: bodies that remember the schedule",
+        "caption": "Figure 8. A close view gives Paste’s wide-eyed reaction individuality against the nearly interchangeable commuters behind him.",
+        "source": "film still"
+      },
+      {
+        "path": "assets/alike-office-routine-repetition.jpg",
+        "section": "13. The office and the classroom: two sides of a repeated ritual",
+        "caption": "Figure 9. Rows of nearly identical desks make office labor appear repetitive, standardized, and emotionally distant.",
+        "source": "film still"
+      },
+      {
+        "path": "assets/alike-ending-embrace-beneath-red-tree.jpg",
+        "section": "Conclusion: learning to notice",
+        "caption": "Figure 10. The embrace at the red tree makes the concluding change in Copi’s attention visible through color and gesture.",
+        "source": "film still"
+      }
+    ],
+    "the-black-hole": [
+      {
+        "path": "assets/black-hole-office-worker-portrait.jpg",
+        "section": "2. The office as a visual baseline",
+        "caption": "Figure 2. The worker’s exhausted expression and slack office attire establish fatigue as the film’s baseline.",
+        "source": "film still"
+      },
+      {
+        "path": "assets/black-hole-printed-circle-on-paper.jpg",
+        "section": "3. The photocopier: an ordinary machine produces an impossible object",
+        "caption": "Figure 3. The impossible black circle must first read as an ordinary printed object before it can become a portal.",
+        "source": "film still"
+      },
+      {
+        "path": "assets/black-hole-worker-at-photocopier.jpg",
+        "section": "5. From observation to experiment: performance without dialogue",
+        "caption": "Figure 4. The medium-wide view keeps the worker, copier, and ordinary surroundings legible as he begins to investigate.",
+        "source": "film still"
+      },
+      {
+        "path": "assets/black-hole-hand-through-copier.jpg",
+        "section": "5. From observation to experiment: performance without dialogue",
+        "caption": "Figure 5. The tactile test transforms surprise into knowledge: the viewer learns the rule by watching the hand pass through the surface.",
+        "source": "film still"
+      },
+      {
+        "path": "assets/black-hole-worker-holding-hole-sheet.jpg",
+        "section": "6. The portable hole as a changing relation between surfaces",
+        "caption": "Figure 7. The portal becomes a portable tool.",
+        "source": "film still"
+      },
+      {
+        "path": "assets/black-hole-vending-machine-theft.jpg",
+        "section": "7. The vending machine and the first chosen transgression",
+        "caption": "Figure 8. The vending-machine beat marks the moment curiosity turns into chosen transgression.",
+        "source": "film still"
+      },
+      {
+        "path": "assets/black-hole-worker-tests-portal-overhead.jpg",
+        "section": "9. Camera distance and the changing scale of risk",
+        "caption": "Figure 10. From below the opening, the raised arm dominates the frame and makes the impossible passage feel physically large.",
+        "source": "film still"
+      },
+      {
+        "path": "assets/black-hole-worker-under-ceiling-closeup.jpg",
+        "section": "9. Camera distance and the changing scale of risk",
+        "caption": "Figure 11. A matching upward perspective isolates the worker’s reaction, pairing body language with the portal’s implied point of view.",
+        "source": "film still"
+      },
+      {
+        "path": "assets/black-hole-worker-trapped-in-safe.jpg",
+        "section": "14. Why the final image is funny and unsettling",
+        "caption": "Figure 13. The worker bends into the opened safe to gather cash. His exposure to confinement is visible before the final reversal.",
+        "source": "film still"
+      },
+      {
+        "path": "assets/black-hole-worker-opening-photocopier.jpg",
+        "section": "18. Practical illusion, editing, and what cannot be verified",
+        "caption": "Figure 14. The worker lifting the copier lid supplies an ordinary physical action that anchors the impossible effect.",
+        "source": "film still"
+      },
+      {
+        "path": "assets/black-hole-final-empty-hallway.jpg",
+        "section": "Conclusion: the cost of an unchecked shortcut",
+        "caption": "Figure 15. The final distant shot leaves the closed safe and scattered money in view while the worker has vanished from the office.",
+        "source": "film still"
+      }
+    ]
+  }
+}

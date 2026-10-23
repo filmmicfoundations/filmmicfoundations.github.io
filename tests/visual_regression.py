@@ -115,6 +115,7 @@ def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--update-baseline',action='store_true')
     parser.add_argument('--threshold',type=float,default=.008,help='fraction of average RGB pixel difference')
+    parser.add_argument('--only',default='',help='optional case-name substring for targeted visual updates')
     args=parser.parse_args()
     BASE.mkdir(exist_ok=True);ACTUAL.mkdir(exist_ok=True);DIFF.mkdir(exist_ok=True)
     cases=[]
@@ -124,6 +125,8 @@ def main():
                 cases.append((rel,w,h,theme,'top'))
         if rel!='index.html':
             cases.extend([(rel,1365,860,'dark','body'),(rel,1365,860,'dark','viewer'),(rel,390,844,'dark','viewer')])
+    if args.only:
+        cases=[case for case in cases if args.only in f'{case[0].replace("/","-").replace(".html","")}-{case[1]}-{case[3]}-{case[4]}.png']
     failures=[]
     with sync_playwright() as p:
         browser=p.chromium.launch(executable_path=CHROMIUM,headless=True,args=['--no-sandbox'])

@@ -5,3 +5,8 @@
 - Publication: file uploads are measured, commit is a stage, GitHub Pages processing is **estimated**, and 100% is reserved for a confirmed deployment. Never claim live success without GitHub/API confirmation.
 - Display specific activity labels (opening archive, verifying files, comparing repository, transferring files, committing, waiting for GitHub, checking live site), preserve the available review controls, and never block interaction with fake timers.
 - Respect `prefers-reduced-motion`, keyboard navigation, light and dark themes, and announce current activity through an aria-live status.
+
+
+## Compact progress UI (October 2026)
+
+The deployment modal shows only: title, current phase, percentage, one progress bar, status detail, and a single optional Github link or retry action. Do not add step badges, duplicate labels, multiple animated dots, or an always-visible stage list. Label GitHub build percentages as estimates, and only show 100% when release confirmation is received. Use a subtle sweeping animation, disabled for reduced-motion users.

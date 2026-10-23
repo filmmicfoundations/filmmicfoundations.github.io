@@ -427,26 +427,29 @@ html:has(body.ff-dev-page dialog[open]),body.ff-dev-page:has(dialog[open]){overf
 }
 
 
-/* Release progress v2: one steady bar, accurate local file progress,
-   explicit estimated remote build progress, and accessible reduced motion. */
-.ff-dev-page .dev-zip-inspection{margin:15px 0 18px;padding:15px 17px;border-radius:13px;border:1px solid var(--dev-line);background:var(--dev-card)}
-.ff-dev-page .dev-zip-inspection-head,.ff-dev-page .dev-deploy-progress-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:11px;font:600 12px/1.4 'DM Sans',sans-serif;color:var(--dev-ink)}
-.ff-dev-page .dev-zip-inspection-head strong,.ff-dev-page .dev-deploy-progress-heading>span{display:inline-flex;align-items:center;gap:9px;min-width:0}
-.ff-dev-page .dev-progress-percent{font:700 17px/1.2 'DM Sans',sans-serif;font-variant-numeric:tabular-nums;color:var(--dev-accent);white-space:nowrap;letter-spacing:-.035em}
-.ff-dev-page .dev-working-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--dev-accent);box-shadow:0 0 0 0 color-mix(in srgb,var(--dev-accent) 24%,transparent);animation:ff-progress-breathe 1.55s ease-out infinite;flex:none}
-.ff-dev-page .is-complete .dev-working-dot,.ff-dev-page .is-failed .dev-working-dot{animation:none}
-.ff-dev-page .dev-zip-track,.ff-dev-page .dev-deploy-track{height:9px!important;border:0!important;background:color-mix(in srgb,var(--dev-accent) 12%,var(--dev-line));border-radius:99px;overflow:hidden;position:relative;margin:0!important}
-.ff-dev-page .dev-zip-track>span,.ff-dev-page .dev-deploy-track>span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,color-mix(in srgb,var(--dev-accent) 80%,#ffffff),var(--dev-accent));transition:width .32s cubic-bezier(.2,.75,.25,1)!important;position:relative;overflow:hidden}
-.ff-dev-page .dev-zip-track>span::after,.ff-dev-page .dev-deploy-track>span::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 20%,rgba(255,255,255,.32) 48%,transparent 76%);transform:translateX(-110%);animation:ff-progress-shine 2.4s ease-in-out infinite}
-.ff-dev-page .dev-zip-inspection.is-complete .dev-zip-track>span::after,.ff-dev-page .dev-deploy-track.is-complete>span::after,.ff-dev-page .dev-deploy-track.is-failed>span::after{animation:none}
-.ff-dev-page .dev-deploy-track.is-checking::after{display:none!important}
-.ff-dev-page .dev-progress-stage{font:500 11px/1.5 'DM Sans',sans-serif;color:var(--dev-muted);min-height:17px;margin:10px 0 0!important;overflow-wrap:anywhere}
-.ff-dev-page .dev-deploy-progress-heading{margin:15px 0 10px}
-.ff-dev-page .dev-deploy-detail{margin:11px 0 15px!important;min-height:18px}
-.ff-dev-page .dev-deploy-track.is-complete>span{background:var(--dev-accent)}
-.ff-dev-page .dev-deploy-progress-heading .dev-working-dot{animation:ff-progress-breathe 1.55s ease-out infinite}
-.ff-dev-page .dev-deploy-panel.is-complete .dev-working-dot,.ff-dev-page .dev-deploy-panel.is-failed .dev-working-dot{animation:none}
-@keyframes ff-progress-breathe{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--dev-accent) 30%,transparent)}75%,100%{box-shadow:0 0 0 9px transparent}}
-@keyframes ff-progress-shine{0%,20%{transform:translateX(-110%)}70%,100%{transform:translateX(120%)}}
-@media(max-width:520px){.ff-dev-page .dev-zip-inspection{padding:13px 12px}.ff-dev-page .dev-progress-percent{font-size:16px}}
-@media(prefers-reduced-motion:reduce){.ff-dev-page .dev-working-dot,.ff-dev-page .dev-zip-track>span::after,.ff-dev-page .dev-deploy-track>span::after{animation:none!important}.ff-dev-page .dev-zip-track>span,.ff-dev-page .dev-deploy-track>span{transition:none!important}}
+
+/* Simple release progress: one measured/estimated bar with a single status line. */
+.ff-dev-page .dev-deploy-dialog{width:min(470px,calc(100vw - 28px));border-radius:12px;overflow:auto}
+.ff-dev-page .dev-deploy-dialog .dev-deploy-panel{padding:24px 25px 24px}
+.ff-dev-page .dev-deploy-dialog-top{padding:14px 25px}
+.ff-dev-page .dev-deploy-panel h3{margin:0 0 23px;font-size:21px;line-height:1.3;font-weight:700;letter-spacing:-.015em}
+.ff-dev-page .dev-deploy-progress-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 10px;color:var(--dev-muted);font:500 12px/1.4 'DM Sans',sans-serif}
+.ff-dev-page .dev-deploy-progress-heading strong{font:700 21px/1 'DM Sans',sans-serif;color:var(--dev-ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+.ff-dev-page .dev-deploy-track{margin:0!important;height:7px;border:0;background:color-mix(in srgb,var(--dev-accent) 11%,var(--dev-line));border-radius:99px;overflow:hidden;position:relative}
+.ff-dev-page .dev-deploy-track > span{display:block;height:100%;background:var(--dev-accent);border-radius:inherit;transition:width .3s ease;position:relative}
+.ff-dev-page .dev-deploy-track:not(.is-complete):not(.is-failed) > span::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.33) 50%,transparent 70%);animation:ff-progress-sweep 2.4s ease-in-out infinite}
+@keyframes ff-progress-sweep{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+.ff-dev-page .dev-deploy-detail{font:400 12px/1.6 'DM Sans',sans-serif;color:var(--dev-muted);margin:13px 0 19px!important;min-height:20px;overflow-wrap:anywhere}
+.ff-dev-page .dev-deploy-actions{border-top:1px solid var(--dev-line);padding-top:14px;margin-top:0;gap:15px;justify-content:flex-start}
+.ff-dev-page .dev-deploy-actions a{font:600 12px 'DM Sans',sans-serif;text-decoration:none;border-bottom:1px solid currentColor}
+.ff-dev-page .dev-deploy-actions [hidden]{display:none!important}
+.ff-dev-page .dev-zip-inspection{margin:12px 0 15px;padding:12px 14px;border-radius:9px;border:1px solid var(--dev-line);background:var(--dev-card)}
+.ff-dev-page .dev-zip-inspection-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;font:600 12px/1.4 'DM Sans',sans-serif}
+.ff-dev-page .dev-zip-inspection-head strong{display:inline-flex;gap:7px;align-items:center}
+.ff-dev-page .dev-working-dot{width:6px;height:6px;border-radius:50%;background:var(--dev-accent);display:inline-block;flex:none}
+.ff-dev-page .dev-progress-percent{font:700 16px/1.1 'DM Sans',sans-serif;color:var(--dev-ink);font-variant-numeric:tabular-nums}
+.ff-dev-page .dev-zip-track{height:7px;background:color-mix(in srgb,var(--dev-accent) 11%,var(--dev-line));border:0;border-radius:99px;overflow:hidden}
+.ff-dev-page .dev-zip-track>span{display:block;height:100%;border-radius:inherit;background:var(--dev-accent);transition:width .25s ease}
+.ff-dev-page .dev-progress-stage{font:400 11px/1.5 'DM Sans',sans-serif;color:var(--dev-muted);margin:8px 0 0!important;min-height:14px}
+@media(max-width:520px){.ff-dev-page .dev-deploy-dialog .dev-deploy-panel{padding:20px 18px}.ff-dev-page .dev-deploy-dialog-top{padding:13px 18px}}
+@media(prefers-reduced-motion:reduce){.ff-dev-page .dev-deploy-track>span::after{animation:none!important}.ff-dev-page .dev-deploy-track>span,.ff-dev-page .dev-zip-track>span{transition:none!important}}

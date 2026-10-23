@@ -228,6 +228,17 @@ def editorial_consistency():
             error(f'{name}: Suggested Articles must follow Watch the Film and precede the footer')
         if any('article-image-open' in figure.group(0) for figure in re.finditer(r'<figure\b[^>]*class="[^"]*diagram[^"]*"[^>]*>.*?</figure>',page,re.S)):
             error(f'{name}: diagrams must not register as lightbox items')
+        # Figure numbers must run in article reading order, including original diagrams.
+        # Do not let rearranged stills silently leave Figure 10 before Figure 9.
+        figure_numbers=[]
+        for figure in re.findall(r'<figure\b[^>]*>.*?</figure>',page,flags=re.S):
+            caption=re.search(r'<figcaption\b[^>]*>(.*?)</figcaption>',figure,re.S)
+            if not caption:continue
+            plain=re.sub(r'<[^>]*>','',caption.group(1))
+            n=re.search(r'Figure\s+(\d+)\.',plain)
+            if n:figure_numbers.append(int(n.group(1)))
+        if figure_numbers and figure_numbers!=list(range(1,len(figure_numbers)+1)):
+            error(f'{name}: figure numbering is not sequential in reading order: {figure_numbers}')
         # A mistake in Alike used duplicate crops and remote-hosted gallery assets.
         viewer_paths=[]
         for fig in re.finditer(r'<figure\b[^>]*>.*?</figure>',page,re.S):

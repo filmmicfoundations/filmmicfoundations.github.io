@@ -26,7 +26,7 @@ with sync_playwright() as p:
     page.locator('#dev-zip-file').set_input_files({'name':'sample-film.zip','mimeType':'application/zip','buffer':GOOD})
     page.wait_for_function("document.querySelector('#dev-update-status').textContent.includes('ZIP structure and CRC validated locally')",timeout=30000)
     assert page.locator('#dev-publish').get_attribute('data-ready')=='false'
-    assert page.locator('#dev-zip-inspection').get_attribute('hidden') is not None
+    page.wait_for_function("document.querySelector('#dev-zip-inspection').hidden",timeout=5000)
     assert page.locator('#dev-file-list').locator('.dev-file-row').count()==2
     results.append('Valid article-only ZIP automatically inspected; button guarded, progress settled')
     page.locator('#dev-clear-zip').click()

@@ -161,9 +161,8 @@
     const panel=$('dev-deploy-panel');panel.hidden=false;
     panel.classList.toggle('is-complete',done);panel.classList.toggle('is-failed',failed);
     $('dev-deploy-title').textContent=title;
-    $('dev-deploy-badge').textContent=failed?'Needs attention':done?'Published':'In progress';
     $('dev-deploy-detail').textContent=detail;
-    const index=Math.max(0,DEPLOY_STEPS.indexOf(step));
+    $('dev-deploy-phase').textContent=done?'Complete':failed?'Update interrupted':step==='files'?'Uploading files':step==='commit'?'Creating release':step==='build'?'Building site · estimated':'Checking live site · estimated';
     const track=$('dev-deploy-track');
     track.classList.toggle('is-checking',!done&&!failed && step==='build');
     track.classList.toggle('is-complete',done);
@@ -179,12 +178,6 @@
     track.setAttribute('aria-valuetext',done?'Published and verified':failed?'Needs attention':`${pct}% ${step==='files'?'transferred':'estimated'} · ${title}`);
     $('dev-deploy-fill').style.width=`${pct}%`;
     $('dev-deploy-percent').textContent=done?'100%':`${pct}%${step==='files'?'':' est.'}`;
-    document.querySelectorAll('[data-deploy-step]').forEach(el=>{
-      const i=DEPLOY_STEPS.indexOf(el.dataset.deployStep);
-      el.classList.toggle('is-done',done||i<index);
-      el.classList.toggle('is-current',!done&&!failed&&i===index);
-      el.querySelector('.dev-deploy-step-dot').textContent=(done||i<index)?'✓':String(i+1);
-    });
     $('dev-deploy-reload').hidden=!(done||failed);
     $('dev-deploy-retry').hidden=!(failed||(!done&&step==='build'&&/unavailable|longer/i.test(title))); 
   }

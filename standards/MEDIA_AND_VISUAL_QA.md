@@ -55,3 +55,12 @@ homepage, each article and at least one viewer in both color modes. Check every
 image control, viewer navigation, search/sort/filter, PDF link and preview.
 Compare PDF cover/captions to local stills. A failed visual or link test blocks
 publication until corrected rather than being waived silently.
+
+
+## Intentional figure placement (mandatory)
+
+- Every photograph must evidence a specific nearby sentence or paragraph and its caption must describe what the actual frame shows. Do not label an anticipatory frame as a later plot event.
+- Keep film stills in the section they support, adjacent to the most relevant paragraph. When a frame is useful twice, choose one primary location rather than repeating it solely to reach the image-count target.
+- A paired set of shots is acceptable only when it supports a comparison of framing, perspective, performance, color or editing. State that reason in the adjoining text.
+- The article archive and `standards/IMAGE_PLACEMENT_REVIEW.json` record the intended section and caption for each photographic figure. For the PDF, keep stills within the relevant textual discussion instead of detached picture galleries where possible.
+- Do not change an image's factual description to support an interpretation the frame does not show.
