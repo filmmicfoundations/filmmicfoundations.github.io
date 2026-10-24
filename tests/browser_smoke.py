@@ -79,8 +79,8 @@ def test_page(browser,relative,width,theme):
             attempt(page,short+' tabs',lambda: [click_if(page, f'#ff-tab-{key}') for key in ['appearance','reading','research','general']])
             attempt(page,short+' settings close',lambda: click_if(page,'.ff-settings-done'))
     if relative=='index.html':
-        attempt(page,short+' cards',lambda: page.locator('.archive-card').count()==2 or (_ for _ in ()).throw(AssertionError('article count')))
-        attempt(page,short+' search',lambda: (page.locator('#article-search').fill('alike'),page.locator('#article-search').input_value()=='alike') or (_ for _ in ()).throw(AssertionError('search input')))
+        attempt(page,short+' cards',lambda: page.locator('.archive-card').count()==4 or (_ for _ in ()).throw(AssertionError('article count')))
+        attempt(page,short+' search',lambda: (page.locator('#article-search').fill('spring'),page.locator('#article-search').input_value()=='spring') or (_ for _ in ()).throw(AssertionError('search input')))
         attempt(page,short+' clear',lambda: click_if(page,'#clear-search'))
         attempt(page,short+' filter open/close',lambda: (click_if(page,'#ff-filter-toggle'),click_if(page,'#reset-filters'),click_if(page,'#ff-filter-toggle')))
         attempt(page,short+' sort all',lambda: (click_if(page,'#ff-sort-toggle'),[click_if(page,'[data-sort="'+m+'"]') for m in ['oldest','az','za','newest']]))
@@ -88,7 +88,7 @@ def test_page(browser,relative,width,theme):
         attempt(page,short+' preview',lambda: (click_if(page,'.archive-preview-trigger'),page.locator('#archive-preview').evaluate('(e)=>e.open') or (_ for _ in ()).throw(AssertionError('preview closed'))))
         if page.locator('#archive-preview').count() and page.locator('#archive-preview').evaluate('(e)=>e.open'):
             attempt(page,short+' preview dismissal',lambda: page.keyboard.press('Escape'))
-    if relative in ['alike/index.html','mindglassprocedure/index.html']:
+    if relative in ['alike/index.html','mindglassprocedure/index.html','the-black-hole/index.html','spring/index.html']:
         attempt(page,short+' article structure',lambda: page.locator('article h2').count()>=5 or (_ for _ in ()).throw(AssertionError('sections missing')))
         attempt(page,short+' visual figures',lambda: page.locator('article figure button.article-image-open').count()>=5 or (_ for _ in ()).throw(AssertionError('image viewer buttons missing')))
         attempt(page,short+' diagram exclusions',lambda: page.locator('article figure.diagram button.article-image-open').count()==0 or (_ for _ in ()).throw(AssertionError('diagram linked')))
@@ -120,7 +120,7 @@ def test_page(browser,relative,width,theme):
 def main():
     with sync_playwright() as p:
         browser=p.chromium.launch(executable_path=CHROMIUM,headless=True,args=['--no-sandbox'])
-        for rel in ['index.html','about/index.html','alike/index.html','mindglassprocedure/index.html','dev/index.html','404.html']:
+        for rel in ['index.html','about/index.html','alike/index.html','mindglassprocedure/index.html','the-black-hole/index.html','spring/index.html','dev/index.html','404.html']:
             for width in (390,1365):
                 for theme in ('light','dark'):
                     test_page(browser,rel,width,theme)

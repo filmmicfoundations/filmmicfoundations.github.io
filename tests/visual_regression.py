@@ -116,15 +116,18 @@ def main():
     parser.add_argument('--update-baseline',action='store_true')
     parser.add_argument('--threshold',type=float,default=.008,help='fraction of average RGB pixel difference')
     parser.add_argument('--only',default='',help='optional case-name substring for targeted visual updates')
+    parser.add_argument('--path',default='',help='exact site-relative HTML page for targeted checks, e.g. index.html')
     args=parser.parse_args()
     BASE.mkdir(exist_ok=True);ACTUAL.mkdir(exist_ok=True);DIFF.mkdir(exist_ok=True)
     cases=[]
-    for rel in ['index.html','alike/index.html','mindglassprocedure/index.html','the-black-hole/index.html']:
+    for rel in ['index.html','alike/index.html','mindglassprocedure/index.html','the-black-hole/index.html','spring/index.html']:
         for w,h in [(1365,860),(390,844)]:
             for theme in ['light','dark']:
                 cases.append((rel,w,h,theme,'top'))
         if rel!='index.html':
             cases.extend([(rel,1365,860,'dark','body'),(rel,1365,860,'dark','viewer'),(rel,390,844,'dark','viewer')])
+    if args.path:
+        cases=[case for case in cases if case[0]==args.path]
     if args.only:
         cases=[case for case in cases if args.only in f'{case[0].replace("/","-").replace(".html","")}-{case[1]}-{case[3]}-{case[4]}.png']
     failures=[]

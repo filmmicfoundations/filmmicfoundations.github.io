@@ -64,3 +64,14 @@ publication until corrected rather than being waived silently.
 - A paired set of shots is acceptable only when it supports a comparison of framing, perspective, performance, color or editing. State that reason in the adjoining text.
 - The article archive and `standards/IMAGE_PLACEMENT_REVIEW.json` record the intended section and caption for each photographic figure. For the PDF, keep stills within the relevant textual discussion instead of detached picture galleries where possible.
 - Do not change an image's factual description to support an interpretation the frame does not show.
+
+## Source-video workflow and PDF parity (2026-10-23)
+
+When the source short film is available as a video file with publication rights:
+- Extract candidate frames directly from the actual file; review a timeline contact sheet so no fictional or unrelated imagery is substituted.
+- Choose 7–15 **distinct film frames**. Each figure must support the nearby analytical passage, and the caption must describe what the actual frame depicts (not the intended but unverified timestamp).
+- Archive full-resolution JPEGs with `film-slug-descriptive-scene.jpg` and a `-640.jpg` responsive derivative. Do not upscale source captures, strip EXIF from exports, and preserve original composition.
+- Use a real film frame as the cover and six distinct real frames in the preview. Film-still image-viewer controls must open/close and center; original analytical diagrams must remain outside the gallery.
+- Record source video, license, requested attribution, figure order, and timestamps in the article's `media-figure-map.json`. Never distribute the 78MB video itself in a normal website article ZIP.
+- **Article HTML controls figure order and placement.** A PDF generator should traverse the article's actual paragraphs, headings and figure nodes in document order. Check that all 1..N figure numbers/captions appear in the same sequence in both media. Cover uses the article cover frame. Keep PDF contents unlinked; retain linked numbered in-text citations in the body.
+- Run quality gate, media manifest, article-package validation, representative article/homepage Chromium click tests, and desktop/mobile light/dark screenshot regression before publication. Browser-local checks do not certify authenticated GitHub publishing or remote YouTube embed playback.

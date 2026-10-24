@@ -1,21 +1,41 @@
 {
   "mode": "check",
   "scope": "offline Chromium; no live GitHub/Safari/Vimeo verification",
-  "cases": 3,
+  "cases": 7,
   "failed": 0,
   "results": [
+    {
+      "case": "alike-index-1365-light-top.png",
+      "result": "pass",
+      "rgb_difference": 0.0
+    },
+    {
+      "case": "alike-index-1365-dark-top.png",
+      "result": "pass",
+      "rgb_difference": 0.0
+    },
+    {
+      "case": "alike-index-390-light-top.png",
+      "result": "pass",
+      "rgb_difference": 0.0
+    },
+    {
+      "case": "alike-index-390-dark-top.png",
+      "result": "pass",
+      "rgb_difference": 0.0
+    },
     {
       "case": "alike-index-1365-dark-body.png",
       "result": "pass",
       "rgb_difference": 0.0
     },
     {
-      "case": "mindglassprocedure-index-1365-dark-body.png",
+      "case": "alike-index-1365-dark-viewer.png",
       "result": "pass",
       "rgb_difference": 0.0
     },
     {
-      "case": "the-black-hole-index-1365-dark-body.png",
+      "case": "alike-index-390-dark-viewer.png",
       "result": "pass",
       "rgb_difference": 0.0
     }

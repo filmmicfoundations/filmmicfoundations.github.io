@@ -70,7 +70,7 @@ def build():
             entry['roles'].add('preview')
         if cover:
             rolemap.setdefault(cover,{'kind':'film_still','roles':set()})['roles'].add('cover')
-        source=('filmmaker-supplied film frame' if slug=='mindglassprocedure' else 'user-supplied film frame')
+        source=('filmmaker-supplied film frame' if slug=='mindglassprocedure' else '© Blender Foundation | cloud.blender.org/spring; CC BY 4.0, extracted from source video' if slug=='spring' else 'user-supplied film frame')
         entries=[item(slug,path,entry['roles'],entry['kind'], 'original analytical diagram' if entry['kind']=='diagram' else source)
                  for path,entry in sorted(rolemap.items())]
         thumbnails=[]

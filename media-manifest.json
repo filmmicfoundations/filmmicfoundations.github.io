@@ -375,6 +375,282 @@
         }
       ]
     },
+    "spring": {
+      "cover": "assets/spring-and-autumn-over-renewed-valley.jpg",
+      "figures": {
+        "original_image_diagrams": 0,
+        "total_image_figures": 14,
+        "viewable_film_stills": 14
+      },
+      "media": [
+        {
+          "bytes": 182243,
+          "path": "assets/spring-ancient-spirit-scale.jpg",
+          "roles": [
+            "article",
+            "preview",
+            "viewer"
+          ],
+          "sha256": "eb0b269ab143de0ddd75fa6060e4b5cde66b2fbf8e706d1c439444fcda42f2e1",
+          "source": "© Blender Foundation | cloud.blender.org/spring; CC BY 4.0, extracted from source video",
+          "type": "film_still"
+        },
+        {
+          "bytes": 405931,
+          "path": "assets/spring-and-autumn-on-the-ridge.jpg",
+          "roles": [
+            "article",
+            "viewer"
+          ],
+          "sha256": "04600b1c47b35f5519e43a798e878fdc61ad783c7bc0b1e4fee20a3da2b975ab",
+          "source": "© Blender Foundation | cloud.blender.org/spring; CC BY 4.0, extracted from source video",
+          "type": "film_still"
+        },
+        {
+          "bytes": 314412,
+          "path": "assets/spring-and-autumn-over-renewed-valley.jpg",
+          "roles": [
+            "article",
+            "cover",
+            "preview",
+            "viewer"
+          ],
+          "sha256": "9cc3ab4ddd5338b938b53350a31629db02600e59a8a002531d9dc62695e0fadb",
+          "source": "© Blender Foundation | cloud.blender.org/spring; CC BY 4.0, extracted from source video",
+          "type": "film_still"
+        },
+        {
+          "bytes": 102413,
+          "path": "assets/spring-clouds-opening-over-mountains.jpg",
+          "roles": [
+            "article",
+            "preview",
+            "viewer"
+          ],
+          "sha256": "27d372cfedbd99cc1c418989b0fcb7e6b282228701ba81a646ec97a49be9663c",
+          "source": "© Blender Foundation | cloud.blender.org/spring; CC BY 4.0, extracted from source video",
+          "type": "film_still"
+        },
+        {
+          "bytes": 72584,
+          "path": "assets/spring-displaced-blue-chime.jpg",
+          "roles": [
+            "article",
+            "viewer"
+          ],
+          "sha256": "3ab428b0765e4cdc6fa89ef1deebd44c38f789ece1fd2ccd01e1fd98ac21ccc2",
+          "source": "© Blender Foundation | cloud.blender.org/spring; CC BY 4.0, extracted from source video",
+          "type": "film_still"
+        },
+        {
+          "bytes": 147014,
+          "path": "assets/spring-first-flowers-return.jpg",
+          "roles": [
+            "article",
+            "preview",
+            "viewer"
+          ],
+          "sha256": "dde73a1426cde0f88da0a8c954cea6088e6c09f8d2e60168cd6503a9c0dd7604",
+          "source": "© Blender Foundation | cloud.blender.org/spring; CC BY 4.0, extracted from source video",
+          "type": "film_still"
+        },
+        {
+          "bytes": 159362,
+          "path": "assets/spring-first-glowing-chime.jpg",
+          "roles": [
+            "article",
+            "preview",
+            "viewer"
+          ],
+          "sha256": "a601711f41e75af54cc781d6b88c468ff7fca7cb5775822a40b871259fd543c4",
+          "source": "© Blender Foundation | cloud.blender.org/spring; CC BY 4.0, extracted from source video",
+          "type": "film_still"
+        },
+        {
+          "bytes": 139226,
+          "path": "assets/spring-frozen-valley-vegetation.jpg",
+          "roles": [
+            "article",
+            "viewer"
+          ],
+          "sha256": "27bb2647077206f8d10ccf78999e738ecc02513157a53eed4d83c9e7d98755db",
+          "source": "© Blender Foundation | cloud.blender.org/spring; CC BY 4.0, extracted from source video",
+          "type": "film_still"
+        },
+        {
+          "bytes": 182221,
+          "path": "assets/spring-lifting-staff-through-fog.jpg",
+          "roles": [
+            "article",
+            "viewer"
+          ],
+          "sha256": "779f45fefbfb7f49833068116915022f204cfc5b9374fd1e35c1940ebb65f1b3",
+          "source": "© Blender Foundation | cloud.blender.org/spring; CC BY 4.0, extracted from source video",
+          "type": "film_still"
+        },
+        {
+          "bytes": 102996,
+          "path": "assets/spring-mountain-spirit-in-fog.jpg",
+          "roles": [
+            "article",
+            "viewer"
+          ],
+          "sha256": "1d10a70c32c0dbb9e7c365f6b5eca5ab9fcea332ace86593675dd7ae6ddb401e",
+          "source": "© Blender Foundation | cloud.blender.org/spring; CC BY 4.0, extracted from source video",
+          "type": "film_still"
+        },
+        {
+          "bytes": 171153,
+          "path": "assets/spring-red-chime-and-expression.jpg",
+          "roles": [
+            "article",
+            "viewer"
+          ],
+          "sha256": "227664e21108aed138b99c39344c5bed43a4146cc6afb014f325e6c94198854b",
+          "source": "© Blender Foundation | cloud.blender.org/spring; CC BY 4.0, extracted from source video",
+          "type": "film_still"
+        },
+        {
+          "bytes": 187350,
+          "path": "assets/spring-shepherd-girl-with-staff.jpg",
+          "roles": [
+            "article",
+            "preview",
+            "viewer"
+          ],
+          "sha256": "594284faa5d49e50556ffc801bdb3c22a79cd34fbbbc681fa1377d5cb3e6c9d0",
+          "source": "© Blender Foundation | cloud.blender.org/spring; CC BY 4.0, extracted from source video",
+          "type": "film_still"
+        },
+        {
+          "bytes": 98382,
+          "path": "assets/spring-spirit-and-shepherd-staff.jpg",
+          "roles": [
+            "article",
+            "viewer"
+          ],
+          "sha256": "26d0d547c45f617ca232d8869668189ec5521135efcca4346f20d9c11dda68f4",
+          "source": "© Blender Foundation | cloud.blender.org/spring; CC BY 4.0, extracted from source video",
+          "type": "film_still"
+        },
+        {
+          "bytes": 175866,
+          "path": "assets/spring-upper-valley-above-clouds.jpg",
+          "roles": [
+            "article",
+            "viewer"
+          ],
+          "sha256": "12f6708193289ad69f373579fb9910048edc610e55e5833aac0b8ac9814584ff",
+          "source": "© Blender Foundation | cloud.blender.org/spring; CC BY 4.0, extracted from source video",
+          "type": "film_still"
+        }
+      ],
+      "pdf": [
+        {
+          "bytes": 3127977,
+          "path": "Spring_The_Landscape_That_Answers_Back_Analysis.pdf",
+          "sha256": "d6773012b1971882250f1787fbd11a522d4083692efe01c3e181acbe07f436cb"
+        }
+      ],
+      "preview": [
+        {
+          "caption": "The final expansive shot returns the girl and dog to a valley whose newly visible contours complete the seasonal cycle.",
+          "path": "assets/spring-and-autumn-over-renewed-valley.jpg"
+        },
+        {
+          "caption": "The staff is visible before its ritual function becomes clear, linking an ordinary traveler’s tool to later communication.",
+          "path": "assets/spring-shepherd-girl-with-staff.jpg"
+        },
+        {
+          "caption": "The spirit dwarfs the human figure; its physical scale gives a small gesture extraordinary stakes.",
+          "path": "assets/spring-ancient-spirit-scale.jpg"
+        },
+        {
+          "caption": "The small illuminated chime makes an otherwise invisible exchange tangible and gives viewers a precise object to track.",
+          "path": "assets/spring-first-glowing-chime.jpg"
+        },
+        {
+          "caption": "The contrast of expansive sunlit peaks and obscured valley makes weather a measure of narrative scale.",
+          "path": "assets/spring-clouds-opening-over-mountains.jpg"
+        },
+        {
+          "caption": "The close-up of flowering plants makes seasonal renewal visible through small material details.",
+          "path": "assets/spring-first-flowers-return.jpg"
+        }
+      ],
+      "thumbnails": [
+        {
+          "derivative_of": "assets/spring-ancient-spirit-scale.jpg",
+          "path": "assets/spring-ancient-spirit-scale-640.jpg",
+          "sha256": "f37ad5a0ced30ef53fc6b27b3b3bf64d05c37200ac5f8abba29cfaea10f579e4"
+        },
+        {
+          "derivative_of": "assets/spring-and-autumn-on-the-ridge.jpg",
+          "path": "assets/spring-and-autumn-on-the-ridge-640.jpg",
+          "sha256": "6be69c176a4d66285717df637679a685a70b2a1072cc405626afb5f1ef64f37f"
+        },
+        {
+          "derivative_of": "assets/spring-and-autumn-over-renewed-valley.jpg",
+          "path": "assets/spring-and-autumn-over-renewed-valley-640.jpg",
+          "sha256": "0b61c498dcd91bacf034d542a6c633b518e4e0799b35df2f67dbb9b50372233b"
+        },
+        {
+          "derivative_of": "assets/spring-clouds-opening-over-mountains.jpg",
+          "path": "assets/spring-clouds-opening-over-mountains-640.jpg",
+          "sha256": "cd2350c778790857104f51f55754855a4afd0e40616466ca87dc493509f71562"
+        },
+        {
+          "derivative_of": "assets/spring-displaced-blue-chime.jpg",
+          "path": "assets/spring-displaced-blue-chime-640.jpg",
+          "sha256": "adaf9fba6f86e26a860165d2118882ac4c05c64c04b44707936a0a8e9c7cd382"
+        },
+        {
+          "derivative_of": "assets/spring-first-flowers-return.jpg",
+          "path": "assets/spring-first-flowers-return-640.jpg",
+          "sha256": "eaa97e1bbd8aaeed65cd6532e40021d762953ba172d0a1b51872bb040150c965"
+        },
+        {
+          "derivative_of": "assets/spring-first-glowing-chime.jpg",
+          "path": "assets/spring-first-glowing-chime-640.jpg",
+          "sha256": "9bd7479d9a0dbc1f203563e8d2e2e83cb79347fd4b21639f0b37b374a77a3a9f"
+        },
+        {
+          "derivative_of": "assets/spring-frozen-valley-vegetation.jpg",
+          "path": "assets/spring-frozen-valley-vegetation-640.jpg",
+          "sha256": "26d99ecb5d61cfd26430ad9a7d55d93a7dafce066acdf8618f414d5216ec6560"
+        },
+        {
+          "derivative_of": "assets/spring-lifting-staff-through-fog.jpg",
+          "path": "assets/spring-lifting-staff-through-fog-640.jpg",
+          "sha256": "07c1cb99119fb68a3a87b8e7d329cfbedd7a99f700a21856e4369eb5367831f4"
+        },
+        {
+          "derivative_of": "assets/spring-mountain-spirit-in-fog.jpg",
+          "path": "assets/spring-mountain-spirit-in-fog-640.jpg",
+          "sha256": "570620e00a591b018d46e9bbecb91504535af46999205c1eeedd25bb615618bc"
+        },
+        {
+          "derivative_of": "assets/spring-red-chime-and-expression.jpg",
+          "path": "assets/spring-red-chime-and-expression-640.jpg",
+          "sha256": "0d0efdf4d7c39a4e40f202d359bb7cb5e83c8829450f69b6117026bca5d324ff"
+        },
+        {
+          "derivative_of": "assets/spring-shepherd-girl-with-staff.jpg",
+          "path": "assets/spring-shepherd-girl-with-staff-640.jpg",
+          "sha256": "b6f8606e57600aa224204c9b364f629080340e4f22eec66c0e51312527ec9a0f"
+        },
+        {
+          "derivative_of": "assets/spring-spirit-and-shepherd-staff.jpg",
+          "path": "assets/spring-spirit-and-shepherd-staff-640.jpg",
+          "sha256": "e6f84a60c05356e3047157997d58a2779e8bba4ec20f46ebd397f350a41d7c8a"
+        },
+        {
+          "derivative_of": "assets/spring-upper-valley-above-clouds.jpg",
+          "path": "assets/spring-upper-valley-above-clouds-640.jpg",
+          "sha256": "47770fc879a225468baab26708139c5bcd10ddae380047efba46c2c8ee62792e"
+        }
+      ]
+    },
     "the-black-hole": {
       "cover": "assets/black-hole-office-worker-portrait.jpg",
       "figures": {
