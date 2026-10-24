@@ -317,7 +317,7 @@ def generated_assets():
         for meta in ROOT.glob('*/article.json'):
             if meta.parent.name not in search:error(f'search-index.json: missing {meta.parent.name}')
     except Exception as e:error(f'search-index.json: invalid search index: {e}')
-    for asset in ['404.html','favicon.svg','favicon.ico','assets/css/print.css','assets/css/site-settings.css','assets/js/site-settings.js','assets/js/site-settings-colors-v2.js','assets/css/site-settings-colors-v2.css','assets/images/apple-touch-icon.png']:
+    for asset in ['404.html','favicon.svg','favicon.ico','assets/css/print.css','assets/css/site-settings.css','assets/js/site-settings.js','assets/images/apple-touch-icon.png']:
         if not (ROOT/asset).is_file():error(f'missing essential asset: {asset}')
     for source in ['index.html','404.html','about/index.html']:
         html=(ROOT/source).read_text(encoding='utf-8')

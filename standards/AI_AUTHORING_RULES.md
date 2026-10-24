@@ -20,3 +20,11 @@ When asked to create, revise, format, or code a Filmmic Foundations article or w
 13. Publish future articles using `python3 scripts/package_article.py film-slug`: never change the homepage manually to add a card. Keep locally archived unique film stills and full-length PDF synchronized; test every clickable still and nonclickable diagram.
 14. Preserve the Mindglass established typography and diagram layout; no novel research-guide callouts, hotlinked viewer images, nested buttons, or separate visual language. Suggested Articles must be last, after Watch Film.
 15. Report browser tests honestly: local Chromium checks cannot certify GitHub deploy, native mobile Safari, third-party video services or authenticated publishing.
+
+
+### Inline citations and fixed teal identity (24 October 2026)
+- Cite individual supported statements where they occur; do **not** accumulate `[1] [2] [3]` at the end of each paragraph. Place each citation immediately after its relevant sentence-ending punctuation, with a space before the link.
+- In website HTML, use clickable links such as `<a class="cite" href="#ref-1">[1]</a>` and verify each `#ref-N` resolves to a numbered reference.
+- In the PDF, preserve the same *in-paragraph* citation placements and keep each marker linked to its source entry. The **Contents & research method** page has no links, while bibliography URLs stay clickable.
+- Maintain the original **teal** brand accents with standard **Light, Dark, and System** display modes. There is no selectable accent/theme-color palette in Settings; do not reintroduce one without a new explicit request.
+- Future PDF generators must build citations from article content rather than appending them mechanically to paragraph ends.

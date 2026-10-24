@@ -33,3 +33,11 @@
 
 - [ ] The film-image viewer is centered on the viewport at desktop, portrait/mobile and landscape widths; it does not sit below center due to stacked navbar-height offsets.
 - [ ] PDF contents/method page is non-clickable; numbered in-body source citations link to matching references, and bibliography URLs remain usable.
+
+
+### Inline citations and fixed teal identity (24 October 2026)
+- Cite individual supported statements where they occur; do **not** accumulate `[1] [2] [3]` at the end of each paragraph. Place each citation immediately after its relevant sentence-ending punctuation, with a space before the link.
+- In website HTML, use clickable links such as `<a class="cite" href="#ref-1">[1]</a>` and verify each `#ref-N` resolves to a numbered reference.
+- In the PDF, preserve the same *in-paragraph* citation placements and keep each marker linked to its source entry. The **Contents & research method** page has no links, while bibliography URLs stay clickable.
+- Maintain the original **teal** brand accents with standard **Light, Dark, and System** display modes. There is no selectable accent/theme-color palette in Settings; do not reintroduce one without a new explicit request.
+- Future PDF generators must build citations from article content rather than appending them mechanically to paragraph ends.

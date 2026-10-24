@@ -50,3 +50,11 @@ The Mindglass Procedure PDF is the visual baseline. Use a sans-serif, title-firs
 ### Research citation interaction
 - Plain text contents and research-method page; no accidental in-PDF TOC hyperlinks.
 - Retain in-body numbered citations as clickable links to exact reference entries and clickable source URLs in the bibliography. Only TOC links are removed, not evidence links.
+
+
+### Inline citations and fixed teal identity (24 October 2026)
+- Cite individual supported statements where they occur; do **not** accumulate `[1] [2] [3]` at the end of each paragraph. Place each citation immediately after its relevant sentence-ending punctuation, with a space before the link.
+- In website HTML, use clickable links such as `<a class="cite" href="#ref-1">[1]</a>` and verify each `#ref-N` resolves to a numbered reference.
+- In the PDF, preserve the same *in-paragraph* citation placements and keep each marker linked to its source entry. The **Contents & research method** page has no links, while bibliography URLs stay clickable.
+- Maintain the original **teal** brand accents with standard **Light, Dark, and System** display modes. There is no selectable accent/theme-color palette in Settings; do not reintroduce one without a new explicit request.
+- Future PDF generators must build citations from article content rather than appending them mechanically to paragraph ends.

@@ -6,9 +6,6 @@
 
 **Implementation references:** See `ARTICLE_RELEASE_WORKFLOW.md` for one-ZIP releases, `UI_TEST_MATRIX.md` for test coverage, `ARTICLE_AUTHORING_PROMPT.md` for a reusable handoff, and `PDF_DESIGN_SPEC.md` for visual document consistency. The original v1 examples remain informational, but v2 behavior rules take precedence when they conflict.
 
-
-- **Accent color settings:** the Appearance panel includes Theme color (Teal, Amber, Violet, Rose and Forest), separately from Light/Dark/System. The shared UI loads a versioned settings JavaScript/CSS pair to avoid stale browser-cached controls; update the versioned assets and all HTML references together on future releases. Color preferences are stored locally.
-
 ## 1. Nonnegotiable principles
 
 1. **Anonymous publication:** Attribute essays and their scholarly citations to **Filmmic Foundations** unless a genuinely different, explicitly authorized publication credit is provided. Do not identify website owners, repository operators, article drafters, email addresses, internal accounts, private identities, or personal affiliations. Verified filmmakers' names may appear as factual **film credits**, independently of research authorship. Metadata, source images, PDFs, commit identity, and public hosting must be reviewed separately for privacy.
@@ -150,8 +147,10 @@ preview slides, and article cover media should use one of the archive's verified
 local assets. If an article changes, update its PDF and manifest in the same
 release, and test both light/dark and mobile/desktop modes.
 
-## Global accent palettes (October 2026 update)
 
-Accent color is independent from light/dark mode. The Settings → Appearance → Accent color preference selects Teal (default), Amber, Violet, Rose or Forest. The CSS owner is `assets/css/accent-system-v3.css`; add any new interface elements to that semantic token system rather than hard-coding teal. The shared color attributes are `html[data-ff-color]` and `html[data-theme]`.
-
-**The chosen palette must apply to all brand/interaction chrome:** logo highlight, landing and developer hero backgrounds, archive controls, links, article toolbars, image-viewer panels, viewer arrows/gallery outlines, citation and sharing controls, settings selections, Developer Portal buttons/progress elements, and Back to Top. Maintain white-on-dark legibility and suitable focus indications in every mode. Preserve film photographs, editorial diagrams whose colors convey film-specific information, and semantic status colors. New visual regression testing should compare the same selectors for all five palettes in both light and dark modes and verify that a changed preference persists across pages. Do not modify PDF color conventions; PDFs remain consistent with the Mindglass document standard.
+### Inline citations and fixed teal identity (24 October 2026)
+- Cite individual supported statements where they occur; do **not** accumulate `[1] [2] [3]` at the end of each paragraph. Place each citation immediately after its relevant sentence-ending punctuation, with a space before the link.
+- In website HTML, use clickable links such as `<a class="cite" href="#ref-1">[1]</a>` and verify each `#ref-N` resolves to a numbered reference.
+- In the PDF, preserve the same *in-paragraph* citation placements and keep each marker linked to its source entry. The **Contents & research method** page has no links, while bibliography URLs stay clickable.
+- Maintain the original **teal** brand accents with standard **Light, Dark, and System** display modes. There is no selectable accent/theme-color palette in Settings; do not reintroduce one without a new explicit request.
+- Future PDF generators must build citations from article content rather than appending them mechanically to paragraph ends.
