@@ -112,7 +112,7 @@ cover=ROOT/media['cover'];assert cover.is_file()
 with PILImage.open(cover) as im:iw,ih=im.size
 story.append(Image(str(cover),width=content_w,height=content_w*ih/iw))
 story.append(Spacer(1,5))
-story.append(Paragraph('Cover image. Spring and Autumn overlooking the mountain valley after renewal. Film still, © Blender Foundation | cloud.blender.org/spring (CC BY 4.0).',S['FFtiny']))
+story.append(Paragraph('Cover image. Spring examining a glowing blue shard inside the cavern. Film still, © Blender Foundation | cloud.blender.org/spring (CC BY 4.0).',S['FFtiny']))
 story.append(Spacer(1,.13*inch))
 story.append(Paragraph('An in-depth critical analysis',S['FFlabel']))
 story.append(Paragraph('A study of seasonal ritual, landscape, character animation, music, visual scale, production practice, and interpretive uncertainty.',S['FFbody']))

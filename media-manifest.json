@@ -376,7 +376,7 @@
       ]
     },
     "spring": {
-      "cover": "assets/spring-and-autumn-over-renewed-valley.jpg",
+      "cover": "assets/spring-cave-glowing-shard-cover.jpg",
       "figures": {
         "original_image_diagrams": 0,
         "total_image_figures": 14,
@@ -411,11 +411,20 @@
           "path": "assets/spring-and-autumn-over-renewed-valley.jpg",
           "roles": [
             "article",
-            "cover",
-            "preview",
             "viewer"
           ],
           "sha256": "9cc3ab4ddd5338b938b53350a31629db02600e59a8a002531d9dc62695e0fadb",
+          "source": "© Blender Foundation | cloud.blender.org/spring; CC BY 4.0, extracted from source video",
+          "type": "film_still"
+        },
+        {
+          "bytes": 135032,
+          "path": "assets/spring-cave-glowing-shard-cover.jpg",
+          "roles": [
+            "cover",
+            "preview"
+          ],
+          "sha256": "3105a6e101a9814b87ae7e3f3545a1947b5670bba8f074d5d30b74a1c6fd6243",
           "source": "© Blender Foundation | cloud.blender.org/spring; CC BY 4.0, extracted from source video",
           "type": "film_still"
         },
@@ -554,8 +563,8 @@
       ],
       "preview": [
         {
-          "caption": "The final expansive shot returns the girl and dog to a valley whose newly visible contours complete the seasonal cycle.",
-          "path": "assets/spring-and-autumn-over-renewed-valley.jpg"
+          "caption": "Inside the cavern, the blue shard becomes a focal object that turns discovery into attention and anticipation.",
+          "path": "assets/spring-cave-glowing-shard-cover.jpg"
         },
         {
           "caption": "The staff is visible before its ritual function becomes clear, linking an ordinary traveler’s tool to later communication.",
@@ -593,6 +602,11 @@
           "derivative_of": "assets/spring-and-autumn-over-renewed-valley.jpg",
           "path": "assets/spring-and-autumn-over-renewed-valley-640.jpg",
           "sha256": "0b61c498dcd91bacf034d542a6c633b518e4e0799b35df2f67dbb9b50372233b"
+        },
+        {
+          "derivative_of": "assets/spring-cave-glowing-shard-cover.jpg",
+          "path": "assets/spring-cave-glowing-shard-cover-640.jpg",
+          "sha256": "236f237a0196df688120e7f42af41bf99a42470a0e44adbd3066842403f11a1e"
         },
         {
           "derivative_of": "assets/spring-clouds-opening-over-mountains.jpg",

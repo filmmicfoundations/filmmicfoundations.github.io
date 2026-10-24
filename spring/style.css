@@ -64,3 +64,7 @@ html[data-theme="dark"] .spring-step,html[data-theme="dark"] .spring-scale-box{b
 /* Authenticated Spring stills — consistent with Mindglass image treatment. */
 .hero .hero-image{background-image:url('assets/spring-and-autumn-over-renewed-valley.jpg')!important;background-position:center 56%!important;opacity:.83!important;}
 .spring-film-still{margin:40px 0 46px}.spring-film-still img{display:block;width:100%;height:auto;max-height:520px;object-fit:contain;background:#e3eae7}.spring-film-still figcaption{margin-top:11px}.spring-film-still .article-image-open{display:block;width:100%}html[data-theme="dark"] .spring-film-still img{background:#18292e;}
+
+/* Updated Spring cover selection */
+.hero .hero-image,.hero-image{background-image:url('assets/spring-cave-glowing-shard-cover.jpg')!important;background-position:center center!important;background-size:cover!important;opacity:.84!important;}
+@media(max-width:700px){.hero .hero-image,.hero-image{background-position:54% center!important;}}

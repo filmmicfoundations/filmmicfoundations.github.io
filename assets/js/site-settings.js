@@ -8,7 +8,7 @@
   const LEGACY_THEME = 'filmmic-foundations-theme';
   const POSITIONS = 'filmmic-foundations-reading-positions';
   const values = {
-    theme:['light','dark','system'], text:['small','default','large','extra'],
+    theme:['light','dark','system'], color:['teal','amber','violet','rose','forest'], text:['small','default','large','extra'],
     width:['narrow','standard','wide'], leading:['compact','standard','relaxed'],
     contrast:['off','on'], motion:['off','subtle','full'],
     focus:['off','on'], progress:['off','on'], captions:['off','on'],
@@ -19,7 +19,7 @@
     media:['ask','auto'], shortcuts:['off','on'], external:['direct','confirm']
   };
   const DEFAULT = Object.freeze({
-    theme:'light', text:'default', width:'standard', leading:'standard',
+    theme:'light', color:'teal', text:'default', width:'standard', leading:'standard',
     contrast:'off', motion:'subtle', focus:'off', progress:'on', captions:'on',
     remember:'off', contents:'collapsed', related:'on', citation:'mla',
     pdf:'new-tab', sort:'newest', archive:'editorial', viewer:'single',
@@ -29,6 +29,7 @@
     {id:'appearance',label:'Appearance',symbol:'appearance',groups:[
       {name:'Color & typography',fields:[
         ['theme','Color theme','Light is the default; System follows your device.',[['light','Light'],['dark','Dark'],['system','System']]],
+        ['color','Accent color','Choose a site accent for links, buttons, and interface highlights.',[['teal','Teal'],['amber','Amber'],['violet','Violet'],['rose','Rose'],['forest','Forest']]],
         ['text','Text size','Adjust article and editorial text.',[['small','Small'],['default','Standard'],['large','Large'],['extra','Extra large']]],
         ['width','Reading width','Change the maximum width of long-form papers.',[['narrow','Narrow'],['standard','Standard'],['wide','Wide']]],
         ['leading','Line spacing','Fine-tune the space between lines.',[['compact','Compact'],['standard','Standard'],['relaxed','Relaxed']]]
