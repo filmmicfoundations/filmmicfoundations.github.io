@@ -6,6 +6,9 @@
 
 **Implementation references:** See `ARTICLE_RELEASE_WORKFLOW.md` for one-ZIP releases, `UI_TEST_MATRIX.md` for test coverage, `ARTICLE_AUTHORING_PROMPT.md` for a reusable handoff, and `PDF_DESIGN_SPEC.md` for visual document consistency. The original v1 examples remain informational, but v2 behavior rules take precedence when they conflict.
 
+
+- **Accent color settings:** the Appearance panel includes Theme color (Teal, Amber, Violet, Rose and Forest), separately from Light/Dark/System. The shared UI loads a versioned settings JavaScript/CSS pair to avoid stale browser-cached controls; update the versioned assets and all HTML references together on future releases. Color preferences are stored locally.
+
 ## 1. Nonnegotiable principles
 
 1. **Anonymous publication:** Attribute essays and their scholarly citations to **Filmmic Foundations** unless a genuinely different, explicitly authorized publication credit is provided. Do not identify website owners, repository operators, article drafters, email addresses, internal accounts, private identities, or personal affiliations. Verified filmmakers' names may appear as factual **film credits**, independently of research authorship. Metadata, source images, PDFs, commit identity, and public hosting must be reviewed separately for privacy.

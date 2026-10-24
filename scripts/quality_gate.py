@@ -174,7 +174,7 @@ def validate_article(article_json):
         refs=len(re.findall(r'id="ref-\d+"',html))
         if refs==0:error(f'{label}: article needs a traceable reference list (id="ref-N")')
         if '<article' not in html:error(f'{label}: research text missing article element')
-        if 'assets/js/site-settings.js' not in html or 'assets/css/site-settings.css' not in html:
+        if not re.search(r'assets/js/site-settings(?:-colors-v2)?\.js',html) or not re.search(r'assets/css/site-settings(?:-colors-v2)?\.css',html):
             error(f'{label}: shared settings not installed; run build_archive.py')
         if 'id="ff-citation-data"' not in html:error(f'{label}: generated citation data missing; run build_archive.py')
         else:
@@ -317,11 +317,11 @@ def generated_assets():
         for meta in ROOT.glob('*/article.json'):
             if meta.parent.name not in search:error(f'search-index.json: missing {meta.parent.name}')
     except Exception as e:error(f'search-index.json: invalid search index: {e}')
-    for asset in ['404.html','favicon.svg','favicon.ico','assets/css/print.css','assets/css/site-settings.css','assets/js/site-settings.js','assets/images/apple-touch-icon.png']:
+    for asset in ['404.html','favicon.svg','favicon.ico','assets/css/print.css','assets/css/site-settings.css','assets/js/site-settings.js','assets/js/site-settings-colors-v2.js','assets/css/site-settings-colors-v2.css','assets/images/apple-touch-icon.png']:
         if not (ROOT/asset).is_file():error(f'missing essential asset: {asset}')
     for source in ['index.html','404.html','about/index.html']:
         html=(ROOT/source).read_text(encoding='utf-8')
-        if 'assets/js/site-settings.js' not in html:error(f'{source}: shared settings / header script missing')
+        if not re.search(r'assets/js/site-settings(?:-colors-v2)?\.js',html):error(f'{source}: shared settings / header script missing')
     # Regression guard: an article-only ZIP must never publish its index.html at the site root.
     portal=(ROOT/'assets/js/developer.js').read_text(encoding='utf-8')
     if not all(marker in portal for marker in (
