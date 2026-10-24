@@ -1,0 +1,132 @@
+{
+  "title": "Spring",
+  "film": "Spring (2019)",
+  "video_source": "Spring - Blender Open Movie.webm",
+  "source_credit": "© Blender Foundation | cloud.blender.org/spring",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "cover": "assets/spring-and-autumn-over-renewed-valley.jpg",
+  "figures": [
+    {
+      "figure": 1,
+      "kind": "film_still",
+      "name": "assets/spring-upper-valley-above-clouds.jpg",
+      "caption": "The distant upper landscape gives the girl a readable route while the clouds conceal the valley below.",
+      "time": 30
+    },
+    {
+      "figure": 2,
+      "kind": "diagram",
+      "name": "inline_html_diagram",
+      "caption": "Original analytical diagram contrasting the film’s two environmental states; a formal comparison, not a map of real climate."
+    },
+    {
+      "figure": 3,
+      "kind": "film_still",
+      "name": "assets/spring-frozen-valley-vegetation.jpg",
+      "caption": "Plant details are almost swallowed by the blue-gray valley: atmosphere reduces depth and certainty.",
+      "time": 95
+    },
+    {
+      "figure": 4,
+      "kind": "film_still",
+      "name": "assets/spring-shepherd-girl-with-staff.jpg",
+      "caption": "The staff is visible before its ritual function becomes clear, linking an ordinary traveler’s tool to later communication.",
+      "time": 67
+    },
+    {
+      "figure": 5,
+      "kind": "film_still",
+      "name": "assets/spring-ancient-spirit-scale.jpg",
+      "caption": "The spirit dwarfs the human figure; its physical scale gives a small gesture extraordinary stakes.",
+      "time": 181
+    },
+    {
+      "figure": 6,
+      "kind": "film_still",
+      "name": "assets/spring-mountain-spirit-in-fog.jpg",
+      "caption": "The creature’s limbs and points of light emerge slowly from fog, making its form legible through movement rather than exposition.",
+      "time": 173
+    },
+    {
+      "figure": 7,
+      "kind": "film_still",
+      "name": "assets/spring-and-autumn-on-the-ridge.jpg",
+      "caption": "Autumn’s smaller movements and recognizable canine behavior provide a familiar scale beside the fantastical creatures.",
+      "time": 50
+    },
+    {
+      "figure": 8,
+      "kind": "film_still",
+      "name": "assets/spring-spirit-and-shepherd-staff.jpg",
+      "caption": "The gap between the small staff and the enormous spirit turns the musical exchange into a visible negotiation.",
+      "time": 204
+    },
+    {
+      "figure": 9,
+      "kind": "film_still",
+      "name": "assets/spring-first-glowing-chime.jpg",
+      "caption": "The small illuminated chime makes an otherwise invisible exchange tangible and gives viewers a precise object to track.",
+      "time": 228
+    },
+    {
+      "figure": 10,
+      "kind": "diagram",
+      "name": "inline_html_diagram",
+      "caption": "Interpretive model of how a musical exchange becomes a concrete task; not a shot from the film."
+    },
+    {
+      "figure": 11,
+      "kind": "film_still",
+      "name": "assets/spring-lifting-staff-through-fog.jpg",
+      "caption": "The glowing staff provides a clear point of orientation amid the spirits and the fog.",
+      "time": 252
+    },
+    {
+      "figure": 12,
+      "kind": "film_still",
+      "name": "assets/spring-displaced-blue-chime.jpg",
+      "caption": "By isolating the chime in a sparse composition, the film makes the vulnerable object the center of suspense.",
+      "time": 289
+    },
+    {
+      "figure": 13,
+      "kind": "film_still",
+      "name": "assets/spring-red-chime-and-expression.jpg",
+      "caption": "Spring’s facial expression and the bright chime communicate thought and intention without spoken dialogue.",
+      "time": 313
+    },
+    {
+      "figure": 14,
+      "kind": "film_still",
+      "name": "assets/spring-clouds-opening-over-mountains.jpg",
+      "caption": "The contrast of expansive sunlit peaks and obscured valley makes weather a measure of narrative scale.",
+      "time": 340
+    },
+    {
+      "figure": 15,
+      "kind": "diagram",
+      "name": "inline_html_diagram",
+      "caption": "A model of the changing scale of narrative consequence, from a small gesture to the transformed valley."
+    },
+    {
+      "figure": 16,
+      "kind": "film_still",
+      "name": "assets/spring-first-flowers-return.jpg",
+      "caption": "The close-up of flowering plants makes seasonal renewal visible through small material details.",
+      "time": 378
+    },
+    {
+      "figure": 17,
+      "kind": "diagram",
+      "name": "inline_html_diagram",
+      "caption": "Evidence categories used to keep film interpretation separate from verified production facts and reception."
+    },
+    {
+      "figure": 18,
+      "kind": "film_still",
+      "name": "assets/spring-and-autumn-over-renewed-valley.jpg",
+      "caption": "The final expansive shot returns the girl and dog to a valley whose newly visible contours complete the seasonal cycle.",
+      "time": 388
+    }
+  ]
+}
