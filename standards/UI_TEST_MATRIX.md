@@ -33,3 +33,10 @@
 - User-uploaded high-quality JPEGs become new local derivatives; PDF cover,
   article cover, OG metadata, archive card, and preview first slide must be
   updated together. Build, render, compare, and verify the PDF separately.
+
+### Accent-color matrix
+- For each of Teal, Amber, Violet, Rose, and Forest, test in Light and Dark modes on Home, About, each article, and Developer Portal.
+- Confirm logo accent, landing background, secondary article toolbar, image viewer shell/header/footer, gallery selection outline, article citation buttons, Settings controls and Developer Portal accents all respond.
+- Verify that switching colors does not recolor film stills or meaningful analytical diagrams.
+- Verify theme color choice is saved locally, survives reload/navigation, and Reset restores Teal.
+- Check that the selected palette remains legible at 390px and 1365px viewport widths and with reduced motion enabled.

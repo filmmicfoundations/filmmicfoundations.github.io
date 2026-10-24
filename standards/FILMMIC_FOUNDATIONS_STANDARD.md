@@ -149,3 +149,9 @@ title and keeps the single-font treatment. All PDF figures, cover images,
 preview slides, and article cover media should use one of the archive's verified
 local assets. If an article changes, update its PDF and manifest in the same
 release, and test both light/dark and mobile/desktop modes.
+
+## Global accent palettes (October 2026 update)
+
+Accent color is independent from light/dark mode. The Settings → Appearance → Accent color preference selects Teal (default), Amber, Violet, Rose or Forest. The CSS owner is `assets/css/accent-system-v3.css`; add any new interface elements to that semantic token system rather than hard-coding teal. The shared color attributes are `html[data-ff-color]` and `html[data-theme]`.
+
+**The chosen palette must apply to all brand/interaction chrome:** logo highlight, landing and developer hero backgrounds, archive controls, links, article toolbars, image-viewer panels, viewer arrows/gallery outlines, citation and sharing controls, settings selections, Developer Portal buttons/progress elements, and Back to Top. Maintain white-on-dark legibility and suitable focus indications in every mode. Preserve film photographs, editorial diagrams whose colors convey film-specific information, and semantic status colors. New visual regression testing should compare the same selectors for all five palettes in both light and dark modes and verify that a changed preference persists across pages. Do not modify PDF color conventions; PDFs remain consistent with the Mindglass document standard.

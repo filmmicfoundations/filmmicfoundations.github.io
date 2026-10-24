@@ -1,0 +1,200 @@
+/* Filmmic Foundations — unified accent system, 2026-10-24.
+   One semantic palette drives decorative chrome throughout the archive.
+   Film stills, embedded video, diagrams carrying documentary information, and
+   accessibility/safety colors are intentionally not recolored. */
+:root,
+html[data-ff-color="teal"]{
+  --ff-theme-accent:#2d777d;
+  --ff-theme-accent-hover:#245963;
+  --ff-theme-dark:#173d46;
+  --ff-theme-dark-hover:#245963;
+  --ff-theme-glow:#a3dad5;
+  --ff-theme-soft:#edf5f2;
+  --ff-theme-text:#26696e;
+}
+html[data-ff-color="amber"]{
+  --ff-theme-accent:#9f601b;
+  --ff-theme-accent-hover:#814a12;
+  --ff-theme-dark:#754315;
+  --ff-theme-dark-hover:#965c1d;
+  --ff-theme-glow:#ffd49b;
+  --ff-theme-soft:#faf3e9;
+  --ff-theme-text:#8b541c;
+}
+html[data-ff-color="violet"]{
+  --ff-theme-accent:#6554a8;
+  --ff-theme-accent-hover:#50418b;
+  --ff-theme-dark:#40346f;
+  --ff-theme-dark-hover:#5b4b91;
+  --ff-theme-glow:#c9bdff;
+  --ff-theme-soft:#f1effa;
+  --ff-theme-text:#62529e;
+}
+html[data-ff-color="rose"]{
+  --ff-theme-accent:#a34265;
+  --ff-theme-accent-hover:#852f50;
+  --ff-theme-dark:#702c49;
+  --ff-theme-dark-hover:#8c3b5b;
+  --ff-theme-glow:#ffbdd2;
+  --ff-theme-soft:#faf0f3;
+  --ff-theme-text:#9c4061;
+}
+html[data-ff-color="forest"]{
+  --ff-theme-accent:#2c7658;
+  --ff-theme-accent-hover:#20583f;
+  --ff-theme-dark:#194935;
+  --ff-theme-dark-hover:#2b684c;
+  --ff-theme-glow:#ace9ca;
+  --ff-theme-soft:#edf6f0;
+  --ff-theme-text:#2a6e52;
+}
+/* Any existing variable-based component should inherit the same palette. */
+html{
+  --accent:var(--ff-theme-accent);
+  --ff-accent:var(--ff-theme-accent);
+  --ff-accent-hover:var(--ff-theme-accent-hover);
+  --ff-accent-dark:var(--ff-theme-dark);
+  --ff-blue:var(--ff-theme-dark);
+  --ff-blue-hover:var(--ff-theme-dark-hover);
+  --ff-teal:var(--ff-theme-accent);
+  --ff-header-accent:var(--ff-theme-accent);
+  --ff-focus-accent:var(--ff-theme-accent);
+}
+html[data-theme="dark"]{
+  --accent:var(--ff-theme-glow);
+  --ff-blue:var(--ff-theme-glow);
+  --ff-teal:var(--ff-theme-glow);
+  --ff-header-accent:var(--ff-theme-glow);
+  --ff-focus-accent:var(--ff-theme-glow);
+}
+/* Site identity, banners, card accents, and general navigation. */
+html .ff-site-header.topbar{--ff-header-accent:var(--ff-theme-accent)}
+html[data-theme="dark"] .ff-site-header.topbar{--ff-header-accent:var(--ff-theme-glow)}
+html .ff-site-header .ff-site-brand span{color:var(--ff-header-accent)!important}
+html .ff-site-header .ff-site-nav .nav-link:focus-visible,
+html .ff-site-header .ff-settings-toggle:focus-visible{outline-color:var(--ff-focus-accent)!important}
+html .masthead{
+  background:linear-gradient(120deg,
+    color-mix(in srgb,var(--ff-theme-dark) 84%,#07141a),
+    color-mix(in srgb,var(--ff-theme-dark) 54%,#07141a))!important;
+}
+html .masthead .eyebrow{color:var(--ff-theme-glow)!important}
+html .masthead h1 em{text-shadow:0 1px 25px color-mix(in srgb,var(--ff-theme-glow) 18%,transparent)}
+html .hero .eyebrow{color:var(--ff-theme-glow)!important}
+html .hero .hero-shade{
+  background:linear-gradient(90deg,
+    color-mix(in srgb,var(--ff-theme-dark) 42%,#071017) 0%,
+    color-mix(in srgb,var(--ff-theme-dark) 27%,#071017) 35%,
+    rgba(5,13,19,.09) 100%),
+    linear-gradient(0deg,rgba(6,16,21,.37),transparent 52%)!important;
+}
+html .tag,html .read,html .article-meta,html .ref-num,
+html .ff-related-kicker,html .ff-related-content small,
+html .ff-about-caption,html .ff-about-number,
+html .ff-about-content a,html .ff-about-end a,
+html .article a.cite{color:var(--accent)!important}
+html .ff-related-card:hover{border-color:var(--ff-theme-accent)!important}
+html .search-shell:focus-within,html .archive-controls select:focus-visible,
+html .filter-field-grid select:focus-visible,
+html .archive-filter-dropdown>summary:focus-visible,
+html .ff-discover .ff-picker-toggle:focus-visible{outline-color:var(--ff-focus-accent)!important}
+html .search-shell button,html .filter-panel-heading button,
+html .ff-discover .ff-discover-head button{color:var(--accent)!important}
+html .ff-discover .ff-sort-options button[aria-pressed="true"]::before{color:var(--accent)!important}
+html .archive-filter-dropdown>summary:hover,
+html .archive-filter-dropdown[open]>summary{
+  background:var(--ff-theme-soft)!important;
+  border-color:color-mix(in srgb,var(--ff-theme-accent) 40%,#c2cecc)!important;
+}
+html .archive-view-options .view-switch button[aria-pressed="true"],
+html .active-filter-count{background:var(--ff-theme-dark)!important;color:#fff!important}
+html .ff-discover .ff-filter-chip{color:var(--ff-theme-text)!important}
+html[data-theme="dark"] .ff-discover .ff-filter-chip{color:var(--ff-theme-glow)!important}
+html .archive-preview-trigger{color:var(--ff-theme-dark)!important}
+html .archive-preview .preview-actions a{
+  background:var(--ff-theme-dark)!important;
+  border-color:var(--ff-theme-dark)!important;
+  color:#fff!important;
+}
+html .archive-preview .preview-actions button{color:var(--ff-theme-accent)!important;border-color:var(--ff-theme-accent)!important}
+html .preview-close:hover{background:var(--ff-theme-soft)!important}
+/* Main and mobile article menu retain a dark differentiated bar. */
+html .ff-section-toolbar{background:var(--ff-theme-dark)!important;
+  border-bottom-color:color-mix(in srgb,var(--ff-theme-dark) 75%,#07161c)!important;}
+html[data-theme="dark"] .ff-section-toolbar{background:var(--ff-theme-dark-hover)!important}
+html .ff-section-toolbar .reading-pdf{background:#f5f7f6!important;border-color:#f5f7f6!important;color:var(--ff-theme-dark)!important}
+html .ff-section-toolbar .reading-pdf:hover{background:#fff!important;color:var(--ff-theme-dark)!important}
+html .ff-section-toolbar .mobile-contents-list a:hover{color:var(--ff-theme-text)!important;background:var(--ff-theme-soft)!important}
+html .ff-back-to-top{background:var(--ff-theme-dark)!important;border-color:var(--ff-theme-dark-hover)!important;color:#fff!important}
+html .ff-back-to-top:hover{background:var(--ff-theme-dark-hover)!important}
+html[data-theme="dark"] .ff-back-to-top{background:var(--ff-theme-dark)!important;color:#fff!important}
+/* Article links and PDF/share/citation controls. */
+html .article a:not(.article-image-open):not(.ff-related-card){--accent:var(--ff-theme-accent)}
+html[data-theme="dark"] .article a:not(.article-image-open):not(.ff-related-card){--accent:var(--ff-theme-glow)}
+html .hero-actions .primary{background:var(--ff-theme-glow)!important;color:#10272c!important}
+html .hero-actions .primary:hover{background:color-mix(in srgb,var(--ff-theme-glow) 72%,white)!important}
+html .toc a.active{color:var(--accent)!important;border-left-color:var(--ff-theme-accent)!important}
+html .article .ff-cite-tabs button.is-selected,
+html .article .ff-cite-output button,
+html .ffs-row button{background:var(--ff-theme-dark)!important;border-color:var(--ff-theme-dark)!important;color:#fff!important}
+html .article .ff-cite-tabs button.is-selected:hover,
+html .article .ff-cite-output button:hover,
+html .ffs-row button:hover{background:var(--ff-theme-dark-hover)!important}
+html[data-theme="dark"] .article .ff-cite-tabs button.is-selected,
+html[data-theme="dark"] .ffs-row button{background:var(--ff-theme-glow)!important;border-color:var(--ff-theme-glow)!important;color:#172126!important}
+html .ff-cite-eyebrow,html .ffs-feedback{color:var(--ff-theme-text)!important}
+html[data-theme="dark"] .ff-cite-eyebrow,html[data-theme="dark"] .ffs-feedback{color:var(--ff-theme-glow)!important}
+/* Film still viewer: a themed dark shell without tinting the film still pixels. */
+html .ffv-dialog{background:color-mix(in srgb,var(--ff-theme-dark) 46%,#081419)!important;
+  border-color:color-mix(in srgb,var(--ff-theme-glow) 33%,transparent)!important;}
+html .ffv-shell{background:color-mix(in srgb,var(--ff-theme-dark) 42%,#081419)!important}
+html .ffv-head,html .ffv-foot{background:color-mix(in srgb,var(--ff-theme-dark) 65%,#09191d)!important}
+html .ffv-viewport,html .ffv-gallery{background:color-mix(in srgb,var(--ff-theme-dark) 23%,#061217)!important}
+html .ffv-eyebrow,html .ffv-details{color:color-mix(in srgb,var(--ff-theme-glow) 48%,white)!important}
+html .ffv-button:focus-visible,html .ffv-arrow:focus-visible,html .ffv-tile:focus-visible{outline-color:var(--ff-theme-glow)!important}
+html .ffv-button:hover:not(:disabled){background:color-mix(in srgb,var(--ff-theme-glow) 13%,transparent)!important;border-color:var(--ff-theme-glow)!important}
+html .ffv-arrow{background:color-mix(in srgb,var(--ff-theme-dark) 76%,#0b151a)!important}
+html .ffv-arrow:hover{background:var(--ff-theme-dark-hover)!important;border-color:var(--ff-theme-glow)!important}
+html .ffv-tile.ffv-current{outline-color:var(--ff-theme-glow)!important}
+html .ffv-status{background:var(--ff-theme-dark)!important}
+/* Settings modal and its selection controls (the inputs don't move on theme changes). */
+html .ff-settings-kicker,html .ff-settings-section>h3{color:var(--ff-theme-text)!important}
+html .ff-settings-tab[aria-selected="true"]{border-color:var(--ff-theme-accent)!important;color:var(--ff-theme-text)!important;background:var(--ff-theme-soft)!important}
+html .ff-settings-tab:hover{color:var(--ff-theme-text)!important}
+html .ff-pref-row input[type="checkbox"]:checked{background:var(--ff-theme-accent)!important;border-color:var(--ff-theme-accent)!important}
+html .ff-pref-action:not(.ff-danger):hover{background:var(--ff-theme-soft)!important;border-color:var(--ff-theme-accent)!important}
+html .ff-settings-done,html .ff-resume-prompt button:first-of-type,
+html .ff-external-dialog a{background:var(--ff-theme-dark)!important;border-color:var(--ff-theme-dark)!important;color:#fff!important}
+html .ff-settings-done:hover{background:var(--ff-theme-dark-hover)!important}
+html .ff-pref-choice-button:focus-visible,
+html .ff-pref-row select:focus-visible,
+html .ff-pref-row input:focus-visible,
+html .ff-settings-dialog button:focus-visible{outline-color:var(--ff-focus-accent)!important}
+html[data-theme="dark"] .ff-settings-kicker,
+html[data-theme="dark"] .ff-settings-section>h3,
+html[data-theme="dark"] .ff-settings-tab[aria-selected="true"]{color:var(--ff-theme-glow)!important}
+html[data-theme="dark"] .ff-settings-tab[aria-selected="true"]{
+  background:color-mix(in srgb,var(--ff-theme-dark) 45%,#192930)!important;
+  border-color:var(--ff-theme-glow)!important;
+}
+html[data-theme="dark"] .ff-pref-action:not(.ff-danger){color:var(--ff-theme-glow)!important;border-color:color-mix(in srgb,var(--ff-theme-glow) 50%,#344e53)!important}
+html[data-theme="dark"] .ff-pref-action:not(.ff-danger):hover{background:color-mix(in srgb,var(--ff-theme-dark) 55%,#192930)!important}
+html[data-theme="dark"] .ff-settings-done{background:var(--ff-theme-glow)!important;border-color:var(--ff-theme-glow)!important;color:#15252b!important}
+/* Keep graphical figure content intact while theme-coloring only decorative outlines/accent. */
+html .diagram:not(.spring-analysis-figure) .diagram-row>div{border-top-color:var(--ff-theme-accent)!important}
+html .diagram:not(.spring-analysis-figure) .diagram-arrow{color:var(--ff-theme-accent)!important}
+/* Developer portal follows visitor themes rather than retaining independent teal. */
+html .ff-dev-page{--dev-accent:var(--ff-theme-accent);--dev-dark:var(--ff-theme-dark)}
+html[data-theme="dark"] .ff-dev-page{--dev-accent:var(--ff-theme-glow);--dev-dark:var(--ff-theme-dark)}
+html .ff-dev-page .dev-hero{background:linear-gradient(120deg,var(--ff-theme-dark),color-mix(in srgb,var(--ff-theme-dark) 65%,#08161b))!important}
+html .ff-dev-page .dev-hero .dev-overline{color:var(--ff-theme-glow)!important}
+html .ff-dev-page .dev-button.primary{background:var(--ff-theme-dark)!important;color:#fff!important}
+html .ff-dev-page .dev-button.primary:hover{background:var(--ff-theme-dark-hover)!important}
+html .ff-dev-page .dev-options input,html .ff-dev-page .dev-checkline input{accent-color:var(--ff-theme-accent)!important}
+html .ff-dev-page .dev-progress-fill{background:var(--ff-theme-accent)!important}
+/* Fixed literal design accents in the 404/metadata/secondary controls. */
+html .ff-error-link--primary{background:var(--ff-theme-dark)!important;border-color:var(--ff-theme-dark)!important;color:#fff!important}
+html .ff-discover .ff-picker-toggle:focus-visible{outline-color:var(--ff-focus-accent)!important}
+@media(prefers-reduced-motion:reduce){html .ffv-dialog,html .ffv-shell,html .masthead{transition:none!important}}
+/* Shared section eyebrow text (including About's editorial kicker). */
+html .eyebrow{color:var(--ff-theme-glow)!important}
