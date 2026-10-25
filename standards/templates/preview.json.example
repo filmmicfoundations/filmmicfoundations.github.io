@@ -1,0 +1,20 @@
+{
+  "title": "REPLACE WITH VERIFIED SHORT FILM TITLE",
+  "abstract": "REPLACE with article abstract.",
+  "images": [
+    "assets/film-slug-scene-1.jpg",
+    "assets/film-slug-scene-2.jpg",
+    "assets/film-slug-scene-3.jpg",
+    "assets/film-slug-scene-4.jpg",
+    "assets/film-slug-scene-5.jpg",
+    "assets/film-slug-scene-6.jpg"
+  ],
+  "image_captions": [
+    "REPLACE: specific visible film moment in preview 1",
+    "REPLACE: specific visible film moment in preview 2",
+    "REPLACE: specific visible film moment in preview 3",
+    "REPLACE: specific visible film moment in preview 4",
+    "REPLACE: specific visible film moment in preview 5",
+    "REPLACE: specific visible film moment in preview 6"
+  ]
+}

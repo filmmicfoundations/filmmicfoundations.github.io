@@ -1,0 +1,50 @@
+{
+  "film_title": "REPLACE WITH VERIFIED SHORT FILM TITLE",
+  "film_version_viewed": "REPLACE WITH exact link/file and cut",
+  "last_verified": "2026-10-24",
+  "sources": [
+    {
+      "id": 1,
+      "type": "primary",
+      "author": "VERIFIED CREATOR",
+      "title": "VERIFIED OFFICIAL SHORT FILM",
+      "venue": "Official film release",
+      "date": "YYYY-MM-DD",
+      "url": "https://example.org/official-film",
+      "verified": "needs verification",
+      "supports": [
+        "S1 exact screen observation or credit"
+      ],
+      "limitations": "Do not cite film to prove filmmaker intent"
+    },
+    {
+      "id": 2,
+      "type": "secondary",
+      "author": "VERIFIED JOURNALIST/RESEARCHER",
+      "title": "VERIFIED INDEPENDENT CRITICISM OR ACADEMIC ARTICLE",
+      "venue": "Publication",
+      "date": "YYYY-MM-DD",
+      "url": "https://example.org/article",
+      "verified": "needs verification",
+      "supports": [
+        "S2 specific context"
+      ],
+      "limitations": "Describe what it actually says"
+    },
+    {
+      "id": 3,
+      "type": "tertiary",
+      "author": "VERIFIED CATALOG",
+      "title": "VERIFIED FILM LISTING",
+      "venue": "Reference resource",
+      "date": "YYYY-MM-DD",
+      "url": "https://example.org/catalog",
+      "verified": "needs verification",
+      "supports": [
+        "S3 basic listing facts only"
+      ],
+      "limitations": "Not evidence of filmmaker intent"
+    }
+  ],
+  "reminder": "This is an EXAMPLE, not a ready bibliography. Expand to at least 10 real verified sources, including each of the three types. Do not publish placeholders."
+}

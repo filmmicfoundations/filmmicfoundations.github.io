@@ -1,3 +1,5 @@
+> **For new AI authors without prior context:** start at `standards/00_START_HERE_FOR_NEW_AI.md` and `standards/NEW_ARTICLE_MASTER_PROMPT.md`. Never upload an AI authoring-kit ZIP directly to Developer Portal; only the validated article-only ZIP.
+
 # Filmmic Foundations — publication repository
 
 An anonymous, educational archive for evidence-led short-film analysis.

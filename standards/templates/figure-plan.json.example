@@ -1,0 +1,31 @@
+{
+  "film_title": "REPLACE",
+  "cover": {
+    "path": "assets/film-slug-cover-scene.jpg",
+    "timestamp_seconds": 60,
+    "purpose": "REPLACE; same frame used for homepage / social / PDF / preview first"
+  },
+  "still_figures": [
+    {
+      "figure": 1,
+      "path": "assets/film-slug-scene-1.jpg",
+      "responsive_path": "assets/film-slug-scene-1-640.jpg",
+      "timestamp_seconds": 60,
+      "section_id": "article-section-id",
+      "analytical_purpose": "REPLACE specific paragraph and formal detail",
+      "caption": "Figure 1. REPLACE with evidenced descriptive caption.",
+      "alt": "REPLACE",
+      "license_or_rights": "REPLACE and verify"
+    }
+  ],
+  "diagrams": [
+    {
+      "figure": 2,
+      "type": "original-analytical",
+      "section_id": "article-section-id",
+      "reason_needed": "REPLACE; otherwise omit",
+      "viewer_enabled": false
+    }
+  ],
+  "notes": "Keep 7–15 unique still_figures; total figure numbering sequential across both stills and diagrams. Never use diagrams as preview assets."
+}

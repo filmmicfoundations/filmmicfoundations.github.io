@@ -1,3 +1,5 @@
+> **Edition 3.0 compatibility notice (24 October 2026):** Read `00_START_HERE_FOR_NEW_AI.md` and `AI_INDEPENDENT_ARTICLE_CONTRACT.md` first. They resolve older wording: all NEW flagship articles require a real 20–30-minute body, at least 10 verifiable sources covering primary/secondary/tertiary categories (15–20 preferred), 7–15 authentic local stills, complete matched PDF, in-paragraph citations, fixed teal identity, and an article-only publish ZIP. Latest human instructions and actual current site source take precedence.
+
 **Edition 2.0 — October 21, 2026.**
 
 # Publication checklist
@@ -41,3 +43,12 @@
 - In the PDF, preserve the same *in-paragraph* citation placements and keep each marker linked to its source entry. The **Contents & research method** page has no links, while bibliography URLs stay clickable.
 - Maintain the original **teal** brand accents with standard **Light, Dark, and System** display modes. There is no selectable accent/theme-color palette in Settings; do not reintroduce one without a new explicit request.
 - Future PDF generators must build citations from article content rather than appending them mechanically to paragraph ends.
+
+### Mandatory fresh-AI handoff checks (Edition 3.0)
+- [ ] At least **10 DISTINCT verified sources including primary, secondary and tertiary** (15–20 preferred), recorded with evidence support in a source ledger.
+- [ ] Actual film watched with audio; timestamps and rights basis documented for all stills, no screenshots fabricated.
+- [ ] Actual body text = 20–30 min at 225 wpm, citation markers located after specific supported sentences rather than paragraph ends.
+- [ ] Exactly six still-only preview frames; the first matches all cover surfaces; 7–15 unique stills within the article body.
+- [ ] PDF section/figure/citation map exactly matches the HTML, unlinked TOC and linked research citations/bibliography.
+- [ ] AI author was supplied and read the CURRENT source code, not just the style descriptions.
+- [ ] Final ZIP is one `film-slug/` folder, not an entire website or this authoring kit; upload simulation and live-deploy instructions verified.

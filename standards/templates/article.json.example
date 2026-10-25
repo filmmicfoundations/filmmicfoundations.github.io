@@ -1,0 +1,28 @@
+{
+  "title": "REPLACE WITH VERIFIED SHORT FILM TITLE",
+  "citation_title": "REPLACE: film title and focused article subtitle",
+  "citation_apa_title": "REPLACE: sentence case citation title",
+  "year": "2026",
+  "type": "FILM ANALYSIS",
+  "description": "REPLACE with precise evidence-led one-sentence article summary.",
+  "abstract": "REPLACE with 100–200 word thesis, primary text, limits, methodology.",
+  "image": "assets/film-slug-cover-scene.jpg",
+  "image_alt": "REPLACE: factual description of authentic frame",
+  "genre": [
+    "Short film"
+  ],
+  "tags": [
+    "REPLACE"
+  ],
+  "themes": [
+    "REPLACE"
+  ],
+  "techniques": [
+    "REPLACE"
+  ],
+  "article_date": "2026-10-24",
+  "updated_date": "2026-10-24",
+  "film_year": "2019",
+  "language": "en",
+  "order": 5
+}

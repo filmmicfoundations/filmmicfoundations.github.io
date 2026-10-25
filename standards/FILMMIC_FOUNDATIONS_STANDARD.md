@@ -1,3 +1,5 @@
+> **Edition 3.0 compatibility notice (24 October 2026):** Read `00_START_HERE_FOR_NEW_AI.md` and `AI_INDEPENDENT_ARTICLE_CONTRACT.md` first. They resolve older wording: all NEW flagship articles require a real 20–30-minute body, at least 10 verifiable sources covering primary/secondary/tertiary categories (15–20 preferred), 7–15 authentic local stills, complete matched PDF, in-paragraph citations, fixed teal identity, and an article-only publish ZIP. Latest human instructions and actual current site source take precedence.
+
 # Filmmic Foundations — Publication & Design Standard
 
 **Edition 2.0 (October 21, 2026) | Applies to the website, future short-film articles, film-analysis PDFs, and machine-generated content.**
@@ -26,7 +28,7 @@
 - **Context:** Connect to psychological, historical, philosophical, technical, or sociological scholarship when appropriate. For sensitive subjects, avoid pathologizing characters or claiming clinical diagnoses based on plot.
 - **Alternative readings:** Include plausible interpretations when warranted, and explain why evidence favors or limits a particular reading. Avoid empty "could symbolize anything" claims.
 - **Conclusion:** Synthesize interpretive consequences and unresolved questions without overstating filmmaker intention or claiming to prove the theme.
-- **Length:** Match depth to research and film complexity, not a rigid word target; an in-depth example is the 16-page *Mindglass Procedure* PDF. Shorter focused analyses are valid when sources or scenes do not justify longer treatment.
+- **Length:** Match depth to research and film complexity, not a rigid word target; an in-depth example is the 16-page *Mindglass Procedure* PDF. Shorter pieces can be labeled as editorial notes, but **do not publish them under the new long-form article standard**; choose an adequately researched film instead.
 
 ## 3. Article information architecture
 
@@ -42,7 +44,7 @@ Expected flexible sequence (adapt to the film and argument):
 8. References and further viewing (film first, then contextual sources, consistently formatted).
 9. **Cite this article** helper *after* the paper's own references; MLA 9, APA 7, Chicago, IEEE, generated from metadata. This cites the archive's writing, not the film.
 10. Related research, when related tags/themes/techniques genuinely overlap; omit automatically when no suitable matches.
-11. Optional film viewing section if legitimate external link exists.
+11. **Watch the Film**, using a verified official/legitimate link whenever available; provide a clear access note otherwise. **Suggested Articles** appears after Watch the Film as the last content section before the footer.
 
 The order of the scholarly body sections is not prescribed. Don't force every paper into a *Mindglass Procedure* outline. A new film with one striking formal device can justify a tighter focus.
 

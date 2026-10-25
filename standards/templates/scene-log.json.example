@@ -1,0 +1,15 @@
+{
+  "film_title": "REPLACE",
+  "version": "REPLACE with source and cut",
+  "runtime_seconds": 0,
+  "scenes": [
+    {
+      "time_in_seconds": 60,
+      "event_observed": "REPLACE with what film actually shows",
+      "visual_or_audio_evidence": "REPLACE with framing/editing/sound",
+      "interpretation": "Hypothesis, not fact",
+      "uncertainty": "What still needs confirmation"
+    }
+  ],
+  "reminder": "Log whole-film sequence with adequate timestamps, not only selected stills."
+}

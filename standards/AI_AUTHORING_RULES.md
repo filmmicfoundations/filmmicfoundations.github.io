@@ -1,3 +1,5 @@
+> **Edition 3.0 compatibility notice (24 October 2026):** Read `00_START_HERE_FOR_NEW_AI.md` and `AI_INDEPENDENT_ARTICLE_CONTRACT.md` first. They resolve older wording: all NEW flagship articles require a real 20–30-minute body, at least 10 verifiable sources covering primary/secondary/tertiary categories (15–20 preferred), 7–15 authentic local stills, complete matched PDF, in-paragraph citations, fixed teal identity, and an article-only publish ZIP. Latest human instructions and actual current site source take precedence.
+
 **Edition 2.0 — October 21, 2026. Read `ARTICLE_RELEASE_WORKFLOW.md` and `UI_TEST_MATRIX.md` first.**
 
 # AI instructions for Filmmic Foundations
