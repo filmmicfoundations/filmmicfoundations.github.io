@@ -30,6 +30,47 @@
   const parseHTML=html=>new DOMParser().parseFromString(html,'text/html');
   function clearUrls(){for(const url of urls)URL.revokeObjectURL(url);urls.length=0;assetURLs.clear();}
   const el=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n;};
+
+  // Bootstrap-safe visual upgrade. A patch changing dev/index.html cannot be published
+  // through older readiness checks (they mistake dev/ for a film article). Instead,
+  // upgrade the existing markup here; the release can contain JS/CSS only.
+  function enhanceHealthLayout(){
+    const panel=document.querySelector('.ffq-health-panel');
+    if(!panel || panel.querySelector('.ffq-section-stack'))return;
+    const results=$('ffq-health-results'),metrics=$('ffq-health-metrics'),inspector=$('ffq-article-result');
+    const select=$('ffq-article-select'),healthTitle=$('ffq-health-heading');
+    if(!results||!metrics||!inspector||!select||!healthTitle)return;
+    const oldNodes=[...panel.children];
+    const eyebrow=panel.querySelector('.dev-eyebrow');
+    const lead=panel.querySelector('.dev-lead');
+    const actions=panel.querySelector('.ffq-actions');
+    const mediaKicker=oldNodes.find(n=>n.classList?.contains('dev-eyebrow')&&n!==eyebrow);
+    const mediaTitle=oldNodes.find(n=>n.tagName==='H3'&&n.textContent.includes('Article'));
+    const mediaDesc=oldNodes.find(n=>n.matches?.('p.ffq-muted'));
+    const mediaLabel=panel.querySelector('label[for="ffq-article-select"]');
+    const stack=el('div','ffq-section-stack');
+    const health=el('div','ffq-surface ffq-surface-health');
+    const healthHead=el('div','ffq-surface-head');
+    const intro=el('div');
+    [eyebrow,healthTitle,lead].filter(Boolean).forEach(n=>intro.append(n));
+    healthHead.append(intro);
+    if(actions)healthHead.append(actions);
+    health.append(healthHead,metrics,results);
+    const library=el('div','ffq-surface ffq-surface-inspector');
+    const libraryHead=el('div','ffq-surface-head ffq-surface-head-inline');
+    const libraryIntro=el('div');
+    [mediaKicker,mediaTitle,mediaDesc].filter(Boolean).forEach(n=>libraryIntro.append(n));
+    libraryHead.append(libraryIntro);
+    const controls=el('div','ffq-inspector-controls');
+    if(mediaLabel)controls.append(mediaLabel);
+    controls.append(select);
+    library.append(libraryHead,controls,inspector);
+    if(!inspector.textContent.trim())inspector.append(el('p','ffq-empty-state','Run a health check or choose an article once the live media manifest is available.'));
+    stack.append(health,library);
+    panel.replaceChildren(stack);
+  }
+  enhanceHealthLayout();
+
   function check(state,label,detail){return {state,label,detail};}
   function sourceClasses(doc){const refs=[...doc.querySelectorAll('li[id^="ref-"]')];const counts={primary:0,secondary:0,tertiary:0};for(const ref of refs){const text=ref.textContent.toLowerCase();for(const key of Object.keys(counts))if(new RegExp('\\b'+key+'\\b').test(text))counts[key]++;}return {refs,counts};}
   function reviewArticle(slug,articleHtml,meta,preview){
@@ -78,7 +119,10 @@
   }
   function makePreflight(){
     const checks=[];
-    const articleIndexes=files.filter(f=>f.bytes&&/^[a-z0-9_-]+\/index\.html$/.test(f.path));
+    // Reserved site sections are not film articles. In particular, dev/index.html
+    // must NEVER enter article preflight or it will block publishing this portal itself.
+    const reserved=new Set(['dev','about','assets','standards','scripts','tests']);
+    const articleIndexes=files.filter(f=>f.bytes&&/^[a-z0-9_-]+\/index\.html$/.test(f.path)&&!reserved.has(f.path.split('/')[0]));
     checks.push(check('pass','ZIP paths and file integrity','Verified by the Developer Portal’s existing CRC and safe-path checks.'));
     const rootIndex=files.find(f=>f.bytes&&f.path==='index.html');
     if(rootIndex)checks.push(check('warn','Homepage included in update','Review this file carefully: it will replace the live homepage.'));
@@ -98,7 +142,7 @@
     checks.push(check('unknown','PDF visual parity and native mobile','Compare the rendered PDF with its web article and test on the deployed site.'));
     return checks;
   }
-  function renderChecks(target,checks){target.replaceChildren();for(const c of checks){const row=el('div',`ffq-check ffq-${c.state}`);const mark=el('span','ffq-check-mark',({pass:'✓',error:'!',warn:'!',unknown:'–'})[c.state]);mark.setAttribute('aria-hidden','true');const body=el('div','ffq-check-text');body.append(el('strong','',c.label),el('small','',c.detail));row.append(mark,body);target.append(row);}}
+  function renderChecks(target,checks){target.replaceChildren();for(const c of checks){const row=el('div',`ffq-check ffq-${c.state}`);const mark=el('span','ffq-check-mark',({pass:'✓',error:'!',warn:'!',unknown:'–'})[c.state]);mark.setAttribute('aria-hidden','true');const body=el('div','ffq-check-text');body.append(el('strong','',c.label),el('small','',c.detail));const badge=el('span','ffq-state',({pass:'Pass',error:'Fix required',warn:'Warning',unknown:'Manual review'})[c.state]||c.state);badge.dataset.state=c.state;row.append(mark,body,badge);target.append(row);}}
   function setReadiness(checks){
     const critical=checks.filter(x=>x.state==='error');const warnings=checks.filter(x=>x.state==='warn');
     window.ffPortalReadiness={blocked:critical.length>0};
@@ -233,62 +277,224 @@
   $('ffq-diff-file').addEventListener('change',showDiff);
 
   // Read-only health checks of the currently published site (not the uploaded ZIP).
-  async function fetchLive(path,method='GET'){const root=location.origin==='null'?PUBLIC:location.origin+'/';const url=new URL(path,root);url.searchParams.set('ff_check',Date.now());const r=await fetch(url,{cache:'no-store',method,signal:AbortSignal.timeout(9000)});if(!r.ok)throw Error(`${path}: HTTP ${r.status}`);return r;}
+  // Progress advances only after a network request actually completes. The number
+  // of sampled assets becomes known after the media manifest has loaded.
+  const healthButton=$('ffq-refresh-health');
+  const healthPanel=document.querySelector('.ffq-surface-health');
+  const healthProgress=el('div','ffq-health-progress');
+  healthProgress.id='ffq-health-progress';healthProgress.hidden=true;
+  const progressHeading=el('div','ffq-health-progress-head');
+  const progressHeadingMain=el('div','ffq-health-progress-title');
+  const progressDot=el('span','ffq-health-progress-dot');progressDot.setAttribute('aria-hidden','true');
+  const progressTitle=el('strong','','Checking published website');
+  progressHeadingMain.append(progressDot,progressTitle);
+  const progressCount=el('span','ffq-health-progress-count','Preparing…');
+  progressHeading.append(progressHeadingMain,progressCount);
+  const progressTrack=el('div','ffq-health-progress-track');
+  progressTrack.setAttribute('role','progressbar');progressTrack.setAttribute('aria-label','Published website health check');
+  progressTrack.setAttribute('aria-valuemin','0');progressTrack.setAttribute('aria-valuemax','100');
+  const progressFill=el('span','ffq-health-progress-fill');progressTrack.append(progressFill);
+  const progressDetail=el('p','ffq-health-progress-detail','Loading published media inventory…');
+  progressDetail.setAttribute('role','status');progressDetail.setAttribute('aria-live','polite');
+  healthProgress.append(progressHeading,progressTrack,progressDetail);
+  healthPanel?.insertBefore(healthProgress,$('ffq-health-results'));
+  let healthRunning=false;
+  function setHealthProgress(detail,done,total){
+    progressDetail.textContent=detail;
+    if(!total){
+      healthProgress.classList.add('is-indeterminate');
+      progressTrack.removeAttribute('aria-valuenow');
+      progressCount.textContent='Connecting…';
+      progressFill.style.width='28%';
+      return;
+    }
+    healthProgress.classList.remove('is-indeterminate');
+    const percent=Math.round(100*done/total);
+    progressFill.style.width=percent+'%';
+    progressTrack.setAttribute('aria-valuenow',String(percent));
+    progressCount.textContent=`${done} of ${total} requests`;
+  }
+  async function fetchLive(path,method='GET'){
+    const root=location.origin==='null'?PUBLIC:location.origin+'/';
+    const url=new URL(path,root);url.searchParams.set('ff_check',Date.now());
+    const r=await fetch(url,{cache:'no-store',method,signal:AbortSignal.timeout(9000)});
+    if(!r.ok)throw Error(`${path}: HTTP ${r.status}`);return r;
+  }
   async function refreshHealth(){
-    $('ffq-health-results').replaceChildren(el('p','ffq-muted','Checking the published website…'));
+    if(healthRunning)return;
+    healthRunning=true;healthButton.disabled=true;healthButton.setAttribute('aria-busy','true');
+    const originalButtonLabel=healthButton.textContent;
+    healthButton.textContent='Checking…';
+    healthProgress.hidden=false;
+    healthProgress.classList.remove('is-complete','is-warning');
+    progressTitle.textContent='Checking published website';
+    $('ffq-health-results').replaceChildren();
+    let completed=0,total=0;
+    setHealthProgress('Loading published media inventory…',0,0);
     const checks=[];let articleCount=0,assetsTested=0,liveStatus='Unverified';
     try{
-      const json=await (await fetchLive('media-manifest.json')).json();
-      if(!json||!json.articles)throw Error('No media inventory found.');
-      liveManifest=json;articleCount=Object.keys(json.articles).length;
-      checks.push(check('pass','Media manifest available',`${articleCount} article records returned from the published site.`));
-      const assets=[];
-      for(const [slug,data] of Object.entries(json.articles)){
-        if(data.cover)assets.push(`${slug}/${data.cover}`);
-        if(data.pdf?.[0]?.path)assets.push(`${slug}/${data.pdf[0].path}`);
-        for(const im of (data.preview||[]).slice(0,2))assets.push(`${slug}/${im.path}`);
+      try{
+        const json=await (await fetchLive('media-manifest.json')).json();
+        if(!json||!json.articles)throw Error('No media inventory found.');
+        liveManifest=json;articleCount=Object.keys(json.articles).length;
+        checks.push(check('pass','Media manifest available',`${articleCount} article records returned from the published site.`));
+        const assets=[];
+        for(const [slug,data] of Object.entries(json.articles)){
+          if(data.cover)assets.push(`${slug}/${data.cover}`);
+          if(data.pdf?.[0]?.path)assets.push(`${slug}/${data.pdf[0].path}`);
+          for(const im of (data.preview||[]).slice(0,2))assets.push(`${slug}/${im.path}`);
+        }
+        // Manifest, each sampled asset, the homepage and GitHub Actions.
+        total=assets.length+3;completed++;
+        setHealthProgress(assets.length?`Verifying media files (0 of ${assets.length})…`:'Checking homepage availability…',completed,total);
+        const failures=[];
+        for(const path of assets){
+          try{await fetchLive(path,'HEAD');assetsTested++;}
+          catch(e){failures.push(path);}
+          completed++;
+          setHealthProgress(`Verifying media files (${completed-1} of ${assets.length})…`,completed,total);
+        }
+        checks.push(check(failures.length?'error':'pass',failures.length?`${failures.length} missing sampled assets`:`${assetsTested} sampled assets reachable`,failures.length?failures.slice(0,5).join(', '):'Verified on the live website; full image inventory was not downloaded.'));
+        populateInspector(json);
+      }catch(e){
+        // The manifest request was attempted, but prevented an accurate asset count.
+        total=3;completed=1;
+        checks.push(check('unknown','Media manifest unavailable',e.message+' This may indicate an older deployment or a network restriction.'));
       }
-      const failures=[];
-      for(const path of assets){try{await fetchLive(path,'HEAD');assetsTested++;}catch(e){failures.push(path);}}
-      checks.push(check(failures.length?'error':'pass',failures.length?`${failures.length} missing sampled assets`:`${assetsTested} sampled assets reachable`,failures.length?failures.slice(0,5).join(', '):'Verified on the live website; full image inventory was not downloaded.'));
-      populateInspector(json);
-    }catch(e){checks.push(check('unknown','Media manifest unavailable',e.message+' This may indicate an older deployment or a network restriction.'));}
-    try{
-      await fetchLive('index.html','HEAD');checks.push(check('pass','Homepage reachable','Published homepage returned successfully.'));
-    }catch(e){checks.push(check('error','Homepage unreachable',e.message));}
-    try{
-      const r=await fetch('https://api.github.com/repos/filmmicfoundations/filmmicfoundations.github.io/actions/runs?per_page=8',{cache:'no-store',headers:{Accept:'application/vnd.github+json'},signal:AbortSignal.timeout(9000)});
-      if(!r.ok)throw Error(`GitHub API HTTP ${r.status}`);
-      const data=await r.json();const run=(data.workflow_runs||[]).find(x=>x.name?.toLowerCase().includes('deploy')||x.path?.includes('deploy'))||(data.workflow_runs||[])[0];
-      if(run){liveStatus=run.status==='completed'&&run.conclusion==='success'?'Passed':run.status==='completed'?'Failed':'In progress';
-        checks.push(check(liveStatus==='Passed'?'pass':liveStatus==='Failed'?'error':'warn',`Latest workflow: ${liveStatus}`,`${run.name||'Workflow'} · ${run.html_url||'GitHub Actions'} · ${run.created_at||''}`));}
-      else checks.push(check('unknown','GitHub deployment','No recent workflow run returned.'));
-    }catch(e){checks.push(check('unknown','GitHub Actions status unavailable',e.message));}
-    checks.push(check('unknown','Off-site links and video','Browser cannot reliably validate external media due to third-party restrictions.'));
-    checks.push(check('unknown','PDF layout parity','Rendered figure alignment requires a PDF/browser regression run.'));
-    const metrics=$('ffq-health-metrics').children;
-    metrics[0].querySelector('strong').textContent=articleCount||'—';
-    metrics[1].querySelector('strong').textContent=assetsTested||'—';
-    metrics[2].querySelector('strong').textContent=liveStatus;
-    renderChecks($('ffq-health-results'),checks);
+      setHealthProgress('Checking published homepage…',completed,total);
+      try{
+        await fetchLive('index.html','HEAD');checks.push(check('pass','Homepage reachable','Published homepage returned successfully.'));
+      }catch(e){checks.push(check('error','Homepage unreachable',e.message));}
+      completed++;setHealthProgress('Checking latest GitHub deployment…',completed,total);
+      try{
+        const r=await fetch('https://api.github.com/repos/filmmicfoundations/filmmicfoundations.github.io/actions/runs?per_page=8',{cache:'no-store',headers:{Accept:'application/vnd.github+json'},signal:AbortSignal.timeout(9000)});
+        if(!r.ok)throw Error(`GitHub API HTTP ${r.status}`);
+        const data=await r.json();const run=(data.workflow_runs||[]).find(x=>x.name?.toLowerCase().includes('deploy')||x.path?.includes('deploy'))||(data.workflow_runs||[])[0];
+        if(run){liveStatus=run.status==='completed'&&run.conclusion==='success'?'Passed':run.status==='completed'?'Failed':'In progress';
+          checks.push(check(liveStatus==='Passed'?'pass':liveStatus==='Failed'?'error':'warn',`Latest workflow: ${liveStatus}`,`${run.name||'Workflow'} · ${run.html_url||'GitHub Actions'} · ${run.created_at||''}`));}
+        else checks.push(check('unknown','GitHub deployment','No recent workflow run returned.'));
+      }catch(e){checks.push(check('unknown','GitHub Actions status unavailable',e.message));}
+      completed++;
+      checks.push(check('unknown','Off-site links and video','Browser cannot reliably validate external media due to third-party restrictions.'));
+      checks.push(check('unknown','PDF layout parity','Rendered figure alignment requires a PDF/browser regression run.'));
+      const metrics=$('ffq-health-metrics').children;
+      metrics[0].querySelector('strong').textContent=articleCount||'—';
+      metrics[1].querySelector('strong').textContent=assetsTested||'—';
+      metrics[2].querySelector('strong').textContent=liveStatus;
+      renderChecks($('ffq-health-results'),checks);
+      healthProgress.classList.add('is-complete');
+      const errors=checks.filter(x=>x.state==='error').length;
+      if(errors)healthProgress.classList.add('is-warning');
+      progressTitle.textContent=errors?'Health check found issues':'Health check complete';
+      setHealthProgress(errors?`${errors} check${errors===1?'':'s'} need attention. See results below.`:`Finished ${total} network checks. See results below.`,completed,total);
+    }finally{
+      healthRunning=false;healthButton.disabled=false;healthButton.removeAttribute('aria-busy');
+      healthButton.textContent=originalButtonLabel;
+    }
   }
-  $('ffq-refresh-health').addEventListener('click',refreshHealth);
+  healthButton.addEventListener('click',refreshHealth);
   $('dev-section-health').addEventListener('toggle',()=>{if($('dev-section-health').open&&!liveManifest)refreshHealth();});
+
+  // Share the archive filter's choice/menu visual language. Keep the native
+  // select as the data source so the media inspector still uses change events.
+  const inspectorSelect=$('ffq-article-select');
+  const inspectorControl=inspectorSelect?.closest('.ffq-inspector-controls');
+  const inspectorChoices=el('div','ff-choice ffq-inspector-choice');
+  const inspectorTrigger=el('button','ff-choice-trigger');
+  inspectorTrigger.type='button';inspectorTrigger.id='ffq-article-trigger';
+  inspectorTrigger.setAttribute('aria-haspopup','listbox');inspectorTrigger.setAttribute('aria-expanded','false');
+  inspectorTrigger.setAttribute('aria-label','Choose an article');
+  const inspectorValue=el('span','ffq-inspector-choice-value','Choose an article');
+  const inspectorArrow=el('span','ff-choice-arrow','⌄');inspectorArrow.setAttribute('aria-hidden','true');
+  inspectorTrigger.append(inspectorValue,inspectorArrow);
+  const inspectorMenu=el('div','ff-choice-menu');inspectorMenu.id='ffq-article-menu';
+  inspectorMenu.setAttribute('role','listbox');inspectorMenu.setAttribute('aria-label','Articles');
+  inspectorMenu.hidden=true;
+  inspectorTrigger.setAttribute('aria-controls',inspectorMenu.id);
+  inspectorChoices.append(inspectorTrigger,inspectorMenu);
+  inspectorControl?.append(inspectorChoices);
+  inspectorSelect.classList.add('ffq-inspector-native-select');
+  inspectorSelect.tabIndex=-1;inspectorSelect.setAttribute('aria-hidden','true');
+  const inspectorLabel=inspectorControl?.querySelector('label[for="ffq-article-select"]');
+  inspectorValue.id='ffq-article-current';
+  if(inspectorLabel){
+    inspectorLabel.id='ffq-article-label';
+    inspectorTrigger.setAttribute('aria-labelledby',inspectorLabel.id+' '+inspectorValue.id);
+  }
+  const reduceInspectorMotion=matchMedia('(prefers-reduced-motion: reduce)');
+  let inspectorOpen=false,inspectorAnimation=null;
+  function syncInspectorChoice(){
+    inspectorValue.textContent=inspectorSelect.selectedOptions[0]?.textContent||'Choose an article';
+    for(const item of inspectorMenu.querySelectorAll('[role="option"]'))
+      item.setAttribute('aria-selected',String(item.dataset.value===inspectorSelect.value));
+  }
+  function openInspectorChoice(next){
+    if(inspectorOpen===next)return;
+    inspectorOpen=next;
+    inspectorTrigger.setAttribute('aria-expanded',String(next));
+    inspectorAnimation?.cancel();inspectorAnimation=null;
+    if(next)inspectorMenu.hidden=false;
+    if(reduceInspectorMotion.matches){inspectorMenu.hidden=!next;return;}
+    const animation=inspectorMenu.animate(next?[
+      {opacity:0,transform:'translateY(-5px) scale(.985)'},{opacity:1,transform:'translateY(0) scale(1)'}
+    ]:[{opacity:1,transform:'translateY(0) scale(1)'},{opacity:0,transform:'translateY(-4px) scale(.99)'}],
+    {duration:next?210:125,easing:'cubic-bezier(.2,.75,.2,1)',fill:'both'});
+    inspectorAnimation=animation;
+    animation.onfinish=()=>{if(inspectorAnimation!==animation)return;inspectorAnimation=null;animation.cancel();if(!inspectorOpen)inspectorMenu.hidden=true;};
+  }
+  function rebuildInspectorChoices(){
+    openInspectorChoice(false);
+    inspectorMenu.replaceChildren();
+    for(const option of inspectorSelect.options){
+      const item=el('button','',option.textContent);item.type='button';
+      item.dataset.value=option.value;item.setAttribute('role','option');
+      item.addEventListener('click',()=>{
+        inspectorSelect.value=option.value;
+        inspectorSelect.dispatchEvent(new Event('change',{bubbles:true}));
+        openInspectorChoice(false);inspectorTrigger.focus({preventScroll:true});
+      });
+      inspectorMenu.append(item);
+    }
+    syncInspectorChoice();
+  }
+  inspectorTrigger.addEventListener('click',()=>openInspectorChoice(!inspectorOpen));
+  inspectorLabel?.addEventListener('click',event=>{event.preventDefault();inspectorTrigger.focus({preventScroll:true});openInspectorChoice(true);});
+  inspectorSelect.addEventListener('change',syncInspectorChoice);
+  inspectorChoices.addEventListener('keydown',event=>{
+    if(event.key==='Escape'&&inspectorOpen){event.preventDefault();openInspectorChoice(false);inspectorTrigger.focus({preventScroll:true});return;}
+    if(!['ArrowDown','ArrowUp','Home','End'].includes(event.key))return;
+    event.preventDefault();
+    if(!inspectorOpen)openInspectorChoice(true);
+    const items=[...inspectorMenu.querySelectorAll('[role="option"]')];
+    if(!items.length)return;
+    const current=items.indexOf(document.activeElement);
+    const selected=items.findIndex(i=>i.dataset.value===inspectorSelect.value);
+    let target=current<0?Math.max(selected,0):current;
+    if(event.key==='Home')target=0;
+    else if(event.key==='End')target=items.length-1;
+    else if(current>=0)target=(current+(event.key==='ArrowDown'?1:-1)+items.length)%items.length;
+    else if(target===0 && items.length>1)target=1;
+    items[target].focus({preventScroll:true});
+  });
+  document.addEventListener('pointerdown',event=>{if(inspectorOpen&&!inspectorChoices.contains(event.target)&&event.target!==inspectorLabel)openInspectorChoice(false);});
+  rebuildInspectorChoices();
 
   // Media inspector: one click to inspect the source/preview/PDF asset manifest.
   function populateInspector(data){
     const select=$('ffq-article-select');const prior=select.value;select.replaceChildren();
-    select.append(el('option','','Choose an article'));
+    const prompt=el('option','','Choose an article');prompt.value='';select.append(prompt);
     for(const slug of Object.keys(data.articles).sort()){
       const opt=el('option','',slug.replaceAll('-',' '));opt.value=slug;select.append(opt);
     }
     if(data.articles[prior])select.value=prior;
-    if(select.value)showArticle();
+    rebuildInspectorChoices();
+    showArticle();
   }
   function showArticle(){
     const slug=$('ffq-article-select').value;
     const area=$('ffq-article-result');area.replaceChildren();
-    if(!liveManifest?.articles[slug])return;
+    if(!slug){area.append(el('p','ffq-empty-state','Choose an article to preview its cover, PDFs, figure counts, and documented media.'));return;}
+    if(!liveManifest?.articles[slug]){area.append(el('p','ffq-empty-state','That article is not available in the current live media manifest. Run the health check again to refresh the inventory.'));return;}
     const data=liveManifest.articles[slug];
     const stats=el('div','ffq-article-stats');
     for(const [name,val] of [['Media assets',data.media?.length??0],['Preview stills',data.preview?.length??0],['Viewable figures',data.figures?.viewable_film_stills??'—'],['PDFs',data.pdf?.length??0]]){
