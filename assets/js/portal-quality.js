@@ -30,47 +30,6 @@
   const parseHTML=html=>new DOMParser().parseFromString(html,'text/html');
   function clearUrls(){for(const url of urls)URL.revokeObjectURL(url);urls.length=0;assetURLs.clear();}
   const el=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n;};
-
-  // Bootstrap-safe visual upgrade. A patch changing dev/index.html cannot be published
-  // through older readiness checks (they mistake dev/ for a film article). Instead,
-  // upgrade the existing markup here; the release can contain JS/CSS only.
-  function enhanceHealthLayout(){
-    const panel=document.querySelector('.ffq-health-panel');
-    if(!panel || panel.querySelector('.ffq-section-stack'))return;
-    const results=$('ffq-health-results'),metrics=$('ffq-health-metrics'),inspector=$('ffq-article-result');
-    const select=$('ffq-article-select'),healthTitle=$('ffq-health-heading');
-    if(!results||!metrics||!inspector||!select||!healthTitle)return;
-    const oldNodes=[...panel.children];
-    const eyebrow=panel.querySelector('.dev-eyebrow');
-    const lead=panel.querySelector('.dev-lead');
-    const actions=panel.querySelector('.ffq-actions');
-    const mediaKicker=oldNodes.find(n=>n.classList?.contains('dev-eyebrow')&&n!==eyebrow);
-    const mediaTitle=oldNodes.find(n=>n.tagName==='H3'&&n.textContent.includes('Article'));
-    const mediaDesc=oldNodes.find(n=>n.matches?.('p.ffq-muted'));
-    const mediaLabel=panel.querySelector('label[for="ffq-article-select"]');
-    const stack=el('div','ffq-section-stack');
-    const health=el('div','ffq-surface ffq-surface-health');
-    const healthHead=el('div','ffq-surface-head');
-    const intro=el('div');
-    [eyebrow,healthTitle,lead].filter(Boolean).forEach(n=>intro.append(n));
-    healthHead.append(intro);
-    if(actions)healthHead.append(actions);
-    health.append(healthHead,metrics,results);
-    const library=el('div','ffq-surface ffq-surface-inspector');
-    const libraryHead=el('div','ffq-surface-head ffq-surface-head-inline');
-    const libraryIntro=el('div');
-    [mediaKicker,mediaTitle,mediaDesc].filter(Boolean).forEach(n=>libraryIntro.append(n));
-    libraryHead.append(libraryIntro);
-    const controls=el('div','ffq-inspector-controls');
-    if(mediaLabel)controls.append(mediaLabel);
-    controls.append(select);
-    library.append(libraryHead,controls,inspector);
-    if(!inspector.textContent.trim())inspector.append(el('p','ffq-empty-state','Run a health check or choose an article once the live media manifest is available.'));
-    stack.append(health,library);
-    panel.replaceChildren(stack);
-  }
-  enhanceHealthLayout();
-
   function check(state,label,detail){return {state,label,detail};}
   function sourceClasses(doc){const refs=[...doc.querySelectorAll('li[id^="ref-"]')];const counts={primary:0,secondary:0,tertiary:0};for(const ref of refs){const text=ref.textContent.toLowerCase();for(const key of Object.keys(counts))if(new RegExp('\\b'+key+'\\b').test(text))counts[key]++;}return {refs,counts};}
   function reviewArticle(slug,articleHtml,meta,preview){
@@ -119,10 +78,7 @@
   }
   function makePreflight(){
     const checks=[];
-    // Reserved site sections are not film articles. In particular, dev/index.html
-    // must NEVER enter article preflight or it will block publishing this portal itself.
-    const reserved=new Set(['dev','about','assets','standards','scripts','tests']);
-    const articleIndexes=files.filter(f=>f.bytes&&/^[a-z0-9_-]+\/index\.html$/.test(f.path)&&!reserved.has(f.path.split('/')[0]));
+    const articleIndexes=files.filter(f=>f.bytes&&/^[a-z0-9_-]+\/index\.html$/.test(f.path));
     checks.push(check('pass','ZIP paths and file integrity','Verified by the Developer Portal’s existing CRC and safe-path checks.'));
     const rootIndex=files.find(f=>f.bytes&&f.path==='index.html');
     if(rootIndex)checks.push(check('warn','Homepage included in update','Review this file carefully: it will replace the live homepage.'));
@@ -142,7 +98,7 @@
     checks.push(check('unknown','PDF visual parity and native mobile','Compare the rendered PDF with its web article and test on the deployed site.'));
     return checks;
   }
-  function renderChecks(target,checks){target.replaceChildren();for(const c of checks){const row=el('div',`ffq-check ffq-${c.state}`);const mark=el('span','ffq-check-mark',({pass:'✓',error:'!',warn:'!',unknown:'–'})[c.state]);mark.setAttribute('aria-hidden','true');const body=el('div','ffq-check-text');body.append(el('strong','',c.label),el('small','',c.detail));const badge=el('span','ffq-state',({pass:'Pass',error:'Fix required',warn:'Warning',unknown:'Manual review'})[c.state]||c.state);badge.dataset.state=c.state;row.append(mark,body,badge);target.append(row);}}
+  function renderChecks(target,checks){target.replaceChildren();for(const c of checks){const row=el('div',`ffq-check ffq-${c.state}`);const mark=el('span','ffq-check-mark',({pass:'✓',error:'!',warn:'!',unknown:'–'})[c.state]);mark.setAttribute('aria-hidden','true');const body=el('div','ffq-check-text');body.append(el('strong','',c.label),el('small','',c.detail));row.append(mark,body);target.append(row);}}
   function setReadiness(checks){
     const critical=checks.filter(x=>x.state==='error');const warnings=checks.filter(x=>x.state==='warn');
     window.ffPortalReadiness={blocked:critical.length>0};
@@ -322,18 +278,17 @@
   // Media inspector: one click to inspect the source/preview/PDF asset manifest.
   function populateInspector(data){
     const select=$('ffq-article-select');const prior=select.value;select.replaceChildren();
-    const prompt=el('option','','Choose an article');prompt.value='';select.append(prompt);
+    select.append(el('option','','Choose an article'));
     for(const slug of Object.keys(data.articles).sort()){
       const opt=el('option','',slug.replaceAll('-',' '));opt.value=slug;select.append(opt);
     }
     if(data.articles[prior])select.value=prior;
-    showArticle();
+    if(select.value)showArticle();
   }
   function showArticle(){
     const slug=$('ffq-article-select').value;
     const area=$('ffq-article-result');area.replaceChildren();
-    if(!slug){area.append(el('p','ffq-empty-state','Choose an article to preview its cover, PDFs, figure counts, and documented media.'));return;}
-    if(!liveManifest?.articles[slug]){area.append(el('p','ffq-empty-state','That article is not available in the current live media manifest. Run the health check again to refresh the inventory.'));return;}
+    if(!liveManifest?.articles[slug])return;
     const data=liveManifest.articles[slug];
     const stats=el('div','ffq-article-stats');
     for(const [name,val] of [['Media assets',data.media?.length??0],['Preview stills',data.preview?.length??0],['Viewable figures',data.figures?.viewable_film_stills??'—'],['PDFs',data.pdf?.length??0]]){
