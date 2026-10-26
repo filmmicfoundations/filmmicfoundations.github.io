@@ -404,6 +404,7 @@
     $('dev-confirm-update').checked=false;
     changes=active.filter(x=>x.status==='changed'||x.status==='new');
     updatePublishButton();
+    window.dispatchEvent(new CustomEvent('ff:portal-inspected',{detail:{files:manifest,compared:!!baselineSha,baselineSha}}));
   }
   function publishBlocker(){
     if(justPublished)return 'Release submitted. Live deployment progress is displayed below.';
@@ -413,9 +414,11 @@
     if(lastInspectionError)return `Fix the inspection issue, then try again: ${lastInspectionError}`;
     if(!baselineSha)return 'The ZIP has not been compared with GitHub. Select Inspect ZIP to compare again.';
     if(!changes.length)return 'Everything in this ZIP already matches the repository. There is nothing new to publish.';
+    if(window.ffPortalReadiness?.blocked)return 'Publication readiness found critical problems. Fix them and re-inspect this ZIP before publishing.';
     if(!$('dev-confirm-update').checked)return `Review the ${changes.length} new or changed file${changes.length===1?'':'s'} and tick the approval box.`;
     return '';
   }
+  window.addEventListener('ff:portal-readiness',()=>updatePublishButton());
   function updatePublishButton(){
     const reason=publishBlocker();
     const button=$('dev-publish');
@@ -673,9 +676,10 @@
     finally{setBusy(false);}
   }
 
+  window.addEventListener('ff:portal-reset',()=>{window.ffPortalReadiness={blocked:false};updatePublishButton();});
   function resetInspection(){
     manifest=[];changes=[];baselineSha='';baselineTree='';lastInspectionError='';justPublished=false;
-    $('dev-review').hidden=true;$('dev-confirm-update').checked=false;updateReleaseSuggestion();updatePublishButton();
+    $('dev-review').hidden=true;$('dev-confirm-update').checked=false;window.dispatchEvent(new Event('ff:portal-reset'));updateReleaseSuggestion();updatePublishButton();
   }
   async function connectWith(value){
     if(!value)return;
