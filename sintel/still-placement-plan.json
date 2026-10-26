@@ -1,0 +1,131 @@
+{
+  "1": [
+    {
+      "after_paragraph": 1,
+      "time": 60,
+      "name": "sintel-crossing-snowbound-mountains",
+      "caption": "Sintel kneels in a white, barren mountain pass, weather and space emphasizing the difficulty of the search.",
+      "alt": "Sintel kneeling in a bleak, snowy mountain pass."
+    }
+  ],
+  "2": [
+    {
+      "after_paragraph": 1,
+      "time": 187,
+      "name": "sintel-finds-injured-baby-scales",
+      "caption": "The wounded baby dragon first enters the story as a small, vulnerable animal rather than a fearsome creature.",
+      "alt": "A wounded baby dragon resting against a stone wall with an injured wing."
+    },
+    {
+      "after_paragraph": 3,
+      "time": 215,
+      "name": "sintel-comforts-young-scales",
+      "caption": "A close view of Sintel and Scales conveys affection through eye-line, facial expression and proximity.",
+      "alt": "Sintel gently cradling the small dragon Scales beside a warm fire."
+    }
+  ],
+  "3": [
+    {
+      "after_paragraph": 1,
+      "time": 274,
+      "name": "scales-spreads-wings-above-city",
+      "caption": "Scales balances on a narrow ledge, revealing the wings that make flight—and separation—possible.",
+      "alt": "The small dragon Scales spreading its wings on a city ledge."
+    },
+    {
+      "after_paragraph": 3,
+      "time": 331,
+      "name": "sintel-witnesses-abduction",
+      "caption": "Sintel’s alarm fixes the abduction as an emotional rupture before she can understand everything she has seen.",
+      "alt": "Close-up of Sintel reacting with alarm in the city."
+    }
+  ],
+  "4": [
+    {
+      "after_paragraph": 2,
+      "time": 390,
+      "name": "sintel-searches-across-desert",
+      "caption": "The desert journey enlarges the world and compresses time, making the long search legible through environmental change.",
+      "alt": "Sintel resting beside rocks in a sun-baked desert landscape."
+    }
+  ],
+  "5": [
+    {
+      "after_paragraph": 2,
+      "time": 440,
+      "name": "sintel-meets-the-shaman",
+      "caption": "Firelight isolates Sintel’s response as the older guide helps shape her interpretation of the quest.",
+      "alt": "Sintel listening in a dark, firelit interior."
+    }
+  ],
+  "6": [
+    {
+      "after_paragraph": 2,
+      "time": 460,
+      "name": "sintel-receives-carved-emblem",
+      "caption": "The circular emblem functions as a specific piece of information that Sintel uses to interpret the world ahead.",
+      "alt": "A detailed round metal emblem held in front of Sintel."
+    }
+  ],
+  "7": [
+    {
+      "after_paragraph": 2,
+      "time": 601,
+      "name": "sintel-confronts-adult-dragon",
+      "caption": "The full-grown dragon fills the cave beside Sintel; their unequal physical scale also reveals her restricted understanding.",
+      "alt": "A gigantic adult dragon towering over Sintel inside a shadowy cavern."
+    }
+  ],
+  "8": [
+    {
+      "after_paragraph": 1,
+      "time": 616,
+      "name": "adult-dragon-wing-mark",
+      "caption": "A close view of the dragon’s marked wing foregrounds bodily continuity at the moment of recognition.",
+      "alt": "Close-up of a pale line on the surface of the adult dragon’s wing."
+    },
+    {
+      "after_paragraph": 3,
+      "time": 638,
+      "name": "sintel-faces-the-passage-of-time",
+      "caption": "Sintel’s face becomes the focus as the film finally makes the effects of elapsed time impossible to ignore.",
+      "alt": "Sintel staring forward in shock during the recognition sequence."
+    }
+  ],
+  "9": [
+    {
+      "after_paragraph": 2,
+      "time": 540,
+      "name": "sintel-examines-cave-crystals",
+      "caption": "Blue glints and deep black stone narrow the image’s visual field compared with the open, sunlit city.",
+      "alt": "Sintel reaching toward glowing blue crystals inside the dark cave."
+    }
+  ],
+  "10": [
+    {
+      "after_paragraph": 2,
+      "time": 110,
+      "name": "shaman-plucks-stringed-instrument",
+      "caption": "The musician’s instrument gives the tavern sequence a tactile acoustic source before the story returns to Sintel’s memories.",
+      "alt": "An elderly musician playing a stringed instrument in an amber-lit interior."
+    }
+  ],
+  "11": [
+    {
+      "after_paragraph": 2,
+      "time": 705,
+      "name": "sintel-quiet-after-revelation",
+      "caption": "A quiet facial close-up asks viewers to reevaluate a character whose certainty has been shaken by new knowledge.",
+      "alt": "Sintel looking down after the cave confrontation, with twisted roots behind her."
+    }
+  ],
+  "15": [
+    {
+      "after_paragraph": 2,
+      "time": 725,
+      "name": "sintel-walks-into-final-light",
+      "caption": "The closing landscape opens beyond Sintel, leaving the ending’s emotional direction unresolved rather than fully explained.",
+      "alt": "Sintel walking away along a bright path beside pale plants."
+    }
+  ]
+}

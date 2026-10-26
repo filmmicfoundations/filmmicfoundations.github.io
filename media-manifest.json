@@ -375,6 +375,298 @@
         }
       ]
     },
+    "sintel": {
+      "cover": "assets/sintel-comforts-young-scales.jpg",
+      "figures": {
+        "original_image_diagrams": 0,
+        "total_image_figures": 15,
+        "viewable_film_stills": 15
+      },
+      "media": [
+        {
+          "bytes": 111489,
+          "path": "assets/adult-dragon-wing-mark.jpg",
+          "roles": [
+            "article",
+            "viewer"
+          ],
+          "sha256": "0310661cb052986a54fc1f70957986df6a3b9fc70141bc0998b27ba2822395c1",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 171391,
+          "path": "assets/scales-spreads-wings-above-city.jpg",
+          "roles": [
+            "article",
+            "preview",
+            "viewer"
+          ],
+          "sha256": "2e2a7dd39f74a6dce129a281c568968bc96855408fba542dbed1d0d5c004f7f0",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 238152,
+          "path": "assets/shaman-plucks-stringed-instrument.jpg",
+          "roles": [
+            "article",
+            "viewer"
+          ],
+          "sha256": "1e45196a9909268dce140afc0e92bc5963d22271853c31a6eb179549d75d635d",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 238586,
+          "path": "assets/sintel-comforts-young-scales.jpg",
+          "roles": [
+            "article",
+            "cover",
+            "preview",
+            "viewer"
+          ],
+          "sha256": "b83d005eb6fbb2e642aa76556ec5d3307802e17e619ec37fde70f9064e26575f",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 101815,
+          "path": "assets/sintel-confronts-adult-dragon.jpg",
+          "roles": [
+            "article",
+            "preview",
+            "viewer"
+          ],
+          "sha256": "e57b5e0ae55bd58c3a1dce86470f7f2472a4bc34bf34ffc3052825675804afca",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 102654,
+          "path": "assets/sintel-crossing-snowbound-mountains.jpg",
+          "roles": [
+            "article",
+            "viewer"
+          ],
+          "sha256": "56eaa94db6c60c99582d7b9cdf3587ea756719815201e6c509a1d9e586eb7249",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 76470,
+          "path": "assets/sintel-examines-cave-crystals.jpg",
+          "roles": [
+            "article",
+            "viewer"
+          ],
+          "sha256": "21cb753b3c2eecfb10627071dec68b699bbff215c577d7e1566f785b17e7ed01",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 76426,
+          "path": "assets/sintel-faces-the-passage-of-time.jpg",
+          "roles": [
+            "article",
+            "preview",
+            "viewer"
+          ],
+          "sha256": "ae3bdb0dde7a82833579b4e710ad8e2eea8fa223ff6f50cb716030057099d0d5",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 529102,
+          "path": "assets/sintel-finds-injured-baby-scales.jpg",
+          "roles": [
+            "article",
+            "preview",
+            "viewer"
+          ],
+          "sha256": "4a6ddc965a1edcab51ab5815166f16e7374b95b9aa70155f68ba9aa91270c6c6",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 79475,
+          "path": "assets/sintel-meets-the-shaman.jpg",
+          "roles": [
+            "article",
+            "viewer"
+          ],
+          "sha256": "1bd5271d713c9dea6ac13dc932b30ffd8748356b3c8bf659776f65c67eb2d39b",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 227963,
+          "path": "assets/sintel-quiet-after-revelation.jpg",
+          "roles": [
+            "article",
+            "viewer"
+          ],
+          "sha256": "08e07ce972c7dd3fe3fda246ad63328fda279612735b7b40d1b73cc10148f93b",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 101227,
+          "path": "assets/sintel-receives-carved-emblem.jpg",
+          "roles": [
+            "article",
+            "viewer"
+          ],
+          "sha256": "557f94b0f5bf80c90af26dffaf394f473b66704360aa4cc2b24d36816511ce83",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 290112,
+          "path": "assets/sintel-searches-across-desert.jpg",
+          "roles": [
+            "article",
+            "preview",
+            "viewer"
+          ],
+          "sha256": "2ecbc7763ae8272fb5e5c1c983266660cb377455b0803c2029c3e980db71fab0",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 395864,
+          "path": "assets/sintel-walks-into-final-light.jpg",
+          "roles": [
+            "article",
+            "viewer"
+          ],
+          "sha256": "16b9a9571583273250ff5adbfbb4216c4e5a28991470eee4d141ba5fd547085a",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        },
+        {
+          "bytes": 192212,
+          "path": "assets/sintel-witnesses-abduction.jpg",
+          "roles": [
+            "article",
+            "viewer"
+          ],
+          "sha256": "ace87fbbaddca66da6082e832979085482c1b2aaa786dab050b905d60ef8b489",
+          "source": "user-supplied film frame",
+          "type": "film_still"
+        }
+      ],
+      "pdf": [
+        {
+          "bytes": 3731673,
+          "path": "Sintel_The_Time_She_Could_Not_See_Analysis.pdf",
+          "sha256": "b6e1e9bbfdba9f1d1318113e627c91bd3dec9f47175fe543112859ae673e79ee"
+        }
+      ],
+      "preview": [
+        {
+          "caption": "Sintel comforts young Scales; the core relationship is established through small gestures",
+          "path": "assets/sintel-comforts-young-scales.jpg"
+        },
+        {
+          "caption": "A vulnerable creature enters the narrative, framing the bond through care",
+          "path": "assets/sintel-finds-injured-baby-scales.jpg"
+        },
+        {
+          "caption": "Scales spreads his wings above the city shortly before the separation",
+          "path": "assets/scales-spreads-wings-above-city.jpg"
+        },
+        {
+          "caption": "The desert landscapes make the length and isolation of Sintel’s search perceptible",
+          "path": "assets/sintel-searches-across-desert.jpg"
+        },
+        {
+          "caption": "The cave meeting challenges Sintel’s understanding of the dragon she finds",
+          "path": "assets/sintel-confronts-adult-dragon.jpg"
+        },
+        {
+          "caption": "A close-up isolates her reaction as new knowledge overturns her certainty",
+          "path": "assets/sintel-faces-the-passage-of-time.jpg"
+        }
+      ],
+      "thumbnails": [
+        {
+          "derivative_of": "assets/adult-dragon-wing-mark.jpg",
+          "path": "assets/adult-dragon-wing-mark-640.jpg",
+          "sha256": "3f69fadee3b6f3f69f55d260c4be4d00794ef85c6765eb3ee32fd3b0e875078b"
+        },
+        {
+          "derivative_of": "assets/scales-spreads-wings-above-city.jpg",
+          "path": "assets/scales-spreads-wings-above-city-640.jpg",
+          "sha256": "795ff6d3363afa049e21ac89a8c0d1f1b7607fd8368c8a7dfeb9374e062fa6a1"
+        },
+        {
+          "derivative_of": "assets/shaman-plucks-stringed-instrument.jpg",
+          "path": "assets/shaman-plucks-stringed-instrument-640.jpg",
+          "sha256": "6d91e927c68a12507a0e747fc86eb42c8cf2ee4cbb1af9867820174d6e745664"
+        },
+        {
+          "derivative_of": "assets/sintel-comforts-young-scales.jpg",
+          "path": "assets/sintel-comforts-young-scales-640.jpg",
+          "sha256": "2a7579bdb3f04c2966bdc9010eaaf71ef21802f09cd54227e7797016d1ca124c"
+        },
+        {
+          "derivative_of": "assets/sintel-confronts-adult-dragon.jpg",
+          "path": "assets/sintel-confronts-adult-dragon-640.jpg",
+          "sha256": "7c7104366ebff9de9e5bc0155ff352ce3dccbb049b585f7dbe1248e9bbb072b1"
+        },
+        {
+          "derivative_of": "assets/sintel-crossing-snowbound-mountains.jpg",
+          "path": "assets/sintel-crossing-snowbound-mountains-640.jpg",
+          "sha256": "625cbb70a45c8e90ffd09d2a48039d46c06babcca4dff2cfe676920e9c5574ef"
+        },
+        {
+          "derivative_of": "assets/sintel-examines-cave-crystals.jpg",
+          "path": "assets/sintel-examines-cave-crystals-640.jpg",
+          "sha256": "6351e9b0961f791c1beff4ed73c813ba871d92f1a7f49cb1f8b12aded27d9ac6"
+        },
+        {
+          "derivative_of": "assets/sintel-faces-the-passage-of-time.jpg",
+          "path": "assets/sintel-faces-the-passage-of-time-640.jpg",
+          "sha256": "a74255d1fc5fa8378c1978de101098acbc959fbfaf0288f44d328712cb4a8dc4"
+        },
+        {
+          "derivative_of": "assets/sintel-finds-injured-baby-scales.jpg",
+          "path": "assets/sintel-finds-injured-baby-scales-640.jpg",
+          "sha256": "59e0eeaa204c3a23dbeffd1686e12ac8b10792426ca45a4f5393d28028a1d8d1"
+        },
+        {
+          "derivative_of": "assets/sintel-meets-the-shaman.jpg",
+          "path": "assets/sintel-meets-the-shaman-640.jpg",
+          "sha256": "043355b17115fe0ef6ea9bf9dc94424255da32b3dd2fd06e7af8c29e92f9fbe9"
+        },
+        {
+          "derivative_of": "assets/sintel-quiet-after-revelation.jpg",
+          "path": "assets/sintel-quiet-after-revelation-640.jpg",
+          "sha256": "3e906a65beb731f892dceb8208e89efa41c6a4c8d0fef986fc3789a273358aee"
+        },
+        {
+          "derivative_of": "assets/sintel-receives-carved-emblem.jpg",
+          "path": "assets/sintel-receives-carved-emblem-640.jpg",
+          "sha256": "a8e04ea81a7566f00d5f93ac25b6aa9bde87eb0be1203e7cc9f844113e95433c"
+        },
+        {
+          "derivative_of": "assets/sintel-searches-across-desert.jpg",
+          "path": "assets/sintel-searches-across-desert-640.jpg",
+          "sha256": "9c4d75e0875db54e3270375af35a68bb84e85fc4a7d1a7ba24a53636a71acb46"
+        },
+        {
+          "derivative_of": "assets/sintel-walks-into-final-light.jpg",
+          "path": "assets/sintel-walks-into-final-light-640.jpg",
+          "sha256": "9b3ad88b03c63dc00d256e57e888654edbf5558345894b32d1ebde2dfeec84c8"
+        },
+        {
+          "derivative_of": "assets/sintel-witnesses-abduction.jpg",
+          "path": "assets/sintel-witnesses-abduction-640.jpg",
+          "sha256": "b7d42877b1dc09363ff6e7d7cddcac18562ae28b414f5ee7f558a4a28d3dc1bc"
+        }
+      ]
+    },
     "spring": {
       "cover": "assets/spring-cave-glowing-shard-cover.jpg",
       "figures": {

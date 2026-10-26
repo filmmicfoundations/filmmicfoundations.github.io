@@ -1,0 +1,20 @@
+{
+  "title": "Sintel",
+  "abstract": "Colin Levy’s Sintel compresses an epic search into a story of misrecognition. This essay argues that the film creates tragic irony through asymmetric temporal knowledge: the quest’s editing and character alignment keep viewers attached to a remembered relationship while physical evidence signals change. The reading examines the wing scar, movement through environments, the shaman, color and musical narration, together with the open-source production context. This editorial draft has a verified reference ledger but awaits genuine local film frames before publication.",
+  "images": [
+    "assets/sintel-comforts-young-scales.jpg",
+    "assets/sintel-finds-injured-baby-scales.jpg",
+    "assets/scales-spreads-wings-above-city.jpg",
+    "assets/sintel-searches-across-desert.jpg",
+    "assets/sintel-confronts-adult-dragon.jpg",
+    "assets/sintel-faces-the-passage-of-time.jpg"
+  ],
+  "image_captions": [
+    "Sintel comforts young Scales; the core relationship is established through small gestures",
+    "A vulnerable creature enters the narrative, framing the bond through care",
+    "Scales spreads his wings above the city shortly before the separation",
+    "The desert landscapes make the length and isolation of Sintel’s search perceptible",
+    "The cave meeting challenges Sintel’s understanding of the dragon she finds",
+    "A close-up isolates her reaction as new knowledge overturns her certainty"
+  ]
+}

@@ -1,0 +1,182 @@
+[
+  {
+    "author": "Blender Studio",
+    "title": "Sintel \u2014 Open Movie Project",
+    "venue": "Blender Studio",
+    "date": "n.d.",
+    "url": "https://studio.blender.org/projects/sintel/",
+    "kind": "Primary",
+    "note": "Official film page, credits and production gallery."
+  },
+  {
+    "author": "Colin Levy",
+    "title": "Sintel",
+    "venue": "ColinLevy.com",
+    "date": "n.d.",
+    "url": "https://www.colinlevy.com/sintel",
+    "kind": "Primary",
+    "note": "Director\u2019s firsthand account of the twelve-month production."
+  },
+  {
+    "author": "Blender Foundation",
+    "title": "About Sintel",
+    "venue": "Durian Open Movie Project",
+    "date": "2010",
+    "url": "https://durian.blender.org/about/",
+    "kind": "Primary",
+    "note": "Original project mission and CC BY 3.0 release terms."
+  },
+  {
+    "author": "Netherlands Film Festival",
+    "title": "Sintel",
+    "venue": "NFF Archive",
+    "date": "2010",
+    "url": "https://www.filmfestival.nl/en/film/sintel",
+    "kind": "Primary",
+    "note": "Festival record with verified credits and premiere context."
+  },
+  {
+    "author": "David Revoy",
+    "title": "Sintel: Art Direction",
+    "venue": "DavidRevoy.com",
+    "date": "30 Sep. 2010",
+    "url": "https://www.davidrevoy.com/article45/sintel-art-direction",
+    "kind": "Primary",
+    "note": "Art director\u2019s concept work and production observations."
+  },
+  {
+    "author": "Ton Roosendaal",
+    "title": "Sintel Online Premiere",
+    "venue": "Durian Production Blog",
+    "date": "1 Oct. 2010",
+    "url": "https://durian.blender.org/news/sintel-online-premiere/",
+    "kind": "Primary",
+    "note": "Producer\u2019s public online release announcement."
+  },
+  {
+    "author": "Jan Morgenstern",
+    "title": "Sintel",
+    "venue": "JanMorgenstern.com",
+    "date": "Oct. 2010",
+    "url": "https://www.janmorgenstern.com/2010/10/sintel-2/",
+    "kind": "Primary",
+    "note": "Composer\u2019s original-score release and song materials."
+  },
+  {
+    "author": "Ali Boubred",
+    "title": "Sintel Documentary",
+    "venue": "Durian Production Blog",
+    "date": "2 Nov. 2010",
+    "url": "https://durian.blender.org/news/sintel-documentary/",
+    "kind": "Primary",
+    "note": "Documentary overview of actual studio production stages."
+  },
+  {
+    "author": "Pablo Vazquez",
+    "title": "Sintel\u2019s Cabin, Sneak Peek",
+    "venue": "Durian Production Blog",
+    "date": "26 May 2010",
+    "url": "https://durian.blender.org/news/sintels-cabin-sneak-peek/",
+    "kind": "Primary",
+    "note": "Firsthand lighting/compositing process and work-in-progress limits."
+  },
+  {
+    "author": "Alexandre Prokoudine",
+    "title": "Interview with Sintel\u2019s Art Director David Revoy",
+    "venue": "Libre Arts",
+    "date": "30 Sep. 2010",
+    "url": "https://librearts.org/2010/09/interview-with-sintel-art-director-david-revoy/",
+    "kind": "Secondary",
+    "note": "Interview contextualizing design and free/open-source workflow."
+  },
+  {
+    "author": "Julia Velkova",
+    "title": "Media Technologies in the Making",
+    "venue": "S\u00f6dert\u00f6rn University",
+    "date": "2017",
+    "url": "https://www.diva-portal.org/smash/get/diva2:1155462/FULLTEXT02.pdf",
+    "kind": "Secondary \u2014 scholarly",
+    "note": "Doctoral research into open digital media production and software infrastructures."
+  },
+  {
+    "author": "Murray Smith",
+    "title": "Engaging Characters (2nd ed.), chapter 3",
+    "venue": "Oxford University Press",
+    "date": "2022",
+    "url": "https://doi.org/10.1093/oso/9780198871071.003.0004",
+    "kind": "Secondary \u2014 scholarly",
+    "note": "Recognition, alignment and allegiance as distinct character-engagement concepts."
+  },
+  {
+    "author": "Murray Smith",
+    "title": "Screens and Filters: Alignment",
+    "venue": "Oxford University Press",
+    "date": "2022",
+    "url": "https://doi.org/10.1093/oso/9780198871071.003.0006",
+    "kind": "Secondary \u2014 scholarly",
+    "note": "Defines narration\u2019s spatial attachment and subjective access."
+  },
+  {
+    "author": "Jerry Beck",
+    "title": "\u201cSintel\u201d by Colin Levy",
+    "venue": "Cartoon Brew",
+    "date": "2 Oct. 2010",
+    "url": "https://www.cartoonbrew.com/cgi/sintel-by-colin-levy-29100.html",
+    "kind": "Secondary",
+    "note": "Contemporaneous independent animation coverage."
+  },
+  {
+    "author": "Peter Upfold",
+    "title": "Blender\u2019s Durian Open Movie Project Premieres \u201cSintel\u201d",
+    "venue": "FOSSwire",
+    "date": "2 Oct. 2010",
+    "url": "https://fosswire.com/post/2010/10/blender-premieres-sintel/",
+    "kind": "Secondary",
+    "note": "Open-movie industry context and distribution account."
+  },
+  {
+    "author": "Randall Newton",
+    "title": "Open Source 3D Animation Dragon Tale Gets 1 Million Hits",
+    "venue": "GfxSpeak",
+    "date": "6 Oct. 2010",
+    "url": "https://gfxspeak.com/archives/open-source-3d-animation-dragon-tale-gets-1-million-hits-in-first-week-online/",
+    "kind": "Secondary",
+    "note": "Contemporary reporting on distribution and technical development."
+  },
+  {
+    "author": "Creative Commons",
+    "title": "Watch Sintel, an Open-Source Animated Short",
+    "venue": "CreativeCommons.org",
+    "date": "2 Nov. 2010",
+    "url": "https://creativecommons.org/2010/11/02/watch-sintel-a-new-open-source-animated-short-from-the-blender-institute/",
+    "kind": "Secondary",
+    "note": "Open-licensing and online-release context."
+  },
+  {
+    "author": "Rotten Tomatoes",
+    "title": "Sintel (2010)",
+    "venue": "Rotten Tomatoes",
+    "date": "n.d.",
+    "url": "https://www.rottentomatoes.com/m/sintel",
+    "kind": "Tertiary",
+    "note": "Compiled reception and film metadata; not a source of interpretation."
+  },
+  {
+    "author": "Wikimedia contributors",
+    "title": "Sintel",
+    "venue": "Wikipedia",
+    "date": "accessed 25 Oct. 2026",
+    "url": "https://en.wikipedia.org/wiki/Sintel",
+    "kind": "Tertiary",
+    "note": "Compiled plot and production overview; corroborated against primary records."
+  },
+  {
+    "author": "MUBI",
+    "title": "Sintel",
+    "venue": "MUBI",
+    "date": "n.d.",
+    "url": "https://mubi.com/en/us/films/sintel",
+    "kind": "Tertiary",
+    "note": "Independent catalog record for film identification."
+  }
+]

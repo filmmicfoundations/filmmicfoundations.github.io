@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');:root{--ink:#1e3035;--accent:#2d777d;--dark:#0d1b21;--muted:#647378;--line:#e0e6e5;--paper:#fcfcfa}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:90px}body{margin:0;background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif}a{color:var(--accent)}.topbar{height:68px;position:sticky;top:0;z-index:10;background:rgba(252,252,250,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 clamp(20px,5vw,90px)}.brand{font-size:22px;font-weight:700;letter-spacing:.12em;color:var(--ink);text-decoration:none}.brand span{color:var(--accent)}nav{display:flex;gap:28px;align-items:center}nav a{text-decoration:none;color:var(--ink);font-size:12px;font-weight:700;letter-spacing:.04em}nav a:hover,.toc a:hover{color:var(--accent)}nav .nav-pdf{border:1px solid #a5b8b8;padding:11px 15px}.hero{height:min(720px,83vh);min-height:540px;position:relative;background:var(--dark);color:white;overflow:hidden}.hero-image{position:absolute;inset:0;background-image:url('assets/mindglass-procedure-laboratory-reveal.webp');background-position:center 45%;background-size:cover;opacity:.6}.hero-shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,16,21,.97) 0%,rgba(6,16,21,.87) 35%,rgba(6,16,21,.12) 100%),linear-gradient(0deg,rgba(6,16,21,.45),transparent 50%)}.hero-inner{position:relative;max-width:1200px;margin:auto;padding:clamp(80px,13vh,130px) 5vw}.eyebrow{color:#87c3c5;font-weight:700;font-size:11px;letter-spacing:.19em}.hero h1{font-size:clamp(54px,8vw,112px);line-height:.98;letter-spacing:-.06em;margin:34px 0 20px;font-weight:700}.hero h1 em{font-family:'Libre Baskerville',serif;font-weight:400;letter-spacing:-.07em}.dek{font-family:'Libre Baskerville',serif;font-size:clamp(16px,2vw,25px);line-height:1.55;margin:0}.hero-caption{font-size:13px;color:#c6d3d2;margin-top:18px}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:40px}.hero-actions a{padding:14px 21px;text-decoration:none;font-weight:700;font-size:13px}.primary{background:#c0e4df;color:#0b2528}.primary span{margin-left:14px}.secondary{border:1px solid #a1b7b8;color:white}.paper-layout{display:grid;grid-template-columns:minmax(220px,290px) minmax(0,800px);gap:clamp(30px,5vw,100px);max-width:1280px;margin:0 auto;padding:78px 40px 120px}.sidebar-sticky{position:sticky;top:105px;max-height:calc(100vh - 130px);overflow:auto}.sidebar-label{font-size:11px;letter-spacing:.18em;color:var(--muted);font-weight:700;margin-bottom:22px}.toc{border-left:1px solid var(--line);display:flex;flex-direction:column}.toc a{display:block;padding:8px 15px;color:#647578;text-decoration:none;font-size:12px;line-height:1.45}.toc a.active{border-left:2px solid var(--accent);color:var(--accent);font-weight:700;margin-left:-1px}.sidebar-note{border-top:1px solid var(--line);margin-top:26px;padding-top:20px;color:var(--muted);font-size:12px;line-height:1.7}.article{min-width:0}.article-meta{display:flex;gap:15px;flex-wrap:wrap;font-size:10px;letter-spacing:.1em;font-weight:700;color:var(--accent);padding-bottom:22px;border-bottom:1px solid var(--line)}.article-intro{margin:28px 0 70px}.article-intro>p:first-child{font-family:'Libre Baskerville',serif;font-size:21px;line-height:1.8;color:#29474b}.disclosure,.source-note{font-size:12px!important;color:var(--muted)!important;line-height:1.7!important;border-left:2px solid #b4cdca;padding-left:15px}.article h2{font-family:'Libre Baskerville',serif;font-size:clamp(22px,2.8vw,31px);line-height:1.4;letter-spacing:-.03em;margin:65px 0 22px;color:#18363b}.article h2:first-of-type{margin-top:0}.article p{font-family:'Libre Baskerville',Georgia,serif;font-size:14px;line-height:2.05;color:#2f3b3d;margin:0 0 22px}.article figure{margin:36px 0 40px}.article figure img{display:block;width:100%;max-height:510px;object-fit:cover;background:#dce1df}.article figcaption,.figure-caption{font-family:'DM Sans',sans-serif!important;font-size:11px!important;line-height:1.65!important;color:#657679!important;margin-top:11px!important}.cite{font-family:'DM Sans',sans-serif;font-size:11px;text-decoration:none;white-space:nowrap}.diagram{padding:22px;background:#eff3f2;border:1px solid #dbe5e2}.diagram-row{display:flex;align-items:stretch;gap:12px}.diagram-row>div{flex:1;padding:18px;background:white;border-top:3px solid #598b8c}.diagram-row b{display:block;font-size:12px;letter-spacing:.05em;margin-bottom:12px}.diagram-row span:not(.diagram-arrow){display:block;font-size:12px;color:#6a7879;padding:4px 0}.diagram-arrow{align-self:center;font-size:24px;color:#598b8c}.cycle{display:flex;align-items:center;flex-wrap:wrap;gap:9px}.cycle span{background:white;border:1px solid #b8cecb;padding:15px 12px;font-size:11px;flex:1;text-align:center;min-width:110px}.cycle i{color:#548787;font-size:22px;font-style:normal}.references{padding:0;list-style:none}.references li{font-size:12px;line-height:1.9;border-bottom:1px solid var(--line);padding:12px 0;overflow-wrap:anywhere;color:#4b595b}.ref-num{font-weight:700;color:var(--accent);margin-right:7px}.watch{background:#0c1e25;color:white;padding:90px max(5vw,24px);display:grid;grid-template-columns:1fr 1.5fr;gap:65px;align-items:center}.watch h2{font-family:'Libre Baskerville',serif;font-size:clamp(32px,4vw,54px);font-weight:400;margin:20px 0}.watch p{color:#c0cecf;line-height:1.8;font-size:14px}.watch a{color:#a9e1df}.video{aspect-ratio:16/9;background:#1d3138}.video iframe{border:0;width:100%;height:100%}footer{display:flex;justify-content:space-between;gap:30px;padding:55px max(5vw,24px);background:#071419;color:#c4d0d0}footer b{font-size:13px;letter-spacing:.14em}footer p{font-size:12px}footer a{color:#9bd3d0}.foot-links{display:flex;gap:22px;align-items:center;flex-wrap:wrap;font-size:12px}@media(max-width:900px){.paper-layout{grid-template-columns:1fr;max-width:760px;padding:50px 24px 90px}.sidebar{display:none}.watch{grid-template-columns:1fr;gap:30px}.hero{min-height:530px}nav{gap:13px}nav a{font-size:11px}nav a:nth-child(1),nav a:nth-child(3){display:none}}@media(max-width:520px){.hero h1{font-size:49px}.hero-inner{padding:95px 22px}.hero-shade{background:linear-gradient(90deg,rgba(6,16,21,.95),rgba(6,16,21,.42))}.article p{font-size:13px}.diagram-row{flex-direction:column}.diagram-arrow{transform:rotate(90deg)}footer{flex-direction:column}.article-meta{font-size:9px}}
+/* Film-specific hero artwork. Interpretive illustration is original, not a screenshot. */
+.hero-image{background-image:url('assets/spring-and-autumn-over-renewed-valley.jpg')!important;background-position:center center!important;opacity:.78}.alike-art-credit{font-size:11px;opacity:.72}
+
+
+
+
+/* --- Alike article alignment with Mindglass formatting --- */
+.film-still-local img{display:block;width:100%;height:auto;max-height:510px;object-fit:cover;background:#dce1df}.film-still-local figcaption{margin-top:11px}.diagram{padding:22px;background:#eff3f2;border:1px solid #dbe5e2}.diagram img{display:none}.alike-diagram-kicker{font:700 11px/1.2 "DM Sans",sans-serif;letter-spacing:.16em;color:#2d777d;margin:0 0 12px}.alike-diagram-title{font:700 clamp(28px,3.4vw,52px)/1.05 "DM Sans",sans-serif;letter-spacing:-.04em;color:#1f4750;margin:0 0 14px}.alike-diagram-subtitle{font-family:"DM Sans",sans-serif!important;font-size:13px!important;line-height:1.7!important;color:#586d72!important;margin:0 0 18px!important}.alike-color-stages{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.alike-stage{padding:18px;background:white;border-top:3px solid #598b8c}.alike-stage-num{font:700 12px/1 "DM Sans",sans-serif;letter-spacing:.08em;color:#2d777d;margin-bottom:12px}.alike-stage-label{font:700 21px/1.1 "DM Sans",sans-serif;letter-spacing:.01em;color:#214148;margin-bottom:18px}.alike-stage-dots{display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap;margin-bottom:16px}.alike-dot-pair{display:flex;flex-direction:column;align-items:center;gap:8px}.alike-dot{display:block;width:84px;height:84px;border-radius:50%}.alike-dot-pair small{font:700 11px/1.2 "DM Sans",sans-serif;letter-spacing:.07em;color:#566a70;text-transform:uppercase}.alike-stage-note{font-family:"DM Sans",sans-serif!important;font-size:12px!important;line-height:1.55!important;color:#5f7277!important;margin:0!important}.alike-cycle span{min-width:96px}.article-intro{margin:28px 0 52px}.article-intro>p:first-child{margin-bottom:0}.source-note{max-width:62ch}.sidebar-note{font-size:12px;line-height:1.7}@media(max-width:900px){.alike-color-stages{grid-template-columns:1fr 1fr}}@media(max-width:560px){.alike-color-stages{grid-template-columns:1fr}.alike-diagram-title{font-size:34px}.alike-stage-dots{gap:14px}.alike-dot{width:68px;height:68px}}html[data-theme="dark"] .film-still-local img{background:#22333a}html[data-theme="dark"] .diagram{background:var(--ff-soft)!important;border-color:var(--ff-border)}html[data-theme="dark"] .alike-stage{background:var(--ff-panel)!important;border-top-color:#6ea9ac!important}html[data-theme="dark"] .alike-diagram-title{color:#edf6f6!important}html[data-theme="dark"] .alike-diagram-subtitle,html[data-theme="dark"] .alike-stage-note,html[data-theme="dark"] .alike-dot-pair small{color:var(--ff-muted)!important}html[data-theme="dark"] .alike-stage-label,html[data-theme="dark"] .alike-stage-num,html[data-theme="dark"] .alike-diagram-kicker{color:#9dd9d7!important}
+
+/* --- Unique stills and diagram tidy-up (2026-10-21) --- */
+.film-still-local img{display:block;width:100%;height:auto;max-height:520px;object-fit:contain;background:#dde3e2}
+.alike-color-stages{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;align-items:start}
+.alike-stage{min-width:0}
+.alike-stage-label{font-size:17px!important;line-height:1.02!important;letter-spacing:0!important;overflow-wrap:anywhere;word-break:break-word;hyphens:auto}
+.alike-stage-num{margin-bottom:10px}
+.alike-stage-note{font-size:11.5px!important;line-height:1.45!important}
+.alike-stage-dots{gap:16px;justify-content:flex-start}
+.alike-dot{width:74px;height:74px}
+.alike-dot-pair small{font-size:10px!important;letter-spacing:.05em}
+@media (max-width: 820px){.alike-color-stages{grid-template-columns:1fr 1fr}.alike-stage-label{font-size:20px!important}.alike-dot{width:82px;height:82px}}
+@media (max-width: 540px){.alike-color-stages{grid-template-columns:1fr}.alike-stage-label{font-size:22px!important}}
+html[data-theme="dark"] .film-still-local img{background:#223238}
+
+
+/* v2026.10.21 typography correction — prevent the final character of DISCONNECTION
+   from wrapping while retaining the four-stage diagram's editorial layout. */
+.alike-color-stages .alike-stage-label {
+  font-size:13.5px !important;
+  line-height:1.2 !important;
+  letter-spacing:-.045em !important;
+  white-space:nowrap !important;
+  overflow-wrap:normal !important;
+  word-break:normal !important;
+  hyphens:none !important;
+}
+@media (max-width:820px) {
+  .alike-color-stages .alike-stage-label {font-size:19px !important; letter-spacing:-.015em !important;}
+}
+@media (max-width:560px) {
+  .alike-color-stages .alike-stage-label {font-size:22px !important; letter-spacing:normal !important;}
+}
+
+/* Cover parity: authentic frame rather than concept art; responsive crop. */
+.hero-image{background-image:url('assets/spring-and-autumn-over-renewed-valley.jpg')!important;background-position:center 44%!important;opacity:.82!important}
+@media(max-width:640px){.hero-image{background-position:42% center!important}}
+
+/* 2026-10-23: Official Alike cover uses the supplied high-resolution film still. */
+.hero .hero-image{background-image:url('assets/spring-and-autumn-over-renewed-valley.jpg')!important;background-position:60% center!important;opacity:.82!important}
+@media(max-width:600px){.hero .hero-image{background-position:60% center!important}}
+
+/* Spring editorial draft. Uses existing palette and shared navigation. */
+.hero-image{background-image:url('assets/spring-and-autumn-over-renewed-valley.jpg')!important;background-position:center!important;background-size:cover!important;opacity:.85!important;}
+.spring-diagram-kicker{font:700 11px/1.5 'DM Sans',sans-serif;letter-spacing:.15em;color:#438c8e;margin:0 0 16px;}
+.spring-process,.spring-scale-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;}
+.spring-step{border-top:3px solid #7ab9b5;background:rgba(58,115,118,.10);padding:12px 9px;min-width:0;}
+.spring-step small{display:block;color:#3e8b8d;font:700 12px 'DM Sans',sans-serif;margin-bottom:9px;}
+.spring-step strong{display:block;font:700 13px 'DM Sans',sans-serif;margin-bottom:8px;overflow-wrap:anywhere;}
+.spring-step span,.spring-scale-box p{display:block;font:400 12px/1.5 'DM Sans',sans-serif;margin:0;color:inherit;}
+.spring-scale-row{grid-template-columns:repeat(3,minmax(0,1fr));}.spring-scale-box{border-top:3px solid #7ab9b5;background:rgba(58,115,118,.10);padding:17px;min-width:0;}.spring-scale-box b{font:700 12px 'DM Sans',sans-serif;letter-spacing:.07em;display:block;margin:0 0 9px;}
+@media(max-width:760px){.spring-process{grid-template-columns:repeat(2,minmax(0,1fr));}.spring-scale-row{grid-template-columns:1fr}}
+html[data-theme="dark"] .spring-step,html[data-theme="dark"] .spring-scale-box{background:rgba(89,165,166,.11);}
+
+/* Authenticated Spring stills — consistent with Mindglass image treatment. */
+.hero .hero-image{background-image:url('assets/spring-and-autumn-over-renewed-valley.jpg')!important;background-position:center 56%!important;opacity:.83!important;}
+.spring-film-still{margin:40px 0 46px}.spring-film-still img{display:block;width:100%;height:auto;max-height:520px;object-fit:contain;background:#e3eae7}.spring-film-still figcaption{margin-top:11px}.spring-film-still .article-image-open{display:block;width:100%}html[data-theme="dark"] .spring-film-still img{background:#18292e;}
+
+/* Updated Spring cover selection */
+.hero .hero-image,.hero-image{background-image:url('assets/spring-cave-glowing-shard-cover.jpg')!important;background-position:center center!important;background-size:cover!important;opacity:.84!important;}
+@media(max-width:700px){.hero .hero-image,.hero-image{background-position:54% center!important;}}
+
+.sintel-analysis-figure{background:transparent!important;border:0!important;padding:0!important;}
+.sintel-diagram-heading{font:700 12px 'DM Sans',sans-serif;color:var(--accent);letter-spacing:.12em;display:block;margin:0 0 13px;}
+.sintel-diagram-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;}
+.sintel-diagram-cell{padding:19px 15px;border-top:3px solid #598b8c;background:var(--ff-panel,#fff);min-width:0;}
+.sintel-diagram-cell b{display:block;font:700 12px/1.4 'DM Sans',sans-serif;color:var(--ff-ink,#17363b);margin:0 0 12px;}
+.sintel-diagram-cell span{display:block;font:500 12px/1.55 'DM Sans',sans-serif;color:var(--ff-muted,#647378);overflow-wrap:anywhere;}
+html[data-theme=dark] .sintel-diagram-cell{background:var(--ff-panel,#17272d);}
+@media(max-width:670px){.sintel-diagram-row{grid-template-columns:1fr}}
+
+/* Media-complete Sintel article: local film-still hero and figure treatment. */
+.hero .hero-image,.hero-image{background-image:url('assets/sintel-comforts-young-scales.jpg')!important;background-position:63% 48%!important;background-size:cover!important;opacity:.83!important;background-color:#15252b!important;}
+@media(max-width:650px){.hero .hero-image{background-position:57% center!important;}}
+.sintel-film-still{margin:38px 0 44px;}
+.sintel-film-still .article-image-open{display:block;width:100%;}
+.sintel-film-still img{display:block;width:100%;max-height:520px;height:auto;object-fit:contain;background:#e2e6e5;}
+html[data-theme=dark] .sintel-film-still img{background:#213339;}

@@ -1,0 +1,271 @@
+{
+  "film": "Sintel (2010)",
+  "cover": "assets/sintel-comforts-young-scales.jpg",
+  "film_stills": [
+    {
+      "figure": 1,
+      "kind": "film_still",
+      "name": "assets/sintel-crossing-snowbound-mountains.jpg",
+      "time": 60,
+      "alt": "Sintel kneeling in a bleak, snowy mountain pass.",
+      "caption": "Sintel kneels in a white, barren mountain pass, weather and space emphasizing the difficulty of the search."
+    },
+    {
+      "figure": 2,
+      "kind": "film_still",
+      "name": "assets/sintel-finds-injured-baby-scales.jpg",
+      "time": 187,
+      "alt": "A wounded baby dragon resting against a stone wall with an injured wing.",
+      "caption": "The wounded baby dragon first enters the story as a small, vulnerable animal rather than a fearsome creature."
+    },
+    {
+      "figure": 3,
+      "kind": "film_still",
+      "name": "assets/sintel-comforts-young-scales.jpg",
+      "time": 215,
+      "alt": "Sintel gently cradling the small dragon Scales beside a warm fire.",
+      "caption": "A close view of Sintel and Scales conveys affection through eye-line, facial expression and proximity."
+    },
+    {
+      "figure": 5,
+      "kind": "film_still",
+      "name": "assets/scales-spreads-wings-above-city.jpg",
+      "time": 274,
+      "alt": "The small dragon Scales spreading its wings on a city ledge.",
+      "caption": "Scales balances on a narrow ledge, revealing the wings that make flight—and separation—possible."
+    },
+    {
+      "figure": 6,
+      "kind": "film_still",
+      "name": "assets/sintel-witnesses-abduction.jpg",
+      "time": 331,
+      "alt": "Close-up of Sintel reacting with alarm in the city.",
+      "caption": "Sintel’s alarm fixes the abduction as an emotional rupture before she can understand everything she has seen."
+    },
+    {
+      "figure": 7,
+      "kind": "film_still",
+      "name": "assets/sintel-searches-across-desert.jpg",
+      "time": 390,
+      "alt": "Sintel resting beside rocks in a sun-baked desert landscape.",
+      "caption": "The desert journey enlarges the world and compresses time, making the long search legible through environmental change."
+    },
+    {
+      "figure": 8,
+      "kind": "film_still",
+      "name": "assets/sintel-meets-the-shaman.jpg",
+      "time": 440,
+      "alt": "Sintel listening in a dark, firelit interior.",
+      "caption": "Firelight isolates Sintel’s response as the older guide helps shape her interpretation of the quest."
+    },
+    {
+      "figure": 10,
+      "kind": "film_still",
+      "name": "assets/sintel-receives-carved-emblem.jpg",
+      "time": 460,
+      "alt": "A detailed round metal emblem held in front of Sintel.",
+      "caption": "The circular emblem functions as a specific piece of information that Sintel uses to interpret the world ahead."
+    },
+    {
+      "figure": 11,
+      "kind": "film_still",
+      "name": "assets/sintel-confronts-adult-dragon.jpg",
+      "time": 601,
+      "alt": "A gigantic adult dragon towering over Sintel inside a shadowy cavern.",
+      "caption": "The full-grown dragon fills the cave beside Sintel; their unequal physical scale also reveals her restricted understanding."
+    },
+    {
+      "figure": 13,
+      "kind": "film_still",
+      "name": "assets/adult-dragon-wing-mark.jpg",
+      "time": 616,
+      "alt": "Close-up of a pale line on the surface of the adult dragon’s wing.",
+      "caption": "A close view of the dragon’s marked wing foregrounds bodily continuity at the moment of recognition."
+    },
+    {
+      "figure": 14,
+      "kind": "film_still",
+      "name": "assets/sintel-faces-the-passage-of-time.jpg",
+      "time": 638,
+      "alt": "Sintel staring forward in shock during the recognition sequence.",
+      "caption": "Sintel’s face becomes the focus as the film finally makes the effects of elapsed time impossible to ignore."
+    },
+    {
+      "figure": 15,
+      "kind": "film_still",
+      "name": "assets/sintel-examines-cave-crystals.jpg",
+      "time": 540,
+      "alt": "Sintel reaching toward glowing blue crystals inside the dark cave.",
+      "caption": "Blue glints and deep black stone narrow the image’s visual field compared with the open, sunlit city."
+    },
+    {
+      "figure": 16,
+      "kind": "film_still",
+      "name": "assets/shaman-plucks-stringed-instrument.jpg",
+      "time": 110,
+      "alt": "An elderly musician playing a stringed instrument in an amber-lit interior.",
+      "caption": "The musician’s instrument gives the tavern sequence a tactile acoustic source before the story returns to Sintel’s memories."
+    },
+    {
+      "figure": 17,
+      "kind": "film_still",
+      "name": "assets/sintel-quiet-after-revelation.jpg",
+      "time": 705,
+      "alt": "Sintel looking down after the cave confrontation, with twisted roots behind her.",
+      "caption": "A quiet facial close-up asks viewers to reevaluate a character whose certainty has been shaken by new knowledge."
+    },
+    {
+      "figure": 19,
+      "kind": "film_still",
+      "name": "assets/sintel-walks-into-final-light.jpg",
+      "time": 725,
+      "alt": "Sintel walking away along a bright path beside pale plants.",
+      "caption": "The closing landscape opens beyond Sintel, leaving the ending’s emotional direction unresolved rather than fully explained."
+    }
+  ],
+  "figures": [
+    {
+      "figure": 1,
+      "kind": "film_still",
+      "name": "assets/sintel-crossing-snowbound-mountains.jpg",
+      "time": 60,
+      "alt": "Sintel kneeling in a bleak, snowy mountain pass.",
+      "caption": "Sintel kneels in a white, barren mountain pass, weather and space emphasizing the difficulty of the search."
+    },
+    {
+      "figure": 2,
+      "kind": "film_still",
+      "name": "assets/sintel-finds-injured-baby-scales.jpg",
+      "time": 187,
+      "alt": "A wounded baby dragon resting against a stone wall with an injured wing.",
+      "caption": "The wounded baby dragon first enters the story as a small, vulnerable animal rather than a fearsome creature."
+    },
+    {
+      "figure": 3,
+      "kind": "film_still",
+      "name": "assets/sintel-comforts-young-scales.jpg",
+      "time": 215,
+      "alt": "Sintel gently cradling the small dragon Scales beside a warm fire.",
+      "caption": "A close view of Sintel and Scales conveys affection through eye-line, facial expression and proximity."
+    },
+    {
+      "figure": 4,
+      "kind": "diagram",
+      "caption": "Analytical diagram of the film’s reframed questions. This is an interpretation, not a storyboard frame."
+    },
+    {
+      "figure": 5,
+      "kind": "film_still",
+      "name": "assets/scales-spreads-wings-above-city.jpg",
+      "time": 274,
+      "alt": "The small dragon Scales spreading its wings on a city ledge.",
+      "caption": "Scales balances on a narrow ledge, revealing the wings that make flight—and separation—possible."
+    },
+    {
+      "figure": 6,
+      "kind": "film_still",
+      "name": "assets/sintel-witnesses-abduction.jpg",
+      "time": 331,
+      "alt": "Close-up of Sintel reacting with alarm in the city.",
+      "caption": "Sintel’s alarm fixes the abduction as an emotional rupture before she can understand everything she has seen."
+    },
+    {
+      "figure": 7,
+      "kind": "film_still",
+      "name": "assets/sintel-searches-across-desert.jpg",
+      "time": 390,
+      "alt": "Sintel resting beside rocks in a sun-baked desert landscape.",
+      "caption": "The desert journey enlarges the world and compresses time, making the long search legible through environmental change."
+    },
+    {
+      "figure": 8,
+      "kind": "film_still",
+      "name": "assets/sintel-meets-the-shaman.jpg",
+      "time": 440,
+      "alt": "Sintel listening in a dark, firelit interior.",
+      "caption": "Firelight isolates Sintel’s response as the older guide helps shape her interpretation of the quest."
+    },
+    {
+      "figure": 9,
+      "kind": "diagram",
+      "caption": "Diagram distinguishing material clues from the assumptions Sintel attaches to them."
+    },
+    {
+      "figure": 10,
+      "kind": "film_still",
+      "name": "assets/sintel-receives-carved-emblem.jpg",
+      "time": 460,
+      "alt": "A detailed round metal emblem held in front of Sintel.",
+      "caption": "The circular emblem functions as a specific piece of information that Sintel uses to interpret the world ahead."
+    },
+    {
+      "figure": 11,
+      "kind": "film_still",
+      "name": "assets/sintel-confronts-adult-dragon.jpg",
+      "time": 601,
+      "alt": "A gigantic adult dragon towering over Sintel inside a shadowy cavern.",
+      "caption": "The full-grown dragon fills the cave beside Sintel; their unequal physical scale also reveals her restricted understanding."
+    },
+    {
+      "figure": 12,
+      "kind": "diagram",
+      "caption": "Diagram of the recurring bodily clue whose meaning changes at the climax."
+    },
+    {
+      "figure": 13,
+      "kind": "film_still",
+      "name": "assets/adult-dragon-wing-mark.jpg",
+      "time": 616,
+      "alt": "Close-up of a pale line on the surface of the adult dragon’s wing.",
+      "caption": "A close view of the dragon’s marked wing foregrounds bodily continuity at the moment of recognition."
+    },
+    {
+      "figure": 14,
+      "kind": "film_still",
+      "name": "assets/sintel-faces-the-passage-of-time.jpg",
+      "time": 638,
+      "alt": "Sintel staring forward in shock during the recognition sequence.",
+      "caption": "Sintel’s face becomes the focus as the film finally makes the effects of elapsed time impossible to ignore."
+    },
+    {
+      "figure": 15,
+      "kind": "film_still",
+      "name": "assets/sintel-examines-cave-crystals.jpg",
+      "time": 540,
+      "alt": "Sintel reaching toward glowing blue crystals inside the dark cave.",
+      "caption": "Blue glints and deep black stone narrow the image’s visual field compared with the open, sunlit city."
+    },
+    {
+      "figure": 16,
+      "kind": "film_still",
+      "name": "assets/shaman-plucks-stringed-instrument.jpg",
+      "time": 110,
+      "alt": "An elderly musician playing a stringed instrument in an amber-lit interior.",
+      "caption": "The musician’s instrument gives the tavern sequence a tactile acoustic source before the story returns to Sintel’s memories."
+    },
+    {
+      "figure": 17,
+      "kind": "film_still",
+      "name": "assets/sintel-quiet-after-revelation.jpg",
+      "time": 705,
+      "alt": "Sintel looking down after the cave confrontation, with twisted roots behind her.",
+      "caption": "A quiet facial close-up asks viewers to reevaluate a character whose certainty has been shaken by new knowledge."
+    },
+    {
+      "figure": 18,
+      "kind": "diagram",
+      "caption": "Analytical comparison of the story’s emotional continuity and its concealed chronology."
+    },
+    {
+      "figure": 19,
+      "kind": "film_still",
+      "name": "assets/sintel-walks-into-final-light.jpg",
+      "time": 725,
+      "alt": "Sintel walking away along a bright path beside pale plants.",
+      "caption": "The closing landscape opens beyond Sintel, leaving the ending’s emotional direction unresolved rather than fully explained."
+    }
+  ],
+  "status": "complete",
+  "license": "https://creativecommons.org/licenses/by/3.0/",
+  "film_source": "https://durian.blender.org/about/"
+}
